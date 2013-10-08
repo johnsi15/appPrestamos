@@ -1,0 +1,64 @@
+/* Para evitar margenes y espacios */
+* { margin: 0; padding: 0;
+  font-family: Arial;
+ }
+
+body{
+    /*background: rgba(153,150,50,0.4);*/
+    /*background: rgba(130,112,54,0.5);*/
+    /*background: rgba(206,176,131,0.5);*/
+    background: rgba(7,7,7,0.6);
+    /* background: rgba(73, 59, 42, 0.8); */
+}
+
+footer{
+   padding-top: 0%;
+   padding-bottom: 0%;
+   background: rgba(255,255,255,0.8);
+   bottom:0!important;
+   margin-bottom: 0%;
+}
+
+#pie{
+    text-align: center;
+    font-weight: bold;
+}
+
+#cabeza {
+    height: 100%;
+}
+#IrInicio:hover{
+    text-decoration: underline;
+}
+#IrInicio:link{
+    text-decoration: none;
+}
+
+/* Responsive Desing */
+/* media queries para hero-unit h1 */
+@media all and (max-width: 480px){
+    .hero-unit h1{
+        font-size: 30px;
+    }
+
+    .respon{
+        width: 50%;
+    }
+
+    #centrar{
+        font-size: 20px;
+    }
+
+    #form{
+        margin-left: 5%;
+    }
+    body{
+        padding-top: 0%;
+    }
+}
+
+@media all and (max-width: 1024px){
+    .respon{
+        width: 140px;
+    }
+}
