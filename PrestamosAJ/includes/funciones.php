@@ -58,8 +58,8 @@
                                       or die ("problemas con el insert de concepto de internet".mysql_error());
     }
 
-    public function verEstudiantes(){
-        $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
+    public function verClientes(){
+        /*$cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
 
         if(isset($_GET["pagina"])){
             $num_pag = $_GET["pagina"];//numero de la pagina
@@ -73,51 +73,28 @@
         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
-        $resultado = mysql_query("SELECT * FROM estudiantes ORDER BY condicion, fechaFinal DESC LIMIT $inicio,$cant_reg");
-
+        */
+        $resultado = mysql_query("SELECT * FROM clientes");
+   
         while($fila = mysql_fetch_array($resultado)){
-            $codigo = $fila['codigo'];
-            $result = mysql_query("SELECT sum(dias) AS total FROM fechasclientes WHERE codigoEstudiante = '$codigo' ");
-            $dias = mysql_fetch_array($result);
-
-            if($fila['condicion'] == 'Pago'){
-                 echo '<tr class="success"> 
-                         <td>'.$fila['nombre'].'</td>
-                         <td>'.$fila['fechaInicial'].'</td>
-                         <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                         <td>'.$fila['dinero'].'</td>
-                         <td>'.$fila['condicion'].'</td>
-                         <td>'.$dias['total'].'</td>
-                         <td><a disabled class="btn btn-mini btn-info"><strong disabled>Editar</strong></a></td>
-                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-                     </tr>';
-            }else{
-                if($fila['condicion'] == 'No Pago'){
-                    echo '<tr class="error"> 
-                         <td>'.$fila['nombre'].'</td>
-                         <td>'.$fila['fechaInicial'].'</td>
-                         <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                         <td>'.$fila['dinero'].'</td>
-                         <td>'.$fila['condicion'].'</td>
-                         <td>'.$dias['total'].'</td>
-                         <td><a id="editPago" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-                     </tr>';
-                }else{
-                    if($fila['condicion'] == 'Abono'){
-                        echo '<tr class="warning"> 
-                                 <td>'.$fila['nombre'].'</td>
-                                 <td>'.$fila['fechaInicial'].'</td>
-                                 <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                                 <td>'.$fila['dinero'].'</td>
-                                 <td>'.$fila['condicion'].'</td>
-                                 <td>'.$dias['total'].'</td>
-                                 <td><a id="editPago" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                 <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-                             </tr>';
-                    }
-                }
-            }
+          //  $codigo = $fila['codigo'];
+          //  $result = mysql_query("SELECT sum(dias) AS total FROM fechasclientes WHERE codigoEstudiante = '$codigo' ");
+          //  $dias = mysql_fetch_array($result);
+         //style="font-weight: bold;
+            
+            echo '<tr> 
+                <td>'.$fila['nombre'].'</td>
+                <td>'.$fila['direccion'].'</td>
+                <td>'.$fila['telefono'].'</td>
+                <td>'.$fila['dinero'].'</td>
+                <td>'.$fila['fecha'].'</td>
+                <td>'.$fila['fechaPago'].'</td>
+                <td>'.$fila['interes'].'</td>
+                <td><a disabled class="btn btn-mini btn-info"><strong disabled>Editar</strong></a></td>
+                <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedula'].'"><strong>Eliminar</strong></a></td>
+            </tr>';
+            
+           
                           // echo $salida;
         }      
     }/*cierre del metodo*/

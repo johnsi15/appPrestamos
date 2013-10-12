@@ -2,10 +2,10 @@
 	    	text-align: center;
 	    }
 	    th{
-	    	font-size: 24px;
+	    	font-size: 1em;
 	    }
 	    td{
-	    	font-size: 20px;
+	    	font-size: 1em;
 	    }
 	    label.error{
 			float: none; 
@@ -73,7 +73,7 @@
 	    	top: 190px;
 	    }
         .hero-unit{
-        	margin-top: 60px;
+        	margin-top: 7%;
         	text-align: center;
         	background-image: url('../img/dinero-3.jpg');
         }

@@ -22,10 +22,11 @@
        }
        #mensaje{
           float: left;
-          margin-left: 580px;
+          margin-left: 40%;
+          margin-top: 7%;
        }
        .hero-unit{
-          margin-top: 10px;
+          margin-top: 7%;
           text-align: center;
        }
        form{
@@ -67,7 +68,7 @@
         }else{
         }    
     ?>
-      <aside id="mensaje"></aside>
+      
   <header>
     <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="navbar-inner">
@@ -108,6 +109,7 @@
         </div><!--navbar-inner-->
       </div><!--navbar-->
   </header>
+  <aside id="mensaje"></aside>
   <section>
     <div class="container">
       <div class="hero-unit"> 

@@ -4,11 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Menu</title>
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/bootstrap-responsive.css">
-	<link rel="stylesheet" href="css/smoothness/jquery-ui.css">
-	<link rel="stylesheet" href="css/estilos.css">
-	<link rel="stylesheet" href="css/estilosMenu.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+	<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/estilos.css">
+	<link rel="stylesheet" type="text/css" href="css/estilosMenu.css">
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery-ui.js"></script>
 	<script src="js/bootstrap.js"></script>
@@ -124,6 +124,24 @@
 		  	}
 		});
 
+		var ventana_ancho = $(window).width();
+		
+		if(ventana_ancho >= 120 && ventana_ancho <= 720){
+			$('table').removeClass('table');
+			$('table').removeClass('table-hover');
+			$('table').removeClass('table-hover');
+			$('table').removeClass('table-bordered');
+			$('table').removeClass('table-condensed');
+		}
+
+		if(ventana_ancho>720){
+			$('table').addClass('table');
+			$('table').addClass('table-hover');
+			$('table').addClass('table-hover');
+			$('table').addClass('table-bordered');
+			$('table').addClass('table-condensed');
+		}
+
 	  });//cierre del document
 	</script>
 	<?php
@@ -163,23 +181,15 @@
 												<input type="text" name="codigo" id="foco" autofocus required>
 												<label>Nombre:</label>
 												<input type="text" name="nombre" required/>
-												<label>Edad:</label>
-												<input type="text" name="edad" required/>
-												<label>Peso - Kg:</label>
-												<input type="text" name="peso" required/>
-												<label>Altura - M:</label>
-												<input type="text" name="altura" required/>
-												<label>Fecha Vencimiento:</label>
+												<label>Dirección:</label>
+												<input type="text" name="dir" required/>
+												<label>Telefono</label>
+												<input type="text" name="tel" required/>
+												<label>Prestamo:</label>
+												<input type="text" name="prest" required/>
+												<label>Fecha Pago:</label>
 												<input type="date" name="fecha2" required/>
-												<label>Pago:</label>
-												<input type="text" name="pago" value="0"/>
-												<label>Condición:</label>
-												<select name="condicion" id="recar">
-							    					<option value="No Pago">No Pago</option>
-							    					<option value="Pago">Pago</option>
-							    					<option value="Abono">Abono</option>
-							    				</select>
-							    				<input type="hidden" name="registrarEstudiante">
+							    				<input type="hidden" name="registrarPrestamo">
 							    				<button type="submit" class="btn btn-success">Registrar</button>
 											</form>
 										</div>
@@ -241,24 +251,25 @@
 	<article class="container well" id="fondo">
 		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>
 		<div class="row">         
-			<h1>Fechas de vencimientos y Pagos</h1><br>
+			<h1>Prestamos AJ Clientes</h1><br>
 			<div class="span12">
-				<table class="table table-hover table-bordered">
+				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>Nombre</th>
-							<th>Fecha Inicial</th>
-							<th>Fecha Vencimiento</th>
-							<th>Pago</th>
-							<th>Condición</th>
-							<th>Dias</th>
+							<th>Direccion</th>
+							<th>Telefono</th>
+							<th>Dinero</th>
+							<th>Fecha Inicio</th>
+							<th>Fecha Pago</th>
+							<th>Interes</th>
 						</tr>
 					</thead>
 					<tbody id="verEstu">
 						<?php 
 						   require_once('includes/funciones.php');
 						   $objeto = new funciones();
-						   $objeto->verEstudiantes();
+						   $objeto->verClientes();
 						?>
 					</tbody>
 				</table>
@@ -267,7 +278,7 @@
 		    	 	 <?php 
 		    	 	  require_once('includes/funciones.php');
 		    	 	  $objeto = new funciones();
-		    	 	  $objeto->paginacionEstudianteMenu();
+		    	 	  //$objeto->paginacionEstudianteMenu();
 			    	 ?>
 		    	</div>
 			</div>
@@ -317,22 +328,22 @@
 	<?php 
 		require_once('includes/funciones.php');
 		$objeto = new funciones();
-		if($objeto->verificar()){
+		//if($objeto->verificar()){
 			?>
 
-			<div id="aviso">
+			<!--<div id="aviso">
 				<div id="cerrar"><a class="btn btn-inverse cerrar">X</a></div>
 				<h1 style='color: #df0024;'>Clientes que deben Pagar</h1>
 				<a href="includes/pagoTiempo.php" id="ver" class="btn btn-inverse btn-large cerrar">VER</a>
-			</div>
+			</div>-->
 	<?php
-		}
+		//}
 	?>
 	 
 	<footer>
 		<h2 id="pie"><img src="img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>
-			<p>Gim Version 1.0</p>
+			<p>Prestamos AJ 1.0</p>
 		</div>
 	</footer>
 </body>
