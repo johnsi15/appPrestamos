@@ -17,22 +17,22 @@
    }
 
 
-   /*registrar un nuevo estudiante al gim*/
-   if(isset($_POST['registrarEstudiante'])){
+   /*registrar un nuevo prestamo*/
+   if(isset($_POST['registrarPrestamo'])){
         $codigo = $_POST['codigo'];
         $nom = $_POST['nombre'];
-        $edad = $_POST['edad'];
-        $peso = $_POST['peso'];
-        $altura = $_POST['altura'];
+        $dir = $_POST['dir'];
+        $tel = $_POST['tel'];
+        $prest = $_POST['prest'];
         date_default_timezone_set('America/Bogota'); 
         $fechaI = date("Y-m-d");
-        $fechaV = $_POST['fecha2'];
-        $pago = $_POST['pago'];
-        $con = $_POST['condicion'];
-        $objeto->registrarEstudiante($codigo,$nom,$edad,$peso,$altura,$fechaI,$fechaV,$pago,$con);
-        $objeto->verEstudiantes();
-        $mes = substr($fechaV,5,-3);
-        $objeto->registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo);
+        $fechaP = $_POST['fechaPago'];
+        //$con = $_POST['condicion'];
+        $interes = 0;
+        $objeto->registrarPrestamo($codigo,$nom,$dir,$tel,$prest,$fechaP,$interes,$fechaI);
+        $objeto->verClientes();
+       // $mes = substr($fechaV,5,-3);
+        //$objeto->registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo);
    }
 
    /*modificamos el pago de algunos de los estudiantes */

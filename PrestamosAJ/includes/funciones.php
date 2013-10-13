@@ -24,9 +24,9 @@
          }
     }
 
-    public function registrarEstudiante($codigo,$nom,$edad,$peso,$altura,$fechaI,$fechaV,$pago,$con){/*condicion el 0-> no pago el 1-> debe el 2-> abono*/
-           $resultado = mysql_query("INSERT INTO estudiantes (codigo,nombre,edad,peso,altura,fechaInicial,fechaFinal,dinero,condicion)
-                                      VALUES ('$codigo','$nom','$edad','$peso','$altura','$fechaI','$fechaV','$pago','$con')")
+    public function registrarPrestamo($codigo,$nom,$dir,$tel,$prest,$fechaPago,$interes,$fechaI){/**/
+           $resultado = mysql_query("INSERT INTO clientes (cedula,nombre,direccion,telefono,dinero,fechaPago,interes,fecha)
+                                      VALUES ('$codigo','$nom','$dir','$tel','$prest','$fechaPago','$interes','$fechaI')")
                                       or die ("Error");
     }
 

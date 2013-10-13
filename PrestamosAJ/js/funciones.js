@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
   /*_____________________________________________*/
-	$("#registrarEstudiante").validate({
+	$("#registrarCliente").validate({
 		rules:{
       codigo:{
         required: true,
@@ -10,30 +10,7 @@ $(document).ready(function(){
 			nombre:{
 				required: true
 		    },
-		  pago:{
-				required: true,
-				number: true
-			},
-      edad:{
-        required: true,
-        number: true,
-        maxlength: 2,
-        minlength: 2
-      },
-      peso:{
-        required: true,
-        number: true,
-        maxlength: 2
-      },
-      altura:{
-        required: true,
-        number: true,
-        maxlength: 3
-      },
-      fecha2:{
-        required: true
-      },
-      condicion: {
+      fechaPago: {
         required: true
       }
 		},
@@ -53,14 +30,14 @@ $(document).ready(function(){
                    success: function(resp){
                    	   console.log(resp);
                        if(resp == "Error"){
-                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 1000); 
+                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
                              var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se Pudo registrar verifique el N° de identificacion'+'</div>';
                              $('#mensajeError .alert').remove();
                              $('#mensajeError').html(error);
                        }else{
-                          $('#verEstu').empty();//limpiar la tabla.
-	                        $('#verEstu').html(resp);//imprimir datos de la tabla.
-	                        setTimeout(function(){ $("#mensaje .alert").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 1000); 
+                          $('#verClien').empty();//limpiar la tabla.
+	                        $('#verClien').html(resp);//imprimir datos de la tabla.
+	                        setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
 	                        var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' el registro se agrego correctamente'+'</div>';
 	                        $('#mensaje').html(exito);//impresion del mensaje exitoso.
 	                        $('.limpiar')[0].reset();///limpiamos los campos del formulario.

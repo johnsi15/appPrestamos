@@ -176,19 +176,19 @@
 									</a>
 									<ul class="dropdown-menu pull-right">
 										<div class="span4" id="registrarNew">
-											<form action="includes/acciones.php" method="post" id="registrarEstudiante" style="margin-left: 30px;" class="limpiar">
+											<form action="includes/acciones.php" method="post" id="registrarCliente" style="margin-left: 30px;" class="limpiar">
 												<label>N° Identificación:</label>
 												<input type="text" name="codigo" id="foco" autofocus required>
 												<label>Nombre:</label>
 												<input type="text" name="nombre" required/>
 												<label>Dirección:</label>
-												<input type="text" name="dir" required/>
+												<input type="text" name="dir"/>
 												<label>Telefono</label>
-												<input type="text" name="tel" required/>
+												<input type="text" name="tel"/>
 												<label>Prestamo:</label>
-												<input type="text" name="prest" required/>
+												<input type="text" name="prest"/>
 												<label>Fecha Pago:</label>
-												<input type="date" name="fecha2" required/>
+												<input type="date" name="fechaPago" required/>
 							    				<input type="hidden" name="registrarPrestamo">
 							    				<button type="submit" class="btn btn-success">Registrar</button>
 											</form>
@@ -235,8 +235,8 @@
 		</div>
 	</header>
 		<aside id="mensaje"></aside><!--menssaje de exito del registro o de error-->
-		<aside id="mensajeError"></aside><!--menssaje de exito del registro o de error-->
-
+		<aside id="mensajeError"></aside><!--menssaje  de error-->
+		
 	<section>
 		<div class="container">
 			<div class="hero-unit">
@@ -265,7 +265,7 @@
 							<th>Interes</th>
 						</tr>
 					</thead>
-					<tbody id="verEstu">
+					<tbody id="verClien">
 						<?php 
 						   require_once('includes/funciones.php');
 						   $objeto = new funciones();

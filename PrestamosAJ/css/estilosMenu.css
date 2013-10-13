@@ -55,13 +55,17 @@
 		}
 		#mensaje{
 	        float: left;
-	        margin-left: 480px;
-	        position: fixed;
+	    	margin-left: 45%;
+	    	position: fixed;
+	    	top: 18%;
+	    	display: block;
        	}
        	#mensajeError{
        		float: left;
-	        margin-left: 680px;
-	        position: fixed;
+	    	margin-left: 45%;
+	    	position: fixed;
+	    	top: 18%;
+	    	display: block;
        	}
        	#ver{
        		margin-left: 43%;
