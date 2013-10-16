@@ -182,14 +182,10 @@
 												<label>Nombre:</label>
 												<input type="text" name="nombre" required/>
 												<label>Dirección:</label>
-												<input type="text" name="dir"/>
+												<input type="text" name="dir" required/>
 												<label>Telefono</label>
-												<input type="text" name="tel"/>
-												<label>Prestamo:</label>
-												<input type="text" name="prest"/>
-												<label>Fecha Pago:</label>
-												<input type="date" name="fechaPago" required/>
-							    				<input type="hidden" name="registrarPrestamo">
+												<input type="text" name="tel" required/>
+							    				<input type="hidden" name="registrarCliente">
 							    				<button type="submit" class="btn btn-success">Registrar</button>
 											</form>
 										</div>
@@ -203,7 +199,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="includes/actualizarDatos.php">Actualizar Datos Personales</a></li>
-									<li><a href="includes/actualizarTiempo.php">Actualizar Tiempo</a></li>
+									<li><a href="includes/actualizarTiempo.php">Prestamos</a></li>
 									<li><a href="includes/pagoTiempo.php">Deben Pagar</a></li>
 								</ul>
 							</li>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-10-2013 a las 22:07:16
+-- Tiempo de generación: 16-10-2013 a las 20:48:14
 -- Versión del servidor: 5.6.12-log
 -- Versión de PHP: 5.4.12
 
@@ -25,6 +25,17 @@ USE `prestamosaj`;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `caja`
+--
+
+CREATE TABLE IF NOT EXISTS `caja` (
+  `baseTotal` int(11) NOT NULL,
+  `interesTotal` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `clientes`
 --
 
@@ -33,12 +44,50 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `nombre` varchar(60) NOT NULL,
   `direccion` varchar(60) NOT NULL,
   `telefono` varchar(20) NOT NULL,
-  `dineroprestado` int(11) NOT NULL,
-  `tiempoprestamo` date NOT NULL,
-  `interes` int(11) NOT NULL,
-  `fecha` date NOT NULL,
   PRIMARY KEY (`cedula`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`cedula`, `nombre`, `direccion`, `telefono`) VALUES
+(1093763837, 'John Andrey', '3016015787', 'Mz E-9 Lote 12');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pagos`
+--
+
+CREATE TABLE IF NOT EXISTS `pagos` (
+  `codigo` int(11) NOT NULL,
+  `cedula` int(11) NOT NULL,
+  `fechaPago` int(11) NOT NULL,
+  `abonoCapital` int(11) NOT NULL,
+  `abonoInteres` int(11) NOT NULL,
+  `Saldo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestamos`
+--
+
+CREATE TABLE IF NOT EXISTS `prestamos` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cedula` int(11) NOT NULL,
+  `monto` int(11) NOT NULL,
+  `N-cuotas-Q` varchar(15) NOT NULL,
+  `N-cuotas-M` varchar(15) NOT NULL,
+  `V-cuota` int(11) NOT NULL,
+  `N-prestamos` int(11) NOT NULL,
+  `fechaPrestamo` date NOT NULL,
+  `fechaPago` date NOT NULL,
+  `interes` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

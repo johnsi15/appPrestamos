@@ -145,7 +145,7 @@ $(document).ready(function(){
 
 
 
-/*este es el codigo para modificar los datos personales de los estudiantes del gim ok*/
+/*este es el codigo para modificar los datos personales del cliente ok*/
     /*___________________________________________________________________*/
     $('#editarDatos').dialog({
             autoOpen: false,
@@ -173,9 +173,8 @@ $(document).ready(function(){
             $('#editarDatos').dialog('open');
             //estraemos los campos.
             $('#nombre').val($(this).parent().parent().children('td:eq(0)').text());
-            $('#edad').val($(this).parent().parent().children('td:eq(1)').text());
-            $('#peso').val($(this).parent().parent().children('td:eq(2)').text());
-            $('#altura').val($(this).parent().parent().children('td:eq(3)').text());
+            $('#direccion').val($(this).parent().parent().children('td:eq(1)').text());
+            $('#telefono').val($(this).parent().parent().children('td:eq(2)').text());
             //$('#dinero').val($(this).parent().parent().children('td:eq(0)').text());
      });
 
@@ -196,7 +195,10 @@ $(document).ready(function(){
                   success: function(resp){
                         console.log(resp);
                         if(resp == "Error"){
-
+                             setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 800); 
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se Pudo Editar'+'</div>';
+                             $('.span3 .alert').remove();
+                             $('#mensaje').html(error);
                         }else{
                               $('#verDatos').empty();//limpiamos la tabla 
                               $('#verDatos').html(resp);//mandamos los nuevos datos a la tabla

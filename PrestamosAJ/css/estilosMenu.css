@@ -81,3 +81,42 @@
         	text-align: center;
         	background-image: url('../img/dinero-3.jpg');
         }
+
+
+/*----Tabla----*/
+
+@media screen and (max-width:720px){
+    table, thead, tr, th, tbody, td{
+        display:block;
+    }
+    
+    thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    td{ 
+        border: none;
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding-left: 50%;
+    }
+
+    td:before { 
+        position: absolute;
+        font-weight: bold;
+        top: 6px;
+        left: 6px;
+        width: 45%; 
+        padding-right: 10px; 
+        white-space: nowrap;
+    }
+    td:nth-of-type(1):before { content: "Nombre:"; }
+    td:nth-of-type(2):before { content: "Dirección:"; }
+    td:nth-of-type(3):before { content: "Teléfono:"; }
+    td:nth-of-type(4):before { content: "Dinero:"; }
+    td:nth-of-type(5):before { content: "Fecha Inicio:"; }
+    td:nth-of-type(6):before { content: "Fecha Pago:"; }
+    td:nth-of-type(7):before { content: "Interes:";}
+}

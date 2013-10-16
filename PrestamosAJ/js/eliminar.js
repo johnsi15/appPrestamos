@@ -48,7 +48,7 @@ $(document).ready(function(){
                    success: function(resp){
                         console.log(resp);
                        if(resp == "Error"){
-                             setTimeout(function(){ $("#mensaje .alert").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 800); 
+                             setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 800); 
                              var error = '<div class="alert alert-warning">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'No se Pudo Eliminar el registro'+'</strong>'+' Intente nuevamente'+'</div>';
                              $('#mensaje .alert').remove();
                              $('#mensaje').html(error);
@@ -59,7 +59,7 @@ $(document).ready(function(){
                              $('#verDatos').empty();
                              $('#verDatos').html(resp);
                              $('#deleteReg').dialog('close');
-                             setTimeout(function(){ $("#mensaje .alert").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 1000); 
+                             setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
                              var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro Eliminado '+'</strong>'+' el registro se Elimino correctamente'+'</div>';
                              $('#mensaje .alert').remove();
                              $('#mensaje').html(exito);

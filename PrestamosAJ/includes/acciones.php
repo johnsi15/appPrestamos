@@ -18,18 +18,18 @@
 
 
    /*registrar un nuevo prestamo*/
-   if(isset($_POST['registrarPrestamo'])){
+   if(isset($_POST['registrarCliente'])){
         $codigo = $_POST['codigo'];
         $nom = $_POST['nombre'];
         $dir = $_POST['dir'];
         $tel = $_POST['tel'];
-        $prest = $_POST['prest'];
-        date_default_timezone_set('America/Bogota'); 
-        $fechaI = date("Y-m-d");
-        $fechaP = $_POST['fechaPago'];
+        // $prest = $_POST['prest'];
+        //date_default_timezone_set('America/Bogota'); 
+        //$fechaI = date("Y-m-d");
+        ///$fechaP = $_POST['fechaPago'];
         //$con = $_POST['condicion'];
         $interes = 0;
-        $objeto->registrarPrestamo($codigo,$nom,$dir,$tel,$prest,$fechaP,$interes,$fechaI);
+        $objeto->registrarCliente($codigo,$nom,$dir,$tel);
         $objeto->verClientes();
        // $mes = substr($fechaV,5,-3);
         //$objeto->registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo);
@@ -64,11 +64,11 @@
    }
 
 
-   if(isset($_POST['deleteEstudiante'])){
+   if(isset($_POST['deleteCliente'])){
        $cod = $_POST['id_delete'];
-       $objeto->eliminarEstudiante($cod);
+       $objeto->deleteCliente($cod);
        $objeto->paginacionDatosPersonales();
-       $objeto->verTodosEstudiantes();
+       $objeto->verTodosClientes();
    }
 
    if(isset($_POST['deleteEstudianteMenu'])){
@@ -89,12 +89,11 @@
    if(isset($_POST['modificarDatos'])){
         $cod = $_POST['id_registro'];
         $nom = $_POST['nombre'];
-        $edad = $_POST['edad'];
-        $peso = $_POST['peso'];
-        $altura = $_POST['altura'];
-        $objeto->actualizarDatosPersonales($cod,$nom,$edad,$peso,$altura);
+        $dir = $_POST['direccion'];
+        $tel = $_POST['telefono'];
+        $objeto->actualizarDatosPersonales($cod,$nom,$dir,$tel);
         $objeto->paginacionDatosPersonales();
-        $objeto->verTodosEstudiantes();
+        $objeto->verTodosClientes();
    }
 
    /*buscador en tiempo real para modificar los datos personales de los estudiantes*/

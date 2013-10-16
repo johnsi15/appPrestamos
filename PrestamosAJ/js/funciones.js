@@ -10,7 +10,10 @@ $(document).ready(function(){
 			nombre:{
 				required: true
 		    },
-      fechaPago: {
+      tel: {
+        required: true
+      },
+      dir: {
         required: true
       }
 		},

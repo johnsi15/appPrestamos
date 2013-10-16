@@ -24,9 +24,9 @@
          }
     }
 
-    public function registrarPrestamo($codigo,$nom,$dir,$tel,$prest,$fechaPago,$interes,$fechaI){/**/
-           $resultado = mysql_query("INSERT INTO clientes (cedula,nombre,direccion,telefono,dinero,fechaPago,interes,fecha)
-                                      VALUES ('$codigo','$nom','$dir','$tel','$prest','$fechaPago','$interes','$fechaI')")
+    public function registrarCliente($codigo,$nom,$dir,$tel){/**/
+           $resultado = mysql_query("INSERT INTO clientes (cedula,nombre,direccion,telefono)
+                                      VALUES ('$codigo','$nom','$dir','$tel')")
                                       or die ("Error");
     }
 
@@ -86,10 +86,6 @@
                 <td>'.$fila['nombre'].'</td>
                 <td>'.$fila['direccion'].'</td>
                 <td>'.$fila['telefono'].'</td>
-                <td>'.$fila['dinero'].'</td>
-                <td>'.$fila['fecha'].'</td>
-                <td>'.$fila['fechaPago'].'</td>
-                <td>'.$fila['interes'].'</td>
                 <td><a disabled class="btn btn-mini btn-info"><strong disabled>Editar</strong></a></td>
                 <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedula'].'"><strong>Eliminar</strong></a></td>
             </tr>';
@@ -438,7 +434,7 @@
                    </div>';
     }
 
-    public function verTodosEstudiantes(){
+    public function verTodosClientes(){
         $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
 
         if(isset($_GET["pagina"])){
@@ -453,15 +449,14 @@
         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
-        $resultado = mysql_query("SELECT * FROM estudiantes LIMIT $inicio,$cant_reg");
+        $resultado = mysql_query("SELECT * FROM clientes LIMIT $inicio,$cant_reg");
         while($fila = mysql_fetch_array($resultado)){
               echo '<tr> 
                         <td>'.$fila['nombre'].'</td>
-                        <td>'.$fila['edad'].'</td>
-                        <td>'.$fila['peso'].'</td>
-                        <td>'.$fila['altura'].'</td>
-                        <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                        <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedula'].'"><strong>Editar</strong></a></td>
+                        <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedula'].'"><strong>Eliminar</strong></a></td>
                     </tr>';
         }
     }
@@ -477,15 +472,15 @@
     }
 
      /*metodos para ELIMINAR estudiantes del gim*/
-    public function eliminarEstudiante($cod){
-        mysql_query("DELETE FROM estudiantes WHERE codigo='$cod'");
-        mysql_query("DELETE FROM fechasclientes WHERE codigoEstudiante='$cod'");
+    public function deleteCliente($cod){
+        mysql_query("DELETE FROM clientes WHERE cedula='$cod'");
+        //mysql_query("DELETE FROM fechasclientes WHERE codigoEstudiante='$cod'");
     }
 
    /*aca comienzo con la partde de actulizar datos de los estudiantes que van al gim*/
-    public function actualizarDatosPersonales($cod,$nom,$edad,$peso,$altura){
-        mysql_query("UPDATE estudiantes SET nombre='$nom', edad='$edad', peso='$peso', altura='$altura' WHERE codigo='$cod'") 
-                                    or die ("Error en el update");
+    public function actualizarDatosPersonales($cod,$nom,$dir,$tel){
+        mysql_query("UPDATE clientes SET nombre='$nom', direccion='$dir', telefono='$tel' WHERE cedula='$cod'") 
+                                    or die ("Error");
     }
 
 
@@ -543,8 +538,8 @@
                         <td>'.$fila['edad'].'</td>
                         <td>'.$fila['peso'].'</td>
                         <td>'.$fila['altura'].'</td>
-                        <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                        <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
+                        <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedula'].'"><strong>Editar</strong></a></td>
+                        <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedula'].'"><strong>Eliminar</strong></a></td>
                     </tr>';
                               // echo $salida;
                     echo $salida;
@@ -570,7 +565,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM estudiantes");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM clientes");///hacemos una consulta de todos los datos de cinternet
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
