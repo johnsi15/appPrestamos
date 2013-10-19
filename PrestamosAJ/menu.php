@@ -199,7 +199,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="includes/actualizarDatos.php">Actualizar Datos Personales</a></li>
-									<li><a href="includes/actualizarTiempo.php">Prestamos</a></li>
+									<li><a href="includes/prestamos.php">Prestamos</a></li>
 									<li><a href="includes/pagoTiempo.php">Deben Pagar</a></li>
 								</ul>
 							</li>

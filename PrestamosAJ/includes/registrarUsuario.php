@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Registrar Usuario</title>
-	<link rel="stylesheet" href="../css/bootstrap.css">
-	<link rel="stylesheet" href="../css/smoothness/jquery-ui.css">
-	<link rel="stylesheet" href="../css/estilos.css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
+	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="../css/estilos.css">
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui.js"></script>
 	<script src="../js/bootstrap.js"></script>
@@ -45,18 +46,22 @@
 	    }
 	    #mensaje{
 	        float: left;
-	        margin-left: 480px;
-	        position: fixed;
+	    	margin-left: 45%;
+	    	position: fixed;
+	    	top: 18%;
+	    	display: block;
        	}
        	#mensajeError{
        		float: left;
-	        margin-left: 680px;
-	        position: fixed;
+	    	margin-left: 45%;
+	    	position: fixed;
+	    	top: 18%;
+	    	display: block;
        	}
         .hero-unit{
-        	margin-top: 30px;
+        	margin-top: 7%;
         	text-align: center;
-        	background-image: url('../img/gim2.jpg');
+        	background-image: url('../img/dinero-1.jpg');
         }
 	</style>
 

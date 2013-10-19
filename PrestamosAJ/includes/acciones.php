@@ -28,7 +28,6 @@
         //$fechaI = date("Y-m-d");
         ///$fechaP = $_POST['fechaPago'];
         //$con = $_POST['condicion'];
-        $interes = 0;
         $objeto->registrarCliente($codigo,$nom,$dir,$tel);
         $objeto->verClientes();
        // $mes = substr($fechaV,5,-3);

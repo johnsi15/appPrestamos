@@ -45,7 +45,7 @@ $(document).ready(function(){
 	                        $('#mensaje').html(exito);//impresion del mensaje exitoso.
 	                        $('.limpiar')[0].reset();///limpiamos los campos del formulario.
                           $("#formMenu").removeClass('open');//cerramos el sub menu del registro
-	                        $('#foco').focus();///indicamos el foco al primer valor del formulario. 
+	                        $('#foco').focus();///indicamos el foco al primer valor del formulario.
                        }
                    },
                    error: function(jqXHR,estado,error){
@@ -59,6 +59,8 @@ $(document).ready(function(){
                });
 		}//cierre del submitHandler
 	});
+
+
 
   /*__________________________________________________*/
 	$("#validate3").validate({
@@ -112,6 +114,8 @@ $(document).ready(function(){
         }///cierre del submitHandler...
 	});
 
+
+
     /*_____________________________________________*/
     $("#cierre").validate({
     	rules:{
@@ -160,6 +164,8 @@ $(document).ready(function(){
         }///cierre del submitHandler...
     });
 
+
+
     /*________________________________________________________*/
     $("#gasto").validate({
       rules:{
@@ -207,6 +213,8 @@ $(document).ready(function(){
                });
         }///cierre del submitHandler...
     });
+
+
 /*____________________________________________________________*/
      $("#vitrinaInternet").validate({
         rules:{
@@ -259,6 +267,8 @@ $(document).ready(function(){
                    });
         }//cierre del submitHandler
       });
+
+
    /*__________________________________________________________________*/
    /*REGISTRAR USUARIOS..............*/
    $("#validarRegistroUser").validate({
@@ -307,5 +317,6 @@ $(document).ready(function(){
                    });
         }//cierre del submitHandler
       });
+
 
 });//cierre del document...

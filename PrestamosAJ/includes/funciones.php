@@ -24,9 +24,17 @@
          }
     }
 
+    /*funcion para registrar los clientes */
     public function registrarCliente($codigo,$nom,$dir,$tel){/**/
-           $resultado = mysql_query("INSERT INTO clientes (cedula,nombre,direccion,telefono)
+        mysql_query("INSERT INTO clientes (cedula,nombre,direccion,telefono)
                                       VALUES ('$codigo','$nom','$dir','$tel')")
+                                      or die ("Error");
+    }
+
+    /*funcion para registrar prestamo */
+    public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$Nprestamos,$fechaPrestamo,$fechaPago,$interes,$condicion){
+        mysql_query("INSERT INTO clientes (cedula,monto,N-cuotas-Q,N-cuotas-M,V-cuota,N-prestamos,fechaPrestamo,fechaPago,interes,condicion)
+                                      VALUES ('$cedula','$prestamo','$NcQ','$NcM','$Vcuota','$Nprestamos','$fechaPrestamo','$fechaPago','$interes','$condicion')")
                                       or die ("Error");
     }
 
@@ -58,6 +66,7 @@
                                       or die ("problemas con el insert de concepto de internet".mysql_error());
     }
 
+    /*funcion para ver los clientes activos*/
     public function verClientes(){
         /*$cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
 
@@ -190,6 +199,7 @@
             }
         }/*cierre del while*/
     }
+
     /*verificamos si hay personas que se les cumplio la fecha de pago*/
     public function verificar(){
         date_default_timezone_set('America/Bogota'); 
@@ -1016,8 +1026,14 @@
     }/*cierre de la funcion*/
 
 
-
-
+/*Codigo de combox para mostrar nombres de los clientes*/
+public function comboClientes(){
+    $result = mysql_query("SELECT cedula,nombre FROM clientes");
+    while ($fila = mysql_fetch_array($result)) {
+        echo "<option value='".$fila['nombre']."'>".$fila['nombre']."
+                 </option>";
+    }
+}
 
 
 

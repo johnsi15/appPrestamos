@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Actualizar datos</title>
+	<title>Prestamos</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
@@ -13,6 +13,7 @@
 	<script src="../js/funciones.js"></script>
 	<script src="../js/bootstrap.js"></script>
 	<script src="../js/editar.js"></script>
+	<script src="../js/prestamos.js"></script>
 	<script src="../js/eliminar.js"></script>
 </head>
 <body>
@@ -28,10 +29,10 @@
 		    font-size: 12px;
 		}
 		th{
-	    	font-size: 2em;
+	    	font-size: 24px;
 	    }
 	    td{
-	    	font-size: 1em;
+	    	font-size: 20px;
 	    }
 		p{
 	    	color: #df0024;
@@ -42,14 +43,14 @@
 		}
 		#mensaje{
 	        float: left;
-	    	margin-left: 20%;
+	    	margin-left: 45%;
 	    	position: fixed;
 	    	top: 18%;
 	    	display: block;
        	}
        	#mensajeError{
        		float: left;
-	    	margin-left: 20%;
+	    	margin-left: 45%;
 	    	position: fixed;
 	    	top: 18%;
 	    	display: block;
@@ -100,9 +101,9 @@
 
 	    /*_______________________________________________*/
 	    $('#buscar').live('keyup',function(){
-		  	var data = 'query='+$(this).val();
+		  	var data = 'queryTiempo='+$(this).val();
 		  	//console.log(data);
-      	    if(data =='query=' ){
+      	    if(data =='queryTiempo=' ){
       	       	$.post('acciones.php',data , function(resp){
 			  	   	//console.log(resp);
 			  	   	$('#verDatos').empty();//limpiar los datos
@@ -201,8 +202,8 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="#">Actualizar Datos Personales</a></li>
-									<li><a href="prestamos.php">Prestamos</a></li>
+									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
+									<li class="active"><a href="#">Prestamos</a></li>
 									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
 								</ul>
 							</li>
@@ -249,32 +250,9 @@
 	<section class="container well" id="fondo">
 		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
 		<div class="row">
-			<h1>Actualizar datos Personales</h1> <br>
-			<div class="span12">
-				<table class="table table-hover table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Dirección</th>
-							<th>Teléfono</th>
-						</tr>
-					</thead>
-					<tbody id="verDatos" style="text-aling:center;">
-						<?php
-						    require_once('funciones.php');
-						   	$objeto = new funciones();
-						   	$objeto->verTodosClientes();
-						 ?>
-					</tbody>
-				</table>
-				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
-		        <div id="paginacion">
-		    	 	 <?php 
-		    	 	  require_once('funciones.php');
-		    	 	  $objeto = new funciones();
-		    	 	  $objeto->paginacionDatosPersonales();
-			    	 ?>
-		    	</div>
+			<h1>Prestamos</h1> <br>
+			<div class="span4">
+				<a class="btn btn-large btn-success" id="nuevo">Nuevo Prestamo</a>
 			</div>
 		</div>
 		<div class="row">
@@ -282,33 +260,47 @@
 		</div>
 	</section>
 
-	<!--codigo para modificar los campos personales-->
-	<div class="hide" id="editarDatos" title="Editar Registro">
-     	<form action="acciones.php" method="post">
-     		<input type="hidden" id="id_registro" name="id_registro" value="0">
+	<!--codigo para hacer un nuevo prestamo-->
+	<div class="hide" id="nuevoPrestamo" title="Nuevo Prestamo">
+     	<form action="acciones.php" method="post" id="form">
      			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre" autofocus/>
-     			<label>Dirección:</label>
-				<input type="text" name="direccion" id="direccion"/>
-				<label>Teléfono:</label>
-				<input type="text" name="telefono" id="telefono">
-				<input type="hidden" name="modificarDatos">
-				<button type="submit" id="modificarDatos" class="btn btn-success">Modificar</button>
+				<select id='nombre' name='nombre' autofocus>
+					<?php
+                        require_once('../includes/funciones.php');
+                        $combo = new funciones();
+                        $combo->comboClientes();
+					?>
+				</select>
+				<input type="hidden" name="nombre" value="ActualizoTiempo">
+     			<label>Prestamo:</label>
+				<input type="text" name="dinero" id="dinero"/>
+				<label>N-cuotas-Q:</label>
+				<input type="text" name="NcuotasQ" id="NcuotasQ"/>
+				<label>N-cuotas-M:</label>
+				<input type="text" name="NcuotasM" id="NcuotasM"/>
+				<label>Valor Cuota:</label>
+				<input type="text" name="valor" id="valor"/>
+				<label>Fecha Pago:</label>
+				<input type="date" name="fechaP" id="fechaP"/>
+				<label>Interes:</label>
+				<input type="text" name="interes" id="interes">
+				<input type="hidden" name="registrarPrestamo">
+				<button type="submit" id="new" class="btn btn-success">Modificar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
     </div>
 
      <!--codigo para eliminar-->
-    <div class="hide" id="deleteReg" title="Eliminar Cliente">
+    <div class="hide" id="deleteReg" title="Eliminar Estudiante">
 	    <form action="acciones.php" method="post">
 	    	<fieldset id="datosOcultos">
 	    		<input type="hidden" id="id_delete" name="id_delete" value="0"/>
 	    	</fieldset>
 	    	<div class="control-group">
 	    		<label for="activoElim" class="alert alert-danger">
-	    		    <strong>Esta seguro de Eliminar este Cliente</strong><br>
+	    		    <strong>Esta seguro de Eliminar este estudiante</strong><br>
 	    		</label>
-	    		<input type="hidden" name="deleteCliente"/> 
+	    		<input type="hidden" name="deleteEstudianteTiempo"/> 
 			    <button type="submit" class="btn btn-success">Aceptar</button>
 			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
 	    	</div>
@@ -318,7 +310,7 @@
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>
-			<p>Prestamos AJ 1.0</p>
+			<p>Gim Version 1.0</p>
 		</div>
 	</footer>
 </body>
