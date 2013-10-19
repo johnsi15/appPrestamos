@@ -59,7 +59,67 @@ $(document).ready(function(){
                });
 		}//cierre del submitHandler
 	});
+  
 
+  /*registro de los prestamos */
+  /*_____________________________________________*/
+  $("#registrarPrestamo").validate({
+    rules:{
+      dinero:{
+        required: true,
+        number: true
+      },
+      valor:{
+        required: true,
+        number: true
+        },
+      interes: {
+        required: true,
+        number: true
+      }
+    },
+    submitHandler: function(form){
+
+        var pet = $('#nuevoPrestamo form').attr('action');
+        var met = $('#nuevoPrestamo form').attr('method');
+        console.log(pet);
+        console.log(met);
+           $.ajax({
+                   beforeSend: function(){
+
+                   },
+                   url: pet,
+                   type: met,
+                   data: $('#nuevoPrestamo form').serialize(),
+                   success: function(resp){
+                       console.log(resp);
+                       if(resp == "Error"){
+                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se Pudo registrar verifique el N° de identificacion'+'</div>';
+                             $('#mensajeError .alert').remove();
+                             $('#mensajeError').html(error);
+                       }else{
+                          $('#verPrestamos').empty();//limpiar la tabla.
+                          $('#verPrestamos').html(resp);//imprimir datos de la tabla.
+                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
+                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' el registro se agrego correctamente'+'</div>';
+                          $('#mensaje').html(exito);//impresion del mensaje exitoso.
+                          $('.limpiar')[0].reset();///limpiamos los campos del formulario.
+                          $("#formMenu").removeClass('open');//cerramos el sub menu del registro
+                          $('#foco').focus();///indicamos el foco al primer valor del formulario.
+                       }
+                   },
+                   error: function(jqXHR,estado,error){
+                       console.log(estado);
+                       console.log(error);
+                   },
+                   complete: function(jqXHR,estado){
+                       console.log(estado);
+                   },
+                   timeout: 10000//10 segundos.
+               });
+    }//cierre del submitHandler
+  });
 
 
   /*__________________________________________________*/

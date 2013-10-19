@@ -17,7 +17,7 @@
    }
 
 
-   /*registrar un nuevo prestamo*/
+   /*registrar un nuevo cliente*/
    if(isset($_POST['registrarCliente'])){
         $codigo = $_POST['codigo'];
         $nom = $_POST['nombre'];
@@ -32,6 +32,23 @@
         $objeto->verClientes();
        // $mes = substr($fechaV,5,-3);
         //$objeto->registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo);
+   }
+
+
+   /*registrar un nuevo prestamo*/
+   if(isset($_POST['registrarPrestamo'])){
+      $cedula = $_POST['nombre'];
+      $dinero = $_POST['dinero'];
+      $NcQ = $_POST['NcuotasQ'];
+      $NcM = $_POST['NcuotasM'];
+      $valor = $_POST['valor'];
+      $fechaP = $_POST['fechaP'];
+      $interes = $_POST['interes'];
+      date_default_timezone_set('America/Bogota'); 
+      $fechaI = date("Y-m-d");
+      $condicion = "nopago";
+      $objeto->registrarPrestamo($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion);
+      $objeto->verPrestamos();
    }
 
    /*modificamos el pago de algunos de los estudiantes */

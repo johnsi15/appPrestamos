@@ -99,7 +99,7 @@
 	        $("#foco").focus();
         });
 
-	    /*_______________________________________________*/
+	    /*_______________________________________________
 	    $('#buscar').live('keyup',function(){
 		  	var data = 'queryTiempo='+$(this).val();
 		  	//console.log(data);
@@ -119,7 +119,7 @@
 	      	    	console.log(resp);
 			  	},'html');
       	    }
-		});
+		});*/
 
 		/*_________________________________________*/
 		$(window).scroll(function(){
@@ -190,7 +190,7 @@
 												<label>Telefono</label>
 												<input type="text" name="tel" required/>
 							    				<input type="hidden" name="registrarCliente">
-							    				<button type="submit" class="btn btn-success">Registrar</button>
+							    				<button type="submit" id="registrarCliente" class="btn btn-success">Registrar</button>
 											</form>
 										</div>
 									</ul>
@@ -254,6 +254,25 @@
 			<div class="span4">
 				<a class="btn btn-large btn-success" id="nuevo">Nuevo Prestamo</a>
 			</div>
+			<div class="span12">
+				<table class="table table-hover table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Prestamo</th>
+							<th>V-cuota</th>
+							<th>Interes</th>
+						</tr>
+					</thead>
+					<tbody id="verPrestamos">
+						<?php 
+						   require_once('funciones.php');
+						   $objeto = new funciones();
+						   $objeto->verPrestamos();
+						?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<div class="row">
 			
@@ -262,7 +281,7 @@
 
 	<!--codigo para hacer un nuevo prestamo-->
 	<div class="hide" id="nuevoPrestamo" title="Nuevo Prestamo">
-     	<form action="acciones.php" method="post" id="form">
+     	<form action="acciones.php" method="post" id="registrarPrestamo">
      			<label>Nombre:</label>
 				<select id='nombre' name='nombre' autofocus>
 					<?php
@@ -271,22 +290,21 @@
                         $combo->comboClientes();
 					?>
 				</select>
-				<input type="hidden" name="nombre" value="ActualizoTiempo">
      			<label>Prestamo:</label>
-				<input type="text" name="dinero" id="dinero"/>
+				<input type="text" name="dinero" required/>
 				<label>N-cuotas-Q:</label>
-				<input type="text" name="NcuotasQ" id="NcuotasQ"/>
+				<input type="text" name="NcuotasQ"/>
 				<label>N-cuotas-M:</label>
-				<input type="text" name="NcuotasM" id="NcuotasM"/>
+				<input type="text" name="NcuotasM"/>
 				<label>Valor Cuota:</label>
-				<input type="text" name="valor" id="valor"/>
+				<input type="text" name="valor" required/>
 				<label>Fecha Pago:</label>
-				<input type="date" name="fechaP" id="fechaP"/>
+				<input type="date" name="fechaP"/>
 				<label>Interes:</label>
-				<input type="text" name="interes" id="interes">
+				<input type="text" name="interes" required>
 				<input type="hidden" name="registrarPrestamo">
-				<button type="submit" id="new" class="btn btn-success">Modificar</button>
-				<button id="cancelar" class="btn btn-danger">Cancelar</button>
+				<button  class="btn btn-primary" type="submit" id="registrarPrestamo">Registrar</button>
+				<button  class="btn btn-danger" id="cancelar">Cancelar</button>
      	</form>
     </div>
 

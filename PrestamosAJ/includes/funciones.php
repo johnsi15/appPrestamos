@@ -32,7 +32,8 @@
     }
 
     /*funcion para registrar prestamo */
-    public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$Nprestamos,$fechaPrestamo,$fechaPago,$interes,$condicion){
+    public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$condicion){
+        $Nprestamos = '1';
         mysql_query("INSERT INTO clientes (cedula,monto,N-cuotas-Q,N-cuotas-M,V-cuota,N-prestamos,fechaPrestamo,fechaPago,interes,condicion)
                                       VALUES ('$cedula','$prestamo','$NcQ','$NcM','$Vcuota','$Nprestamos','$fechaPrestamo','$fechaPago','$interes','$condicion')")
                                       or die ("Error");
@@ -103,6 +104,28 @@
                           // echo $salida;
         }      
     }/*cierre del metodo*/
+
+    public function verPrestamos(){
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula");
+   
+        while($fila = mysql_fetch_array($resultado)){
+          //  $codigo = $fila['codigo'];
+          //  $result = mysql_query("SELECT sum(dias) AS total FROM fechasclientes WHERE codigoEstudiante = '$codigo' ");
+          //  $dias = mysql_fetch_array($result);
+         //style="font-weight: bold;
+            
+            echo '<tr> 
+                <td>'.$fila['nombre'].'</td>
+                <td>'.$fila['monto'].'</td>
+                <td>'.$fila['V-cuota'].'</td>
+                <td>'.$fila['interes'].'</td>
+                <td><a id="info" class="btn btn-mini btn-info" href="'.$fila['cedula'].'"><strong>Ver Mas</strong></a></td>
+            </tr>';
+            
+           
+                          // echo $salida;
+        }      
+    }
 
     public function verVensimientos(){
         /*hacer paginacion*/
@@ -1030,7 +1053,7 @@
 public function comboClientes(){
     $result = mysql_query("SELECT cedula,nombre FROM clientes");
     while ($fila = mysql_fetch_array($result)) {
-        echo "<option value='".$fila['nombre']."'>".$fila['nombre']."
+        echo "<option value='".$fila['cedula']."'>".$fila['nombre']."
                  </option>";
     }
 }
