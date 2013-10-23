@@ -34,7 +34,7 @@
     /*funcion para registrar prestamo */
     public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$condicion){
         $Nprestamos = '1';
-        mysql_query("INSERT INTO clientes (cedula,monto,N-cuotas-Q,N-cuotas-M,V-cuota,N-prestamos,fechaPrestamo,fechaPago,interes,condicion)
+        mysql_query("INSERT INTO prestamos (cedula,monto,NcuotasQ,NcuotasM,Vcuota,Nprestamos,fechaPrestamo,fechaPago,interes,condicion)
                                       VALUES ('$cedula','$prestamo','$NcQ','$NcM','$Vcuota','$Nprestamos','$fechaPrestamo','$fechaPago','$interes','$condicion')")
                                       or die ("Error");
     }
@@ -116,10 +116,18 @@
             
             echo '<tr> 
                 <td>'.$fila['nombre'].'</td>
-                <td>'.$fila['monto'].'</td>
-                <td>'.$fila['V-cuota'].'</td>
-                <td>'.$fila['interes'].'</td>
-                <td><a id="info" class="btn btn-mini btn-info" href="'.$fila['cedula'].'"><strong>Ver Mas</strong></a></td>
+                <td>'.number_format($fila['monto']).'</td>
+                <td>'.number_format($fila['Vcuota']).'</td>
+                <td>'.number_format($fila['interes']).'</td>
+                <td><a id="info" class="btn btn-mini btn-info" 
+                         data-toggle="popover" data-placement="top" 
+                         data-content="NcuotasQ: '.$fila['NcuotasQ'].'    NcuotasM: '.$fila['NcuotasM'].'   
+                                       FechaPrestamo:  '.$fila['fechaPrestamo'].'
+                                       FechaPago: '.$fila['fechaPago'].'"
+
+                         title data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                    </a>
+                </td>
             </tr>';
             
            

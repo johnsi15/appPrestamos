@@ -29,10 +29,10 @@
 		    font-size: 12px;
 		}
 		th{
-	    	font-size: 24px;
+	    	font-size: 2em;
 	    }
 	    td{
-	    	font-size: 20px;
+	    	font-size: 1.3em;
 	    }
 		p{
 	    	color: #df0024;
@@ -63,6 +63,7 @@
 	</style>	
 	<script>
       $(document).ready(function(){
+      	$('#info').popover('hide');
 
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
@@ -255,6 +256,7 @@
 				<a class="btn btn-large btn-success" id="nuevo">Nuevo Prestamo</a>
 			</div>
 			<div class="span12">
+				<hr>
 				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
@@ -281,7 +283,7 @@
 
 	<!--codigo para hacer un nuevo prestamo-->
 	<div class="hide" id="nuevoPrestamo" title="Nuevo Prestamo">
-     	<form action="acciones.php" method="post" id="registrarPrestamo">
+     	<form action="acciones.php" method="post" id="registrarPrestamo" class="limpiar">
      			<label>Nombre:</label>
 				<select id='nombre' name='nombre' autofocus>
 					<?php

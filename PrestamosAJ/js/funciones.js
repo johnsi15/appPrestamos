@@ -95,18 +95,20 @@ $(document).ready(function(){
                        console.log(resp);
                        if(resp == "Error"){
                              setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
-                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se Pudo registrar verifique el N° de identificacion'+'</div>';
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo procesar el prestamo'+'</div>';
                              $('#mensajeError .alert').remove();
                              $('#mensajeError').html(error);
+                             $('#nuevoPrestamo').dialog('close');
                        }else{
                           $('#verPrestamos').empty();//limpiar la tabla.
                           $('#verPrestamos').html(resp);//imprimir datos de la tabla.
-                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
-                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' el registro se agrego correctamente'+'</div>';
+                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
+                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' EL prestamo se hizo correctamente'+'</div>';
                           $('#mensaje').html(exito);//impresion del mensaje exitoso.
                           $('.limpiar')[0].reset();///limpiamos los campos del formulario.
                           $("#formMenu").removeClass('open');//cerramos el sub menu del registro
                           $('#foco').focus();///indicamos el foco al primer valor del formulario.
+                          $('#nuevoPrestamo').dialog('close');
                        }
                    },
                    error: function(jqXHR,estado,error){
