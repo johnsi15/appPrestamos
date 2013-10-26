@@ -33,10 +33,15 @@
 
     /*funcion para registrar prestamo */
     public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$condicion){
-        $Nprestamos = '1';
-        mysql_query("INSERT INTO prestamos (cedula,monto,NcuotasQ,NcuotasM,Vcuota,Nprestamos,fechaPrestamo,fechaPago,interes,condicion)
-                                      VALUES ('$cedula','$prestamo','$NcQ','$NcM','$Vcuota','$Nprestamos','$fechaPrestamo','$fechaPago','$interes','$condicion')")
+        mysql_query("INSERT INTO prestamos (cedula,monto,NcuotasQ,NcuotasM,Vcuota,fechaPrestamo,fechaPago,interes,condicion)
+                                      VALUES ('$cedula','$prestamo','$NcQ','$NcM','$Vcuota','$fechaPrestamo','$fechaPago','$interes','$condicion')")
                                       or die ("Error");
+        $resultado = mysql_query("SELECT * FROM clientes WHERE cedula='$cedula' ");
+        $fila = mysql_fetch_array($resultado);
+        $np = $fila['nPrestamos'];
+        $tp = $np + 1;
+        mysql_query("UPDATE clientes SET nPrestamos='$tp' WHERE cedula='$cedula'") 
+                                    or die ("Error en el update");
     }
 
     public function registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo){
@@ -65,6 +70,14 @@
             $resultado = mysql_query("INSERT INTO fechasclientes (nombre,fechaInicial,fechaFinal,mes,dias,dinero,condicion,codigoEstudiante)
                                       VALUES ('$nom','$fechaI','$fechaV','$mes','$dias_diferencia','$pago','$con','$codigo')")
                                       or die ("problemas con el insert de concepto de internet".mysql_error());
+    }
+
+    /*ver caja */
+    public function verCaja(){
+         $resultado = mysql_query("SELECT * FROM caja");
+   
+        $fila = mysql_fetch_array($resultado);
+        echo "La base es ".$fila['baseTotal'];
     }
 
     /*funcion para ver los clientes activos*/

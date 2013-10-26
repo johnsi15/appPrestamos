@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Actualizar datos</title>
+	<title>Caja</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
@@ -13,6 +13,7 @@
 	<script src="../js/funciones.js"></script>
 	<script src="../js/bootstrap.js"></script>
 	<script src="../js/editar.js"></script>
+	<script src="../js/caja.js"></script>
 	<script src="../js/eliminar.js"></script>
 </head>
 <body>
@@ -201,8 +202,8 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="caja.php">Caja</a></li>
-									<li class="active"><a href="#">Actualizar Datos Personales</a></li>
+									<li class="active"><a  href="#">Caja</a></li>
+									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
 								</ul>
@@ -250,32 +251,19 @@
 	<section class="container well" id="fondo">
 		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
 		<div class="row">
-			<h1>Actualizar datos Personales</h1> <br>
-			<div class="span12">
-				<table class="table table-hover table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Dirección</th>
-							<th>Teléfono</th>
-						</tr>
-					</thead>
-					<tbody id="verDatos" style="text-aling:center;">
-						<?php
-						    require_once('funciones.php');
-						   	$objeto = new funciones();
-						   	$objeto->verTodosClientes();
-						 ?>
-					</tbody>
-				</table>
-				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
-		        <div id="paginacion">
-		    	 	 <?php 
-		    	 	  require_once('funciones.php');
-		    	 	  $objeto = new funciones();
-		    	 	  $objeto->paginacionDatosPersonales();
-			    	 ?>
-		    	</div>
+			<h1>Caja Prestamos AJ</h1> <br>
+			<div class="span3"></div>
+			<div class="span4">
+				<h2>Base</h2>
+				<?php 
+					require_once('funciones.php');
+					$objeto = new funciones();
+					$objeto->verCaja();
+				?>
+				<br><a class="btn btn-large btn-success" id="base">Base</a>
+			</div>
+			<div class="span4">
+				<h2>Interes</h2>
 			</div>
 		</div>
 		<div class="row">
@@ -283,18 +271,20 @@
 		</div>
 	</section>
 
-	<!--codigo para modificar los campos personales-->
-	<div class="hide" id="editarDatos" title="Editar Registro">
+	<!--codigo para registrar base de la caja-->
+	<div class="hide" id="nuevaBase" title="Actualizar Base">
      	<form action="acciones.php" method="post">
      		<input type="hidden" id="id_registro" name="id_registro" value="0">
-     			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre" autofocus/>
-     			<label>Dirección:</label>
-				<input type="text" name="direccion" id="direccion"/>
-				<label>Teléfono:</label>
-				<input type="text" name="telefono" id="telefono">
-				<input type="hidden" name="modificarDatos">
-				<button type="submit" id="modificarDatos" class="btn btn-success">Modificar</button>
+     			<label>Dinero:</label>
+				<input type="text" name="base" id="nbase" autofocus/>
+				<label>Tipo de actualización</label>
+				<select name="tipo">
+					<option value="1">Actualizar Base</option>
+					<option value="2">Agregar a la Base</option>
+					<option value="3">Agregar de interes</option>
+				</select>
+				<input type="hidden" name="modificarBase">
+				<button type="submit" id="modificarBase" class="btn btn-success">Modificar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
     </div>

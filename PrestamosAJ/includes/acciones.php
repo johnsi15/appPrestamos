@@ -52,13 +52,13 @@
    }
 
    /*modificamos el pago de algunos de los estudiantes */
-   if(isset($_POST['modificarPago'])){
-        $cod = $_POST['id_registro'];
-        $pago = $_POST['pago'];
-        $con = $_POST['condicion'];
-        $objeto->modificarPago($pago,$con,$cod);
-        $objeto->verEstudiantes();
-        $objeto->modificarPagoFechas($pago,$con,$cod);
+   if(isset($_POST['modificarBase'])){
+        $cod = $_POST['base'];
+        $pago = $_POST['tipo'];
+
+        $objeto->actualizarBase($base);
+       // $objeto->verEstudiantes();
+        //$objeto->modificarPagoFechas($pago,$con,$cod);
    }
 
 

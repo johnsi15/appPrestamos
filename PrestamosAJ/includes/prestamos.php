@@ -15,8 +15,6 @@
 	<script src="../js/editar.js"></script>
 	<script src="../js/prestamos.js"></script>
 	<script src="../js/eliminar.js"></script>
-</head>
-<body>
 	<style>
 		h1{
 			text-align: center;
@@ -146,10 +144,31 @@
 		  	}
 		});
 
+		$('#quin').keyup(function(){
+    			var quin = $(this).val();
+    			var meses = quin/2;
+    			$('#meses').val(meses);
+    	}).keyup();
+
 
 	  });/*fin del document------------------*/
-	</script>
+		
+		function calculo(){
+    		//var contador = document.getElementById("totalDia");
+    		var quin = $('#quin').val();
+    		var prestamo = $('#prestamo').val();
+    		var porc = $('#porc').val();
+    		var resuPorce = (prestamo*porc)/100;
+    		var div = resuPorce/2;
+    		var interes = div * quin;
+    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
 
+    		$("#vcuota").val(cuota);
+    		$("#interes").val(interes);
+    	}
+	</script>
+</head>
+<body onLoad="setInterval('calculo()',1000);">
 	<?php
       session_start();
       if(isset($_SESSION['id_user'])){
@@ -203,6 +222,7 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
+									<li><a href="caja.php">Caja</a></li>
 									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li class="active"><a href="#">Prestamos</a></li>
 									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
@@ -293,17 +313,19 @@
 					?>
 				</select>
      			<label>Prestamo:</label>
-				<input type="text" name="dinero" required/>
+				<input type="text" name="dinero" required id="prestamo"/>
+				<label>%</label>
+				<input type="text" name="porcentaje" required id="porc">
 				<label>N-cuotas-Q:</label>
-				<input type="text" name="NcuotasQ"/>
+				<input type="text" name="NcuotasQ" id="quin"/>
 				<label>N-cuotas-M:</label>
-				<input type="text" name="NcuotasM"/>
+				<input type="text" name="NcuotasM" id="meses"/>
 				<label>Valor Cuota:</label>
-				<input type="text" name="valor" required/>
+				<input type="text" name="valor" value="0" required id="vcuota"/>
 				<label>Fecha Pago:</label>
 				<input type="date" name="fechaP"/>
 				<label>Interes:</label>
-				<input type="text" name="interes" required>
+				<input type="text" name="interes" required id="interes">
 				<input type="hidden" name="registrarPrestamo">
 				<button  class="btn btn-primary" type="submit" id="registrarPrestamo">Registrar</button>
 				<button  class="btn btn-danger" id="cancelar">Cancelar</button>
