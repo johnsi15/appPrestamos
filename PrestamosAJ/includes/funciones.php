@@ -44,6 +44,64 @@
                                     or die ("Error en el update");
     }
 
+    /*actualizar la base de la caja si es la primera vez lo registramos*/
+    public function actualizarBase($base){
+        $resultado = mysql_query("SELECT * FROM caja");
+        if($fila = mysql_fetch_array($resultado)){
+            mysql_query("UPDATE caja SET baseTotal='$base'") 
+                                    or die ("Error en el update");
+        }else{
+            mysql_query("INSERT INTO caja (baseTotal)
+                                      VALUES ('$base')")
+                                      or die ("Error");
+        }
+    }
+
+    /*agregar mas dinero a la base*/
+    public function agragarBase($base){
+        $resultado = mysql_query("SELECT baseTotal FROM caja");
+        if($fila = mysql_fetch_array($resultado)){
+            $baseTotal = $fila['baseTotal'];
+            $nvBase = $baseTotal + $base;
+            mysql_query("UPDATE caja SET baseTotal='$nvBase'") 
+                                    or die ("Error en el update");
+        }
+    }
+
+    /*sacar de interes y agregar a base*/
+    public function sacarInteres($base){
+        $resultado = mysql_query("SELECT interesTotal FROM caja");
+        if($fila = mysql_fetch_array($resultado)){
+
+            $nvInteres = $fila['interesTotal'] - $base;
+            mysql_query("UPDATE caja SET interesTotal='$nvInteres'") 
+                                    or die ("Error en el update");
+
+            $resultado2 = mysql_query("SELECT baseTotal FROM caja");
+            $fila2 = mysql_fetch_array($resultado2);
+
+            $nvBase = $fila2['baseTotal'] + $base; 
+            mysql_query("UPDATE caja SET baseTotal='$nvBase'") 
+                                    or die ("Error en el update");
+        }
+    }
+
+    /*gastos sacados de interes*/
+    public function gastoInteres($gasto){
+        $resultado = mysql_query("SELECT interesTotal FROM caja");
+        if($fila = mysql_fetch_array($resultado)){
+            $nvInteres = $fila['interesTotal'] - $gasto;
+            mysql_query("UPDATE caja SET interesTotal='$nvInteres'") 
+                                    or die ("Error en el update");
+        }
+    }
+
+    public function registrarGasto($gasto,$concepto,$fecha){
+        mysql_query("INSERT INTO gastos (dinero,concepto,fecha)
+                                      VALUES ('$gasto','$concepto','$fecha')")
+                                      or die ("Error");
+    }
+
     public function registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo){
             
             $mes1 = substr($fechaI,5,-3);
@@ -72,12 +130,26 @@
                                       or die ("problemas con el insert de concepto de internet".mysql_error());
     }
 
-    /*ver caja */
+    /*ver base de la caja */
     public function verCaja(){
-         $resultado = mysql_query("SELECT * FROM caja");
+        $resultado = mysql_query("SELECT * FROM caja");
    
-        $fila = mysql_fetch_array($resultado);
-        echo "La base es ".$fila['baseTotal'];
+        if($fila = mysql_fetch_array($resultado)){
+            echo "<h2>".number_format($fila['baseTotal'])."</h2>";
+        }else{
+            echo "<h2>0</h2>";
+        }
+    }
+
+    /*ver interes de la caja*/
+    public function verInteres(){
+        $resultado = mysql_query("SELECT * FROM caja");
+   
+        if($fila = mysql_fetch_array($resultado)){
+            echo "<h2>".number_format($fila['interesTotal'])."</h2>";
+        }else{
+            echo "<h2>0</h2>";
+        }
     }
 
     /*funcion para ver los clientes activos*/

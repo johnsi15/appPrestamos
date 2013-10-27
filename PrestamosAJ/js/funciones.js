@@ -122,7 +122,114 @@ $(document).ready(function(){
                });
     }//cierre del submitHandler
   });
+  
+  /*registro de la caja base */
+  /*_____________________________________________*/
+  $("#modificarBase").validate({
+    rules:{
+      base:{
+        required: true,
+        number: true
+      }
+    },
+    submitHandler: function(form){
 
+        var pet = $('#nuevaBase form').attr('action');
+        var met = $('#nuevaBase form').attr('method');
+        console.log(pet);
+        console.log(met);
+           $.ajax({
+                   beforeSend: function(){
+
+                   },
+                   url: pet,
+                   type: met,
+                   data: $('#nuevaBase form').serialize(),
+                   success: function(resp){
+                       console.log(resp);
+                       if(resp == "Error"){
+                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo realizar la acción'+'</div>';
+                             $('#mensajeError .alert').remove();
+                             $('#mensajeError').html(error);
+                             $('#nuevaBase').dialog('close');
+                       }else{
+                          $('#verCaja').empty();//limpiar la tabla.
+                          $('#verCaja').html(resp);//imprimir datos de la tabla.
+                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
+                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' La caja fue actualizada'+'</div>';
+                          $('#mensaje').html(exito);//impresion del mensaje exitoso.
+                          $('#modificarBase')[0].reset();///limpiamos los campos del formulario.
+                          $("#formMenu").removeClass('open');//cerramos el sub menu del registro
+                          $('#foco').focus();///indicamos el foco al primer valor del formulario.
+                          $('#nuevaBase').dialog('close');
+                       }
+                   },
+                   error: function(jqXHR,estado,error){
+                       console.log(estado);
+                       console.log(error);
+                   },
+                   complete: function(jqXHR,estado){
+                       console.log(estado);
+                   },
+                   timeout: 10000//10 segundos.
+               });
+    }//cierre del submitHandler
+  });
+
+/*registro de la caja interes */
+  /*_____________________________________________*/
+  $("#modificarInteres").validate({
+    rules:{
+      dinteres:{
+        required: true,
+        number: true
+      }
+    },
+    submitHandler: function(form){
+
+        var pet = $('#nuevoInteres form').attr('action');
+        var met = $('#nuevoInteres form').attr('method');
+        console.log(pet);
+        console.log(met);
+           $.ajax({
+                   beforeSend: function(){
+
+                   },
+                   url: pet,
+                   type: met,
+                   data: $('#nuevoInteres form').serialize(),
+                   success: function(resp){
+                       console.log(resp);
+                       if(resp == "Error"){
+                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo realizar la acción'+'</div>';
+                             $('#mensajeError .alert').remove();
+                             $('#mensajeError').html(error);
+                             $('#nuevoInteres').dialog('close');
+                       }else{
+                          $('#verCaja').empty();//limpiar la tabla.
+                          $('#verCaja').html(resp);//imprimir datos de la tabla.
+                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
+                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' La caja fue actualizada'+'</div>';
+                          $('#mensaje').html(exito);//impresion del mensaje exitoso.
+                          $('#modificarInteres')[0].reset();///limpiamos los campos del formulario.
+                          $("#formMenu").removeClass('open');//cerramos el sub menu del registro
+                          $('#foco').focus();///indicamos el foco al primer valor del formulario.
+                          $('#nuevoInteres').dialog('close');
+                       }
+                   },
+                   error: function(jqXHR,estado,error){
+                       console.log(estado);
+                       console.log(error);
+                   },
+                   complete: function(jqXHR,estado){
+                       console.log(estado);
+                   },
+                   timeout: 10000//10 segundos.
+               });
+    }//cierre del submitHandler
+  });
 
   /*__________________________________________________*/
 	$("#validate3").validate({

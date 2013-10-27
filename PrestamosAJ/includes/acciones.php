@@ -23,15 +23,8 @@
         $nom = $_POST['nombre'];
         $dir = $_POST['dir'];
         $tel = $_POST['tel'];
-        // $prest = $_POST['prest'];
-        //date_default_timezone_set('America/Bogota'); 
-        //$fechaI = date("Y-m-d");
-        ///$fechaP = $_POST['fechaPago'];
-        //$con = $_POST['condicion'];
         $objeto->registrarCliente($codigo,$nom,$dir,$tel);
         $objeto->verClientes();
-       // $mes = substr($fechaV,5,-3);
-        //$objeto->registrarFechasEstudiante($nom,$fechaI,$fechaV,$mes,$pago,$con,$codigo);
    }
 
 
@@ -51,14 +44,32 @@
       $objeto->verPrestamos();
    }
 
-   /*modificamos el pago de algunos de los estudiantes */
+   /*actualizamos la base de la caja*/
    if(isset($_POST['modificarBase'])){
-        $cod = $_POST['base'];
-        $pago = $_POST['tipo'];
+        $base = $_POST['base'];
+        $tipo = $_POST['tipo'];
 
-        $objeto->actualizarBase($base);
-       // $objeto->verEstudiantes();
-        //$objeto->modificarPagoFechas($pago,$con,$cod);
+        if($tipo=='1'){
+            $objeto->actualizarBase($base);
+            $objeto->verCaja();
+        }else{
+          if($tipo=='2'){
+            $objeto->agragarBase($base);
+            $objeto->verCaja();
+          }else{
+            $objeto->sacarInteres($base);
+            $objeto->verCaja();
+          }
+        }
+   }
+   /*modificar interes de la caja solo para sacar dinero */
+   if(isset($_POST['modificarInteres'])){
+      $dinero = $_POST['dinteres'];
+      $conp = $_POST['concepto'];
+      date_default_timezone_set('America/Bogota'); 
+      $fecha = date("Y-m-d");
+      $objeto->gastoInteres($dinero);
+      $objeto->registrasGasto($dinero,$conp,$fecha);
    }
 
 

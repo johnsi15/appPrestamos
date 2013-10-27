@@ -255,15 +255,25 @@
 			<div class="span3"></div>
 			<div class="span4">
 				<h2>Base</h2>
-				<?php 
-					require_once('funciones.php');
-					$objeto = new funciones();
-					$objeto->verCaja();
-				?>
+				<div id="verCaja">
+					<?php 
+						require_once('funciones.php');
+						$objeto = new funciones();
+						$objeto->verCaja();
+					?>
+				</div>
 				<br><a class="btn btn-large btn-success" id="base">Base</a>
 			</div>
 			<div class="span4">
 				<h2>Interes</h2>
+				<div id="verInteres">
+					<?php 
+						require_once('funciones.php');
+						$objeto = new funciones();
+						$objeto->verInteres();
+					?>
+				</div>
+				<br><a class="btn btn-large btn-danger" id="interes">Interes</a>
 			</div>
 		</div>
 		<div class="row">
@@ -273,10 +283,10 @@
 
 	<!--codigo para registrar base de la caja-->
 	<div class="hide" id="nuevaBase" title="Actualizar Base">
-     	<form action="acciones.php" method="post">
+     	<form action="acciones.php" method="post" id="modificarBase">
      		<input type="hidden" id="id_registro" name="id_registro" value="0">
      			<label>Dinero:</label>
-				<input type="text" name="base" id="nbase" autofocus/>
+				<input type="text" name="base" id="dbase" autofocus/>
 				<label>Tipo de actualización</label>
 				<select name="tipo">
 					<option value="1">Actualizar Base</option>
@@ -285,6 +295,21 @@
 				</select>
 				<input type="hidden" name="modificarBase">
 				<button type="submit" id="modificarBase" class="btn btn-success">Modificar</button>
+				<button id="cancelar" class="btn btn-danger">Cancelar</button>
+     	</form>
+    </div>
+
+    <!--codigo para registrar el interes de la caja-->
+	<div class="hide" id="nuevoInteres" title="Actualizar Interes">
+     	<form action="acciones.php" method="post" id="modificarInteres">
+     		<input type="hidden" id="id_registro" name="id_registro" value="0">
+     			<label>Dinero:</label>
+				<input type="text" name="dinteres" id="dinteres" autofocus/>
+				<label>Concepto</label>
+				<textarea name="concepto" rows="4" cols="0">
+				</textarea>
+				<input type="hidden" name="modificarInteres">
+				<button type="submit" id="modificarInteres" class="btn btn-success">Modificar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
     </div>
