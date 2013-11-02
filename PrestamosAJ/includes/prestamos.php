@@ -61,8 +61,7 @@
 	</style>	
 	<script>
       $(document).ready(function(){
-      	$('#info').popover('hide');
-
+      	$('[data-toggle=popover]').popover({html:true});
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
 		var menu_offset = menu.offset();
@@ -225,7 +224,7 @@
 									<li><a href="caja.php">Caja</a></li>
 									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li class="active"><a href="#">Prestamos</a></li>
-									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
+									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -352,7 +351,7 @@
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>
-			<p>Gim Version 1.0</p>
+			<p>Prestamos AJ Version 1.0</p>
 		</div>
 	</footer>
 </body>

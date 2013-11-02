@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Actualizar datos</title>
+	<title>Gastos</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
@@ -13,9 +13,8 @@
 	<script src="../js/funciones.js"></script>
 	<script src="../js/bootstrap.js"></script>
 	<script src="../js/editar.js"></script>
+	<script src="../js/prestamos.js"></script>
 	<script src="../js/eliminar.js"></script>
-</head>
-<body>
 	<style>
 		h1{
 			text-align: center;
@@ -31,7 +30,7 @@
 	    	font-size: 2em;
 	    }
 	    td{
-	    	font-size: 1em;
+	    	font-size: 1.3em;
 	    }
 		p{
 	    	color: #df0024;
@@ -42,14 +41,14 @@
 		}
 		#mensaje{
 	        float: left;
-	    	margin-left: 20%;
+	    	margin-left: 45%;
 	    	position: fixed;
 	    	top: 18%;
 	    	display: block;
        	}
        	#mensajeError{
        		float: left;
-	    	margin-left: 20%;
+	    	margin-left: 45%;
 	    	position: fixed;
 	    	top: 18%;
 	    	display: block;
@@ -62,7 +61,6 @@
 	</style>	
 	<script>
       $(document).ready(function(){
-
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
 		var menu_offset = menu.offset();
@@ -98,11 +96,11 @@
 	        $("#foco").focus();
         });
 
-	    /*_______________________________________________*/
+	    /*_______________________________________________
 	    $('#buscar').live('keyup',function(){
-		  	var data = 'query='+$(this).val();
+		  	var data = 'queryTiempo='+$(this).val();
 		  	//console.log(data);
-      	    if(data =='query=' ){
+      	    if(data =='queryTiempo=' ){
       	       	$.post('acciones.php',data , function(resp){
 			  	   	//console.log(resp);
 			  	   	$('#verDatos').empty();//limpiar los datos
@@ -118,7 +116,7 @@
 	      	    	console.log(resp);
 			  	},'html');
       	    }
-		});
+		});*/
 
 		/*_________________________________________*/
 		$(window).scroll(function(){
@@ -144,10 +142,31 @@
 		  	}
 		});
 
+		$('#quin').keyup(function(){
+    			var quin = $(this).val();
+    			var meses = quin/2;
+    			$('#meses').val(meses);
+    	}).keyup();
+
 
 	  });/*fin del document------------------*/
-	</script>
+		
+		function calculo(){
+    		//var contador = document.getElementById("totalDia");
+    		var quin = $('#quin').val();
+    		var prestamo = $('#prestamo').val();
+    		var porc = $('#porc').val();
+    		var resuPorce = (prestamo*porc)/100;
+    		var div = resuPorce/2;
+    		var interes = div * quin;
+    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
 
+    		$("#vcuota").val(cuota);
+    		$("#interes").val(interes);
+    	}
+	</script>
+</head>
+<body onLoad="setInterval('calculo()',1000);">
 	<?php
       session_start();
       if(isset($_SESSION['id_user'])){
@@ -189,7 +208,7 @@
 												<label>Telefono</label>
 												<input type="text" name="tel" required/>
 							    				<input type="hidden" name="registrarCliente">
-							    				<button type="submit" class="btn btn-success">Registrar</button>
+							    				<button type="submit" id="registrarCliente" class="btn btn-success">Registrar</button>
 											</form>
 										</div>
 									</ul>
@@ -202,8 +221,8 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="caja.php">Caja</a></li>
-									<li class="active"><a href="#">Actualizar Datos Personales</a></li>
-									<li><a href="prestamos.php">Prestamos</a></li>
+									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
+									<li><a href="#">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
 							</li>
@@ -250,32 +269,24 @@
 	<section class="container well" id="fondo">
 		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
 		<div class="row">
-			<h1>Actualizar datos Personales</h1> <br>
+			<h1>Gastos</h1> <br>
 			<div class="span12">
 				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
-							<th>Nombre</th>
-							<th>Dirección</th>
-							<th>Teléfono</th>
+							<th>Dinero</th>
+							<th>Concepto</th>
+							<th>Fecha</th>
 						</tr>
 					</thead>
-					<tbody id="verDatos" style="text-aling:center;">
-						<?php
-						    require_once('funciones.php');
-						   	$objeto = new funciones();
-						   	$objeto->verTodosClientes();
-						 ?>
+					<tbody id="verGastos">
+						<?php 
+						   require_once('funciones.php');
+						   $objeto = new funciones();
+						   $objeto->verGastos();
+						?>
 					</tbody>
 				</table>
-				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
-		        <div id="paginacion">
-		    	 	 <?php 
-		    	 	  require_once('funciones.php');
-		    	 	  $objeto = new funciones();
-		    	 	  $objeto->paginacionDatosPersonales();
-			    	 ?>
-		    	</div>
 			</div>
 		</div>
 		<div class="row">
@@ -283,43 +294,10 @@
 		</div>
 	</section>
 
-	<!--codigo para modificar los campos personales-->
-	<div class="hide" id="editarDatos" title="Editar Registro">
-     	<form action="acciones.php" method="post">
-     		<input type="hidden" id="id_registro" name="id_registro" value="0">
-     			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre" autofocus/>
-     			<label>Dirección:</label>
-				<input type="text" name="direccion" id="direccion"/>
-				<label>Teléfono:</label>
-				<input type="text" name="telefono" id="telefono">
-				<input type="hidden" name="modificarDatos">
-				<button type="submit" id="modificarDatos" class="btn btn-success">Modificar</button>
-				<button id="cancelar" class="btn btn-danger">Cancelar</button>
-     	</form>
-    </div>
-
-     <!--codigo para eliminar-->
-    <div class="hide" id="deleteReg" title="Eliminar Cliente">
-	    <form action="acciones.php" method="post">
-	    	<fieldset id="datosOcultos">
-	    		<input type="hidden" id="id_delete" name="id_delete" value="0"/>
-	    	</fieldset>
-	    	<div class="control-group">
-	    		<label for="activoElim" class="alert alert-danger">
-	    		    <strong>Esta seguro de Eliminar este Cliente</strong><br>
-	    		</label>
-	    		<input type="hidden" name="deleteCliente"/> 
-			    <button type="submit" class="btn btn-success">Aceptar</button>
-			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
-	    	</div>
-	    </form>
-	</div>
-
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>
-			<p>Prestamos AJ 1.0</p>
+			<p>Prestamos AJ Version 1.0</p>
 		</div>
 	</footer>
 </body>

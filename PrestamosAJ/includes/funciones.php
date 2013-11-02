@@ -42,6 +42,14 @@
         $tp = $np + 1;
         mysql_query("UPDATE clientes SET nPrestamos='$tp' WHERE cedula='$cedula'") 
                                     or die ("Error en el update");
+
+        /*actualizando la caja despues del prestamo*/                           
+        $resultado2 = mysql_query("SELECT baseTotal FROM caja");
+        $fila2 = mysql_fetch_array($resultado2);
+
+        $nuevaCaja = $fila2['baseTotal'] - $prestamo;
+        mysql_query("UPDATE caja SET baseTotal='$nuevaCaja'") 
+                                    or die ("Error en el update");
     }
 
     /*actualizar la base de la caja si es la primera vez lo registramos*/
@@ -194,11 +202,6 @@
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula");
    
         while($fila = mysql_fetch_array($resultado)){
-          //  $codigo = $fila['codigo'];
-          //  $result = mysql_query("SELECT sum(dias) AS total FROM fechasclientes WHERE codigoEstudiante = '$codigo' ");
-          //  $dias = mysql_fetch_array($result);
-         //style="font-weight: bold;
-            
             echo '<tr> 
                 <td>'.$fila['nombre'].'</td>
                 <td>'.number_format($fila['monto']).'</td>
@@ -206,21 +209,34 @@
                 <td>'.number_format($fila['interes']).'</td>
                 <td><a id="info" class="btn btn-mini btn-info" 
                          data-toggle="popover" data-placement="top" 
-                         data-content="NcuotasQ: '.$fila['NcuotasQ'].'    NcuotasM: '.$fila['NcuotasM'].'   
-                                       FechaPrestamo:  '.$fila['fechaPrestamo'].'
-                                       FechaPago: '.$fila['fechaPago'].'"
+                         data-content="NcuotasQ: '.$fila['NcuotasQ'].'  <br>
+                                       NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                       FechaPrestamo:  '.$fila['fechaPrestamo'].'  <br>
+                                       FechaPago: '.$fila['fechaPago'].' <br>
+                                       N° Prestamos: '.$fila['nPrestamos'].'"
 
-                         title data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                         data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
                     </a>
                 </td>
             </tr>';
-            
-           
-                          // echo $salida;
+            // echo $salida;
         }      
     }
 
-    public function verVensimientos(){
+    /*ver gastos sacados de los intereses*/
+    public function verGastos(){
+        $resultado = mysql_query("SELECT * FROM gastos");
+   
+        while($fila = mysql_fetch_array($resultado)){
+            echo '<tr> 
+                <td>'.number_format($fila['dinero']).'</td>
+                <td>'.$fila['concepto'].'</td>
+                <td>'.$fila['fecha'].'</td>
+            </tr>';
+        }
+    }
+
+    public function verPagos(){
         /*hacer paginacion*/
         $cant_reg = 20;//definimos la cantidad de datos que deseamos tenes por pagina.
 
@@ -239,78 +255,26 @@
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");
         $fechaD = date("d");
-        $resultado = mysql_query("SELECT * FROM estudiantes WHERE condicion= 'No Pago' OR condicion= 'Abono' ORDER BY fechaFinal ASC LIMIT $inicio,$cant_reg");   
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula AND condicion= 'nopago' ORDER BY fechaPrestamo ASC LIMIT $inicio,$cant_reg");   
         
         while($fila = mysql_fetch_array($resultado)){
-            $dia = substr($fila['fechaFinal'],8,10); 
+            $dia = substr($fila['fechaPrestamo'],8,10); 
             $dia = $dia-3;
-            if($fecha == $fila['fechaFinal']){
-                if($fila['condicion'] == 'No Pago'){
-                        echo '<tr class="error"> 
-                             <td>'.$fila['nombre'].'</td>
-                             <td>'.$fila['fechaInicial'].'</td>
-                             <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                             <td>'.$fila['dinero'].'</td>
-                             <td>'.$fila['condicion'].'</td>
-                             <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                         </tr>';
-                }else{
-                    if($fila['condicion'] == 'Abono'){
-                            echo '<tr class="warning"> 
-                                     <td>'.$fila['nombre'].'</td>
-                                     <td>'.$fila['fechaInicial'].'</td>
-                                     <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                                     <td>'.$fila['dinero'].'</td>
-                                     <td>'.$fila['condicion'].'</td>
-                                     <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                 </tr>';
-                    }
-                }
+            if($fecha == $fila['fechaPrestamo']){
+                 echo '<tr class="error"> 
+                            <td>'.$fila['nombre'].'</td>
+                            <td>'.$fila['fechaPago'].'</td>
+                            <td '.$fila['abonoCapital'].'</td>
+                            <td>'.$fila['abonoInteres'].'</td>
+                            <td>'.$fila['saldo'].'</td>
+                            <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['cedula'].'"><strong>Editar</strong></a></td>
+                    </tr>';
+               
             }else{
                 if($fechaD == $dia){
-                    if($fila['condicion'] == 'No Pago'){
-                        echo '<tr class="error"> 
-                             <td>'.$fila['nombre'].'</td>
-                             <td>'.$fila['fechaInicial'].'</td>
-                             <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                             <td>'.$fila['dinero'].'</td>
-                             <td>'.$fila['condicion'].'</td>
-                             <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                         </tr>';
-                    }else{
-                        if($fila['condicion'] == 'Abono'){
-                                echo '<tr class="warning"> 
-                                         <td>'.$fila['nombre'].'</td>
-                                         <td>'.$fila['fechaInicial'].'</td>
-                                         <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                                         <td>'.$fila['dinero'].'</td>
-                                         <td>'.$fila['condicion'].'</td>
-                                         <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                     </tr>';
-                        }
-                    }
+                    
                 }else{
-                    if($fila['condicion'] == 'No Pago'){
-                        echo '<tr class="error"> 
-                             <td>'.$fila['nombre'].'</td>
-                             <td>'.$fila['fechaInicial'].'</td>
-                             <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                             <td>'.$fila['dinero'].'</td>
-                             <td>'.$fila['condicion'].'</td>
-                             <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                         </tr>';
-                    }else{
-                        if($fila['condicion'] == 'Abono'){
-                                echo '<tr class="warning"> 
-                                         <td>'.$fila['nombre'].'</td>
-                                         <td>'.$fila['fechaInicial'].'</td>
-                                         <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                                         <td>'.$fila['dinero'].'</td>
-                                         <td>'.$fila['condicion'].'</td>
-                                         <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                     </tr>';
-                        }
-                    }
+                    
                 }
             }
         }/*cierre del while*/
@@ -355,7 +319,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM estudiantes WHERE condicion= 'No Pago' OR condicion= 'Abono' ORDER BY fechaFinal ASC");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula AND condicion= 'nopago' ORDER BY fechaPrestamo ASC");///hacemos una consulta de todos los datos
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -372,77 +336,24 @@
             $fecha = date("Y-m-d");
             $fechaD = date("d");
 
-            $resultado = mysql_query("SELECT * FROM estudiantes WHERE condicion= 'No Pago' OR condicion= 'Abono' ORDER BY fechaFinal ASC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+            $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula AND condicion= 'nopago' ORDER BY fechaPrestamo ASC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
            while($fila = mysql_fetch_array($resultado)){
-                $dia = substr($fila['fechaFinal'],8,10); 
+                $dia = substr($fila['fechaPrestamo'],8,10); 
                 $dia = $dia-3;
-                if($fecha == $fila['fechaFinal']){
-                    if($fila['condicion'] == 'No Pago'){
-                            echo '<tr class="error"> 
-                                 <td>'.$fila['nombre'].'</td>
-                                 <td>'.$fila['fechaInicial'].'</td>
-                                 <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                                 <td>'.$fila['dinero'].'</td>
-                                 <td>'.$fila['condicion'].'</td>
-                                 <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                             </tr>';
-                    }else{
-                        if($fila['condicion'] == 'Abono'){
-                                echo '<tr class="warning"> 
-                                         <td>'.$fila['nombre'].'</td>
-                                         <td>'.$fila['fechaInicial'].'</td>
-                                         <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                                         <td>'.$fila['dinero'].'</td>
-                                         <td>'.$fila['condicion'].'</td>
-                                         <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                     </tr>';
-                        }
-                    }
+                if($fecha == $fila['fechaPrestamo']){
+                     echo '<tr class="error"> 
+                            <td>'.$fila['nombre'].'</td>
+                            <td>'.$fila['fechaPago'].'</td>
+                            <td '.$fila['abonoCapital'].'</td>
+                            <td>'.$fila['abonoInteres'].'</td>
+                            <td>'.$fila['saldo'].'</td>
+                            <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['cedula'].'"><strong>Editar</strong></a></td>
+                    </tr>';
                 }else{
                     if($fechaD == $dia){
-                        if($fila['condicion'] == 'No Pago'){
-                            echo '<tr class="error"> 
-                                 <td>'.$fila['nombre'].'</td>
-                                 <td>'.$fila['fechaInicial'].'</td>
-                                 <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                                 <td>'.$fila['dinero'].'</td>
-                                 <td>'.$fila['condicion'].'</td>
-                                 <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                             </tr>';
-                        }else{
-                            if($fila['condicion'] == 'Abono'){
-                                    echo '<tr class="warning"> 
-                                             <td>'.$fila['nombre'].'</td>
-                                             <td>'.$fila['fechaInicial'].'</td>
-                                             <td style="font-weight: bold; font-size: 22px;">'.$fila['fechaFinal'].'</td>
-                                             <td>'.$fila['dinero'].'</td>
-                                             <td>'.$fila['condicion'].'</td>
-                                             <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                         </tr>';
-                            }
-                        }
+                        
                     }else{
-                        if($fila['condicion'] == 'No Pago'){
-                            echo '<tr class="error"> 
-                                 <td>'.$fila['nombre'].'</td>
-                                 <td>'.$fila['fechaInicial'].'</td>
-                                 <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                                 <td>'.$fila['dinero'].'</td>
-                                 <td>'.$fila['condicion'].'</td>
-                                 <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                             </tr>';
-                        }else{
-                            if($fila['condicion'] == 'Abono'){
-                                    echo '<tr class="warning"> 
-                                             <td>'.$fila['nombre'].'</td>
-                                             <td>'.$fila['fechaInicial'].'</td>
-                                             <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-                                             <td>'.$fila['dinero'].'</td>
-                                             <td>'.$fila['condicion'].'</td>
-                                             <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-                                         </tr>';
-                            }
-                        }
+                        
                     }
                 }
             }/*cierre del while*/

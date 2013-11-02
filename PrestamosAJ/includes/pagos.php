@@ -2,11 +2,10 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Actualizar datos</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
-	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="../css/estilos.css">
+	<title>Deben pagar</title>
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="../css/estilos.css">
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui.js"></script>
 	<script src="../js/jquery.validate.js"></script>
@@ -28,10 +27,10 @@
 		    font-size: 12px;
 		}
 		th{
-	    	font-size: 2em;
+	    	font-size: 24px;
 	    }
 	    td{
-	    	font-size: 1em;
+	    	font-size: 20px;
 	    }
 		p{
 	    	color: #df0024;
@@ -41,7 +40,7 @@
 			background: #feffff;
 		}
 		#mensaje{
-	        float: left;
+	         float: left;
 	    	margin-left: 20%;
 	    	position: fixed;
 	    	top: 18%;
@@ -100,21 +99,21 @@
 
 	    /*_______________________________________________*/
 	    $('#buscar').live('keyup',function(){
-		  	var data = 'query='+$(this).val();
+		  	var data = 'queryPago='+$(this).val();
 		  	//console.log(data);
-      	    if(data =='query=' ){
+      	    if(data =='queryPago=' ){
       	       	$.post('acciones.php',data , function(resp){
 			  	   	//console.log(resp);
-			  	   	$('#verDatos').empty();//limpiar los datos
-			  	   	$('#verDatos').html(resp);
+			  	   	$('#verVencimiento').empty();//limpiar los datos
+			  	   	$('#verVencimiento').html(resp);
 	      	    	console.log('poraca paso joder....');
 			  	},'html');
       	    }else{
       	       	$.post('acciones.php',data , function(resp){
 			  	   	  //console.log(resp);
 			  	   	$('.pagination').remove();
-			  	   	$('#verDatos').empty();//limpiar los datos
-			  	   	$('#verDatos').html(resp);
+			  	   	$('#verVencimiento').empty();//limpiar los datos
+			  	   	$('#verVencimiento').html(resp);
 	      	    	console.log(resp);
 			  	},'html');
       	    }
@@ -202,9 +201,9 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="caja.php">Caja</a></li>
-									<li class="active"><a href="#">Actualizar Datos Personales</a></li>
+									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
-									<li><a href="pagos.php">Pagos</a></li>
+									<li class="active"><a href="#">Pagos</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -248,24 +247,26 @@
 
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
-		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
-		<div class="row">
-			<h1>Actualizar datos Personales</h1> <br>
-			<div class="span12">
-				<table class="table table-hover table-bordered table-condensed">
+		<div id="aviso">
+            <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>
+				<h1 style='color: #df0024;'>Pagos</h1><br>
+				<a class="btn btn-large btn-primary" id="pago">Hacer Pago</a><hr>
+				<table  class="table table-hover table-bordered">
 					<thead>
 						<tr>
 							<th>Nombre</th>
-							<th>Dirección</th>
-							<th>Teléfono</th>
+							<th>Fecha Pago</th>
+							<th>Abono</th>
+							<th>Interes</th>
+							<th>Saldo</th>
 						</tr>
 					</thead>
-					<tbody id="verDatos" style="text-aling:center;">
-						<?php
-						    require_once('funciones.php');
-						   	$objeto = new funciones();
-						   	$objeto->verTodosClientes();
-						 ?>
+					<tbody id="verVencimiento">
+						<?php 
+							require_once('funciones.php');
+							$objeto = new funciones();
+							$objeto->verPagos();
+						?>
 					</tbody>
 				</table>
 				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
@@ -273,53 +274,36 @@
 		    	 	 <?php 
 		    	 	  require_once('funciones.php');
 		    	 	  $objeto = new funciones();
-		    	 	  $objeto->paginacionDatosPersonales();
+		    	 	  //$objeto->paginacionVensimientos();
 			    	 ?>
 		    	</div>
-			</div>
-		</div>
-		<div class="row">
-			
 		</div>
 	</section>
 
-	<!--codigo para modificar los campos personales-->
-	<div class="hide" id="editarDatos" title="Editar Registro">
+	 <!--modificamos los pagos que se vencieron-->
+     <div class="hide" id="editarPagoVencimiento" title="Editar Registro">
      	<form action="acciones.php" method="post">
-     		<input type="hidden" id="id_registro" name="id_registro" value="0">
+     		<input type="hidden" id="id_registroVen" name="id_registroVen" value="0">
      			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre" autofocus/>
-     			<label>Dirección:</label>
-				<input type="text" name="direccion" id="direccion"/>
-				<label>Teléfono:</label>
-				<input type="text" name="telefono" id="telefono">
-				<input type="hidden" name="modificarDatos">
-				<button type="submit" id="modificarDatos" class="btn btn-success">Modificar</button>
+				<input type="text" name="nombre" id="nombreVen" disabled/>
+     			<label>Pago:</label>
+				<input type="text" name="pago" id="pagoVen" autofocus/>
+				<label>Condición:</label>
+				<select name="condicion" id="conVen">
+					<option value="No Pago">No Pago</option>
+					<option value="Pago">Pago</option>
+					<option value="Abono">Abono</option>
+				</select>
+				<input type="hidden" name="modificarPagoVen">
+				<button type="submit" id="modificarPagoVen" class="btn btn-success">Modificar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
-    </div>
-
-     <!--codigo para eliminar-->
-    <div class="hide" id="deleteReg" title="Eliminar Cliente">
-	    <form action="acciones.php" method="post">
-	    	<fieldset id="datosOcultos">
-	    		<input type="hidden" id="id_delete" name="id_delete" value="0"/>
-	    	</fieldset>
-	    	<div class="control-group">
-	    		<label for="activoElim" class="alert alert-danger">
-	    		    <strong>Esta seguro de Eliminar este Cliente</strong><br>
-	    		</label>
-	    		<input type="hidden" name="deleteCliente"/> 
-			    <button type="submit" class="btn btn-success">Aceptar</button>
-			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
-	    	</div>
-	    </form>
-	</div>
+     </div>
 
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>
-			<p>Prestamos AJ 1.0</p>
+			<p>Prestamos AJ Version 1.0</p>
 		</div>
 	</footer>
 </body>

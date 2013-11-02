@@ -149,7 +149,7 @@
 									<li><a href="caja.php">Caja</a></li>
 									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li><a href="actualizarTiempo.php">Actualizar Tiempo</a></li>
-									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
+									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>

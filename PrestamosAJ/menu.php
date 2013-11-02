@@ -201,7 +201,7 @@
 									<li><a href="includes/caja.php">Caja</a></li>
 									<li><a href="includes/actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li><a href="includes/prestamos.php">Prestamos</a></li>
-									<li><a href="includes/pagoTiempo.php">Deben Pagar</a></li>
+									<li><a href="includes/pagos.php">Pagos</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>

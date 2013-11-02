@@ -205,7 +205,7 @@
 									<li class="active"><a  href="#">Caja</a></li>
 									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
-									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
+									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -273,7 +273,8 @@
 						$objeto->verInteres();
 					?>
 				</div>
-				<br><a class="btn btn-large btn-danger" id="interes">Interes</a>
+				<br><a class="btn btn-large btn-danger" id="interes">Hacer Gasto</a>
+					<a class="btn btn-large btn-info" href="gastos.php" target="_blank">Ver gastos</a>
 			</div>
 		</div>
 		<div class="row">
@@ -294,7 +295,7 @@
 					<option value="3">Agregar de interes</option>
 				</select>
 				<input type="hidden" name="modificarBase">
-				<button type="submit" id="modificarBase" class="btn btn-success">Modificar</button>
+				<button type="submit" id="modificarBase" class="btn btn-success">Aceptar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
     </div>
@@ -309,7 +310,7 @@
 				<textarea name="concepto" rows="4" cols="0">
 				</textarea>
 				<input type="hidden" name="modificarInteres">
-				<button type="submit" id="modificarInteres" class="btn btn-success">Modificar</button>
+				<button type="submit" id="modificarInteres" class="btn btn-success">Aceptar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
     </div>
