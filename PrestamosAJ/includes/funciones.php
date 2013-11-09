@@ -1,7 +1,6 @@
 <?php
   class funciones{
      private $bd;
-
      function __construct(){
          require_once('config.php');
          $bd = new conexion();
@@ -177,7 +176,7 @@
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
         */
-        $resultado = mysql_query("SELECT * FROM clientes");
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula");
    
         while($fila = mysql_fetch_array($resultado)){
           //  $codigo = $fila['codigo'];
@@ -189,6 +188,8 @@
                 <td>'.$fila['nombre'].'</td>
                 <td>'.$fila['direccion'].'</td>
                 <td>'.$fila['telefono'].'</td>
+                <td>'.$fila['monto'].'</td>
+                <td>'.$fila['fechaPrestamo'].'</td>
                 <td><a disabled class="btn btn-mini btn-info"><strong disabled>Editar</strong></a></td>
                 <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedula'].'"><strong>Eliminar</strong></a></td>
             </tr>';
@@ -202,7 +203,9 @@
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula");
    
         while($fila = mysql_fetch_array($resultado)){
-            echo '<tr> 
+            if($fila['condicion']=='nopago'){
+                echo '<tr class="error"> 
+                <td>'.$fila['codigo'].'</td>
                 <td>'.$fila['nombre'].'</td>
                 <td>'.number_format($fila['monto']).'</td>
                 <td>'.number_format($fila['Vcuota']).'</td>
@@ -216,9 +219,30 @@
                                        N° Prestamos: '.$fila['nPrestamos'].'"
 
                          data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                    </a>
-                </td>
-            </tr>';
+                        </a>
+                    </td>
+                </tr>';
+            }else{
+                echo '<tr class="success"> 
+                <td>'.$fila['codigo'].'</td>
+                <td>'.$fila['nombre'].'</td>
+                <td>'.number_format($fila['monto']).'</td>
+                <td>'.number_format($fila['Vcuota']).'</td>
+                <td>'.number_format($fila['interes']).'</td>
+                <td><a id="info" class="btn btn-mini btn-info" 
+                         data-toggle="popover" data-placement="top" 
+                         data-content="NcuotasQ: '.$fila['NcuotasQ'].'  <br>
+                                       NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                       FechaPrestamo:  '.$fila['fechaPrestamo'].'  <br>
+                                       FechaPago: '.$fila['fechaPago'].' <br>
+                                       N° Prestamos: '.$fila['nPrestamos'].'"
+
+                         data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                        </a>
+                    </td>
+                </tr>';
+            }
+            
             // echo $salida;
         }      
     }
@@ -255,7 +279,7 @@
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");
         $fechaD = date("d");
-        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedula AND condicion= 'nopago' ORDER BY fechaPrestamo ASC LIMIT $inicio,$cant_reg");   
+        $resultado = mysql_query("SELECT * FROM pagos,clientes,prestamos WHERE pagos.cedula=clientes.cedula AND prestamos.cedula=clientes.cedula AND condicion= 'nopago' ORDER BY fechaPrestamo ASC LIMIT $inicio,$cant_reg");   
         
         while($fila = mysql_fetch_array($resultado)){
             $dia = substr($fila['fechaPrestamo'],8,10); 
@@ -1053,25 +1077,26 @@
     }/*cierre de la funcion*/
 
 
-/*Codigo de combox para mostrar nombres de los clientes*/
-public function comboClientes(){
-    $result = mysql_query("SELECT cedula,nombre FROM clientes");
-    while ($fila = mysql_fetch_array($result)) {
-        echo "<option value='".$fila['cedula']."'>".$fila['nombre']."
-                 </option>";
+    /*Codigo de combox para mostrar nombres de los clientes*/
+    public function comboClientes(){
+        $result = mysql_query("SELECT cedula,nombre FROM clientes");
+        while ($fila = mysql_fetch_array($result)) {
+            echo "<option value='".$fila['cedula']."'>".$fila['nombre']."
+                     </option>";
+        }
     }
-}
 
-
-
-
-
-
-
-
-
-
-
+    /*combox para mostrar los prestamos del cliente*/
+    public function comboPrestamos(){
+        $resultado = mysql_query("SELECT cedula FROM clientes LIMIT 1");
+        $dato = mysql_fetch_array($resultado);
+        $cedula = $dato['cedula'];
+        $result = mysql_query("SELECT codigo FROM prestamos WHERE cedula='$cedula'");
+        while ($fila = mysql_fetch_array($result)) {
+            echo "<option value='".$fila['codigo']."'>".$fila['codigo']."
+                     </option>";
+        }
+    }
 
 
     /*MODIFICAR DATOS DEL USUAIRO Y CREAR....*/

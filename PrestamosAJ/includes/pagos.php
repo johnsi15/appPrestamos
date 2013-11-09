@@ -6,11 +6,12 @@
 	<link rel="stylesheet" href="../css/bootstrap.css">
 	<link rel="stylesheet" href="../css/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="../css/estilos.css">
-	<script src="../js/jquery.js"></script>
+	<script src="../js/jquery.js"></script>-->
 	<script src="../js/jquery-ui.js"></script>
 	<script src="../js/jquery.validate.js"></script>
 	<script src="../js/funciones.js"></script>
 	<script src="../js/bootstrap.js"></script>
+	<script src="../js/pagos.js"></script>
 	<script src="../js/editar.js"></script>
 	<script src="../js/eliminar.js"></script>
 </head>
@@ -61,7 +62,14 @@
 	</style>	
 	<script>
       $(document).ready(function(){
+      	/*funcionalidad del combo box*/
+      	$('#nombre').change(function(){
+      		var id = $('#nombre').val();
+      		$('#prestamos').load('datos.php?id='+id);
+      	});
+      	var id = $('#nombre').val();
 
+      	/*-------------------------------------*/
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
 		var menu_offset = menu.offset();
@@ -250,7 +258,7 @@
 		<div id="aviso">
             <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>
 				<h1 style='color: #df0024;'>Pagos</h1><br>
-				<a class="btn btn-large btn-primary" id="pago">Hacer Pago</a><hr>
+				<a class="btn btn-large btn-primary" id="nuevo">Hacer Pago</a><hr>
 				<table  class="table table-hover table-bordered">
 					<thead>
 						<tr>
@@ -261,7 +269,7 @@
 							<th>Saldo</th>
 						</tr>
 					</thead>
-					<tbody id="verVencimiento">
+					<tbody id="verPagos">
 						<?php 
 							require_once('funciones.php');
 							$objeto = new funciones();
@@ -281,21 +289,33 @@
 	</section>
 
 	 <!--modificamos los pagos que se vencieron-->
-     <div class="hide" id="editarPagoVencimiento" title="Editar Registro">
-     	<form action="acciones.php" method="post">
+     <div class="hide" id="nuevoPago" title="Nuevo Pago">
+     	<form action="acciones.php" method="post" id="registrarPago">
      		<input type="hidden" id="id_registroVen" name="id_registroVen" value="0">
      			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombreVen" disabled/>
-     			<label>Pago:</label>
-				<input type="text" name="pago" id="pagoVen" autofocus/>
-				<label>Condición:</label>
-				<select name="condicion" id="conVen">
-					<option value="No Pago">No Pago</option>
-					<option value="Pago">Pago</option>
-					<option value="Abono">Abono</option>
+				<select id='nombre' name='nombre' autofocus>
+					<?php
+                        require_once('../includes/funciones.php');
+                        $combo = new funciones();
+                        $combo->comboClientes();
+					?>
 				</select>
-				<input type="hidden" name="modificarPagoVen">
-				<button type="submit" id="modificarPagoVen" class="btn btn-success">Modificar</button>
+				<label>N° Prestamo</label>
+				<div id="prestamos">
+					<select name='prestamo'>
+						<?php
+                        	require_once('../includes/funciones.php');
+                       	 	$combo = new funciones();
+                        	$combo->comboPrestamos();
+						?>
+					</select>
+				</div>
+     			<label>Pago Capital:</label>
+				<input type="text" name="pago" id="pago" required/>
+     			<label>Pago Interes:</label>
+				<input type="text" name="interes" id="interes" required/>
+				<input type="hidden" name="registrarPago">
+				<button type="submit" id="registrarPago" class="btn btn-success">Aceptar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
      </div>

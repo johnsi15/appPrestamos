@@ -279,6 +279,7 @@
 				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
+							<th>N°</th>
 							<th>Nombre</th>
 							<th>Prestamo</th>
 							<th>V-cuota</th>

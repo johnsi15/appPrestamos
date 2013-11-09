@@ -72,6 +72,15 @@
       $objeto->registrasGasto($dinero,$conp,$fecha);
    }
 
+   if(isset($_POST['registrarPago'])){
+      $cedula = $_POST['nombre'];
+      $prestamo = $_POST['prestamo'];
+      $pago = $_POST['pago'];
+      $interes = $_POST['interes'];
+      date_default_timezone_set('America/Bogota'); 
+      $fecha = date("Y-m-d");
+      $objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo);
+   }
 
    /*modificamos el pago de los que les vencio las fechas */
    if(isset($_POST['modificarPagoVen'])){
@@ -141,7 +150,7 @@
    /*buscador en tiempo real para los pagos que se vencieron*/
    if(isset($_POST['queryPago'])){
       $palabra = $_POST['queryPago'];
-      $objeto->buscarVencimientos($palabra);
+     // $objeto->buscarVencimientos($palabra);
    }
 
 
