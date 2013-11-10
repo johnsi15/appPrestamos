@@ -268,7 +268,7 @@ $(document).ready(function(){
                        }else{
                           $('#verPagos').empty();//limpiar la tabla.
                           $('#verPagos').html(resp);//imprimir datos de la tabla.
-                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
+                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(600);}, 1000); 
                           var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' El pago se hizo correctamente'+'</div>';
                           $('#mensaje').html(exito);//impresion del mensaje exitoso.
                           $('#registrarPago')[0].reset();///limpiamos los campos del formulario.

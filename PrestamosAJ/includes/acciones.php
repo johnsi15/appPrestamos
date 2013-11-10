@@ -80,6 +80,7 @@
       date_default_timezone_set('America/Bogota'); 
       $fecha = date("Y-m-d");
       $objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo);
+      $objeto->verPagos();
    }
 
    /*modificamos el pago de los que les vencio las fechas */

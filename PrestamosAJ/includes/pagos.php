@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Deben pagar</title>
-	<link rel="stylesheet" href="../css/bootstrap.css">
-	<link rel="stylesheet" href="../css/smoothness/jquery-ui.css">
-	<link rel="stylesheet" href="../css/estilos.css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
+	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="../css/estilos.css">
 	<script src="../js/jquery.js"></script>-->
 	<script src="../js/jquery-ui.js"></script>
 	<script src="../js/jquery.validate.js"></script>
@@ -255,36 +256,41 @@
 
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
-		<div id="aviso">
+		<div class="row" id="aviso">
             <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>
 				<h1 style='color: #df0024;'>Pagos</h1><br>
-				<a class="btn btn-large btn-primary" id="nuevo">Hacer Pago</a><hr>
-				<table  class="table table-hover table-bordered">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Fecha Pago</th>
-							<th>Abono</th>
-							<th>Interes</th>
-							<th>Saldo</th>
-						</tr>
-					</thead>
-					<tbody id="verPagos">
-						<?php 
-							require_once('funciones.php');
-							$objeto = new funciones();
-							$objeto->verPagos();
-						?>
-					</tbody>
-				</table>
-				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
-		        <div id="paginacion">
-		    	 	 <?php 
-		    	 	  require_once('funciones.php');
-		    	 	  $objeto = new funciones();
-		    	 	  //$objeto->paginacionVensimientos();
-			    	 ?>
-		    	</div>
+				<div class="span4">
+					<a class="btn btn-large btn-primary" id="nuevo">Hacer Pago</a>
+				</div>
+				<div class="span12">
+					<hr>
+					<table  class="table table-hover table-bordered table-condensed">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Fecha Pago</th>
+								<th>Abono</th>
+								<th>Interes</th>
+								<th>Saldo</th>
+							</tr>
+						</thead>
+						<tbody id="verPagos">
+							<?php 
+								require_once('funciones.php');
+								$objeto = new funciones();
+								$objeto->verPagos();
+							?>
+						</tbody>
+					</table>
+					<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
+			        <div id="paginacion">
+			    	 	 <?php 
+			    	 	  require_once('funciones.php');
+			    	 	  $objeto = new funciones();
+			    	 	  //$objeto->paginacionVensimientos();
+				    	 ?>
+			    	</div>
+				</div>
 		</div>
 	</section>
 

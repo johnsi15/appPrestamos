@@ -51,6 +51,33 @@
                                     or die ("Error en el update");
     }
 
+    /*funcion para registrar los pagos de los prestamos */
+    public function registrarPago($cedula,$fecha,$pago,$interes,$nPrestamo){
+        $resultado = mysql_query("SELECT * FROM prestamos WHERE codigo='$nPrestamo'");
+        $fila = mysql_fetch_array($resultado);
+        if($fila['monto'] == '0'){
+
+        }else{
+            $nuevoInteres = $fila['interes'] - $interes;
+            $nuevoSaldo = $fila['monto'] - $pago;
+
+            mysql_query("INSERT INTO pagos (cedula,fecha,abonoCapital,abonoInteres,saldo)
+                                          VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo')")
+                                          or die ("Error");
+
+            mysql_query("UPDATE prestamos SET monto='$nuevoSaldo', interes='$nuevoInteres' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error en el update");
+
+            $resultado2 = mysql_query("SELECT * FROM caja");
+            $fila2 = mysql_fetch_array($resultado2);
+            $nuevaBase = $fila2['baseTotal'] + $pago;
+            $nuevoInteres = $fila2['interesTotal'] + $interes;
+
+            mysql_query("UPDATE caja SET interesTotal='$nuevoInteres', baseTotal='$nuevaBase'") 
+                                        or die ("Error en el update");
+        } 
+    }
+
     /*actualizar la base de la caja si es la primera vez lo registramos*/
     public function actualizarBase($base){
         $resultado = mysql_query("SELECT * FROM caja");
@@ -276,31 +303,17 @@
         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
-        date_default_timezone_set('America/Bogota'); 
-        $fecha = date("Y-m-d");
-        $fechaD = date("d");
-        $resultado = mysql_query("SELECT * FROM pagos,clientes,prestamos WHERE pagos.cedula=clientes.cedula AND prestamos.cedula=clientes.cedula AND condicion= 'nopago' ORDER BY fechaPrestamo ASC LIMIT $inicio,$cant_reg");   
+        $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedula=clientes.cedula ORDER BY codigo DESC LIMIT $inicio,$cant_reg");   
         
         while($fila = mysql_fetch_array($resultado)){
-            $dia = substr($fila['fechaPrestamo'],8,10); 
-            $dia = $dia-3;
-            if($fecha == $fila['fechaPrestamo']){
-                 echo '<tr class="error"> 
-                            <td>'.$fila['nombre'].'</td>
-                            <td>'.$fila['fechaPago'].'</td>
-                            <td '.$fila['abonoCapital'].'</td>
-                            <td>'.$fila['abonoInteres'].'</td>
-                            <td>'.$fila['saldo'].'</td>
-                            <td><a id="editPagoVen" class="btn btn-mini btn-inverse" href="'.$fila['cedula'].'"><strong>Editar</strong></a></td>
-                    </tr>';
-               
-            }else{
-                if($fechaD == $dia){
-                    
-                }else{
-                    
-                }
-            }
+            echo '<tr> 
+                    <td>'.$fila['nombre'].'</td>
+                    <td>'.$fila['fecha'].'</td>
+                    <td>'.number_format($fila['abonoCapital']).'</td>
+                    <td>'.number_format($fila['abonoInteres']).'</td>
+                    <td>'.number_format($fila['saldo']).'</td>
+            </tr>';
+                
         }/*cierre del while*/
     }
 
