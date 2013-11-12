@@ -24,7 +24,8 @@
 
 	<script>
       $(document).ready(function(){
-
+      	//activar el ver mas
+      	$('[data-toggle=popover]').popover({html:true});
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
 		var menu_offset = menu.offset();
@@ -126,7 +127,7 @@
 
 		var ventana_ancho = $(window).width();
 		
-		if(ventana_ancho >= 120 && ventana_ancho <= 720){
+		/*if(ventana_ancho >= 120 && ventana_ancho <= 720){
 			$('table').removeClass('table');
 			$('table').removeClass('table-hover');
 			$('table').removeClass('table-hover');
@@ -140,7 +141,7 @@
 			$('table').addClass('table-hover');
 			$('table').addClass('table-bordered');
 			$('table').addClass('table-condensed');
-		}
+		}*/
 
 	  });//cierre del document
 	</script>
@@ -253,13 +254,11 @@
 				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
+							<th>N°</th>
 							<th>Nombre</th>
 							<th>Direccion</th>
 							<th>Telefono</th>
-							<th>Dinero</th>
-							<th>Fecha Inicio</th>
-							<th>Fecha Pago</th>
-							<th>Interes</th>
+							<th>Saldo</th>
 						</tr>
 					</thead>
 					<tbody id="verClien">

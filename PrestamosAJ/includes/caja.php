@@ -251,9 +251,9 @@
 	<section class="container well" id="fondo">
 		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
 		<div class="row">
-			<h1>Caja Prestamos AJ</h1> <br>
-			<div class="span3"></div>
-			<div class="span4">
+			<h1>Caja Prestamos AJ</h1> <hr>
+			<div class="span2"></div>
+			<div class="container well span3">
 				<h2>Base</h2>
 				<div id="verCaja">
 					<?php 
@@ -264,7 +264,8 @@
 				</div>
 				<br><a class="btn btn-large btn-success" id="base">Base</a>
 			</div>
-			<div class="span4">
+			<div class="span1"></div>
+			<div class="container well span4">
 				<h2>Interes</h2>
 				<div id="verInteres">
 					<?php 

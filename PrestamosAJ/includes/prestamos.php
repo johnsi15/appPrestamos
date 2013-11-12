@@ -27,7 +27,7 @@
 		    font-size: 12px;
 		}
 		th{
-	    	font-size: 2em;
+	    	font-size: 1.8em;
 	    }
 	    td{
 	    	font-size: 1.3em;
