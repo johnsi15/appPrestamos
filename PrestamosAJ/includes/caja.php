@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Caja</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
@@ -158,7 +159,7 @@
       }
 	?>
 
-	<header class="container">
+	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">
 				<div class="container" >
@@ -173,29 +174,6 @@
 							<li class="divider-vertical"></li>
 							<li><a href="../menu.php"><i class="icon-home icon-white"></i>Inicio</a></li>
 							<li class="divider-vertical"></li>
-								<li id="formMenu" class="dropdown">
-									<a id="menuOpen" class="dropdown-toggle" data-toggle="dropdown">
-										Registrar
-										<span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu pull-right">
-										<div class="span4" id="registrarNew">
-											<form action="acciones.php" method="post" id="registrarCliente" style="margin-left: 30px;" class="limpiar">
-												<label>N° Identificación:</label>
-												<input type="text" name="codigo" id="foco" autofocus required>
-												<label>Nombre:</label>
-												<input type="text" name="nombre" required/>
-												<label>Dirección:</label>
-												<input type="text" name="dir" required/>
-												<label>Telefono</label>
-												<input type="text" name="tel" required/>
-							    				<input type="hidden" name="registrarCliente">
-							    				<button type="submit" class="btn btn-success">Registrar</button>
-											</form>
-										</div>
-									</ul>
-								</li>
-							<li class="divider-vertical"></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									Clientes
@@ -203,7 +181,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li class="active"><a  href="#">Caja</a></li>
-									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
+									<li><a href="actualizarDatos.php">Registrar</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
@@ -249,7 +227,7 @@
 
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
-		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
+		<!-- <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	 -->
 		<div class="row">
 			<h1>Caja Prestamos AJ</h1> <hr>
 			<div class="span2"></div>

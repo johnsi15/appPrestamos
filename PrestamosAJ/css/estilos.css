@@ -33,6 +33,14 @@ footer{
 #IrInicio:link{
     text-decoration: none;
 }
+#pres{
+    float: right;
+    margin-left: 85%;
+    margin-right: 15%;
+    position: fixed;
+    top: 95%;
+    display: block;
+}
 
 /* Responsive Desing */
 /* media queries para hero-unit h1 */
@@ -58,6 +66,17 @@ footer{
 }
 
 @media all and (max-width: 720px){
+    .hero-unit h1{
+        font-size: 30px;
+    }
+
+    #centrar{
+        font-size: 20px;
+    }
+
+    #form{
+        margin-left: 5%;
+    }
     #formMenu{
         color: white;
     }
@@ -73,4 +92,4 @@ footer{
     .respon{
         width: 140px;
     }
-}   
+}    

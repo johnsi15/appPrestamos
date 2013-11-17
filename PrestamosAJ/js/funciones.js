@@ -19,8 +19,8 @@ $(document).ready(function(){
 		},
 		submitHandler: function(form){
 			///BUSCAMOS LOS CAMPOS EN TODAS LAS TABLAS-> cuando le den buscar
-		    var pet = $('#registrarNew form').attr('action');
-	      var met = $('#registrarNew form').attr('method');
+		    var pet = $('#registrarDatos form').attr('action');
+	      var met = $('#registrarDatos form').attr('method');
         console.log(pet);
         console.log(met);
 	         $.ajax({
@@ -29,7 +29,7 @@ $(document).ready(function(){
                    },
                    url: pet,
                    type: met,
-                   data: $('#registrarNew form').serialize(),
+                   data: $('#registrarDatos form').serialize(),
                    success: function(resp){
                    	   console.log(resp);
                        if(resp == "Error"){
@@ -38,14 +38,15 @@ $(document).ready(function(){
                              $('#mensajeError .alert').remove();
                              $('#mensajeError').html(error);
                        }else{
-                          $('#verClien').empty();//limpiar la tabla.
-	                        $('#verClien').html(resp);//imprimir datos de la tabla.
+                          $('#verDatos').empty();//limpiar la tabla.
+	                        $('#verDatos').html(resp);//imprimir datos de la tabla.
 	                        setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
 	                        var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' el registro se agrego correctamente'+'</div>';
 	                        $('#mensaje').html(exito);//impresion del mensaje exitoso.
 	                        $('.limpiar')[0].reset();///limpiamos los campos del formulario.
                           $("#formMenu").removeClass('open');//cerramos el sub menu del registro
-	                        $('#foco').focus();///indicamos el foco al primer valor del formulario.
+	                        $('#buscar').focus();///indicamos el foco al primer valor del formulario.
+                          $('#registrarDatos').dialog('close');
                        }
                    },
                    error: function(jqXHR,estado,error){

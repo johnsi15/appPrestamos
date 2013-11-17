@@ -542,8 +542,8 @@
         while($fila = mysql_fetch_array($resultado)){
               echo '<tr> 
                         <td>'.$fila['nombre'].'</td>
-                        <td>'.$fila['telefono'].'</td>
                         <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedula'].'"><strong>Editar</strong></a></td>
                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedula'].'"><strong>Eliminar</strong></a></td>
                     </tr>';
@@ -574,7 +574,7 @@
 
 
      //BUSCADOR EN TIEMPO REAL POR  DE CONCEPTO......
-    public function buscarEstudiante($palabra){
+    /*public function buscarEstudiante($palabra){
         if($palabra == ''){
             $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
 
@@ -634,7 +634,7 @@
                     echo $salida;
             }  
         }
-    }
+    }*/
 
     /*paginacion de los datos personales..*/
     public function paginacionDatosPersonales(){

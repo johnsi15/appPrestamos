@@ -206,6 +206,7 @@ $(document).ready(function(){
                               setTimeout(function(){ $("#mensaje .alert").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 800); 
                               var exito = '<div class="alert alert-info">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Modificado '+'</strong>'+' el registro se modifico correctamente'+'</div>';
                               $('#mensaje').html(exito);
+                              $('.limpiar')[0].reset();///limpiamos los campos del formulario.
                              // $('#paginacion').empty();//limpiar los datos
                               //$('#paginacion').load('paginacion.php');
                         }

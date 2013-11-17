@@ -92,15 +92,6 @@
 			  	},'html');
       	    }
 		});
-
-         /*______________________________________________*/
-        $("#menuOpen").mouseout(function(){
-            //$("#formMenu").removeClass('open');
-	    }).mouseover(function(){
-	        $("#formMenu").addClass('open');
-	        $("#foco").focus();
-	    });
-
 	   /*________________________________________________________________________*/
 		$(window).scroll(function(){
 		  	if($(window).scrollTop() >= $(document).height() - $(window).height()){
@@ -126,22 +117,6 @@
 		});
 
 		var ventana_ancho = $(window).width();
-		
-		/*if(ventana_ancho >= 120 && ventana_ancho <= 720){
-			$('table').removeClass('table');
-			$('table').removeClass('table-hover');
-			$('table').removeClass('table-hover');
-			$('table').removeClass('table-bordered');
-			$('table').removeClass('table-condensed');
-		}
-
-		if(ventana_ancho>720){
-			$('table').addClass('table');
-			$('table').addClass('table-hover');
-			$('table').addClass('table-hover');
-			$('table').addClass('table-bordered');
-			$('table').addClass('table-condensed');
-		}*/
 
 	  });//cierre del document
 	</script>
@@ -170,37 +145,14 @@
 							<li class="divider-vertical"></li>
 							<li class="active"><a href="#"><i class="icon-home icon-white"></i>Inicio</a></li>
 							<li class="divider-vertical"></li>
-								<li id="formMenu" class="dropdown">
-									<a id="menuOpen" class="dropdown-toggle" data-toggle="dropdown">
-										Registrar
-										<span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu pull-right">
-										<div class="span4" id="registrarNew">
-											<form action="includes/acciones.php" method="post" id="registrarCliente" style="margin-left: 30px;" class="limpiar">
-												<label>N° Identificación:</label>
-												<input type="text" name="codigo" id="foco" autofocus required>
-												<label>Nombre:</label>
-												<input type="text" name="nombre" required/>
-												<label>Dirección:</label>
-												<input type="text" name="dir" required/>
-												<label>Telefono</label>
-												<input type="text" name="tel" required/>
-							    				<input type="hidden" name="registrarCliente">
-							    				<button type="submit" class="btn btn-success">Registrar</button>
-											</form>
-										</div>
-									</ul>
-								</li>
-							<li class="divider-vertical"></li>
-							<li class="dropdown">
+							<li class="dropdown" id="espacio">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									Clientes
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="includes/caja.php">Caja</a></li>
-									<li><a href="includes/actualizarDatos.php">Actualizar Datos Personales</a></li>
+									<li><a href="includes/actualizarDatos.php">Registrar</a></li>
 									<li><a href="includes/prestamos.php">Prestamos</a></li>
 									<li><a href="includes/pagos.php">Pagos</a></li>
 								</ul>
@@ -335,7 +287,6 @@
 	<?php
 		//}
 	?>
-	 
 	<footer>
 		<h2 id="pie"><img src="img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>

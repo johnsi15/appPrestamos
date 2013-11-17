@@ -24,7 +24,7 @@
         $dir = $_POST['dir'];
         $tel = $_POST['tel'];
         $objeto->registrarCliente($codigo,$nom,$dir,$tel);
-        $objeto->verClientes();
+        $objeto->verTodosClientes();
    }
 
 
@@ -129,14 +129,14 @@
         $dir = $_POST['direccion'];
         $tel = $_POST['telefono'];
         $objeto->actualizarDatosPersonales($cod,$nom,$dir,$tel);
-        $objeto->paginacionDatosPersonales();
+        //$objeto->paginacionDatosPersonales();
         $objeto->verTodosClientes();
    }
 
    /*buscador en tiempo real para modificar los datos personales de los estudiantes*/
    if(isset($_POST['query'])){
-       $palabra = $_POST['query'];
-       $objeto->buscarEstudiante($palabra);
+       // $palabra = $_POST['query'];
+       // $objeto->buscarEstudiante($palabra);
    }
    /*buscador en tiempo real para los estudiantes que estan pagos y van a renovar el tiempo de uso del gim*/
    if(isset($_POST['queryTiempo'])){

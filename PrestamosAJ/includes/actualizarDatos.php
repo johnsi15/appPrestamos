@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Actualizar datos</title>
+	<title>Registrar Cliente</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
@@ -12,6 +12,7 @@
 	<script src="../js/jquery.validate.js"></script>
 	<script src="../js/funciones.js"></script>
 	<script src="../js/bootstrap.js"></script>
+	<script src="../js/registrar.js"></script>
 	<script src="../js/editar.js"></script>
 	<script src="../js/eliminar.js"></script>
 </head>
@@ -157,7 +158,7 @@
       }
 	?>
 
-	<header class="container">
+	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">
 				<div class="container" >
@@ -172,29 +173,6 @@
 							<li class="divider-vertical"></li>
 							<li><a href="../menu.php"><i class="icon-home icon-white"></i>Inicio</a></li>
 							<li class="divider-vertical"></li>
-								<li id="formMenu" class="dropdown">
-									<a id="menuOpen" class="dropdown-toggle" data-toggle="dropdown">
-										Registrar
-										<span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu pull-right">
-										<div class="span4" id="registrarNew">
-											<form action="acciones.php" method="post" id="registrarCliente" style="margin-left: 30px;" class="limpiar">
-												<label>N° Identificación:</label>
-												<input type="text" name="codigo" id="foco" autofocus required>
-												<label>Nombre:</label>
-												<input type="text" name="nombre" required/>
-												<label>Dirección:</label>
-												<input type="text" name="dir" required/>
-												<label>Telefono</label>
-												<input type="text" name="tel" required/>
-							    				<input type="hidden" name="registrarCliente">
-							    				<button type="submit" class="btn btn-success">Registrar</button>
-											</form>
-										</div>
-									</ul>
-								</li>
-							<li class="divider-vertical"></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									Clientes
@@ -202,7 +180,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="caja.php">Caja</a></li>
-									<li class="active"><a href="#">Actualizar Datos Personales</a></li>
+									<li class="active"><a href="#">Registrar</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
@@ -250,8 +228,10 @@
 	<section class="container well" id="fondo">
 		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
 		<div class="row">
-			<h1>Actualizar datos Personales</h1> <br>
+			<h1>Registrar Clientes</h1> <br>
 			<div class="span12">
+				<a class="btn btn-large btn-primary" id="nuevo">Registrar cliente</a>
+				<hr>
 				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
@@ -283,6 +263,23 @@
 		</div>
 	</section>
 
+	<!-- codigo para registrar clientes -->
+	<div class="hide" id="registrarDatos" title="Registrar Cliente">
+		<form action="acciones.php" method="post" id="registrarCliente"  class="limpiar">
+			<label>N° Identificación:</label>
+			<input type="text" name="codigo" required>
+			<label>Nombre:</label>
+			<input type="text" name="nombre" required/>
+			<label>Dirección:</label>
+			<input type="text" name="dir" required/>
+			<label>Telefono</label>
+			<input type="text" name="tel" required/>
+			<input type="hidden" name="registrarCliente">
+			<button type="submit" id="registrarCliente" class="btn btn-success">Registrar</button>
+			<button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
+		</form>
+	</div>
+
 	<!--codigo para modificar los campos personales-->
 	<div class="hide" id="editarDatos" title="Editar Registro">
      	<form action="acciones.php" method="post">
@@ -294,7 +291,7 @@
 				<label>Teléfono:</label>
 				<input type="text" name="telefono" id="telefono">
 				<input type="hidden" name="modificarDatos">
-				<button type="submit" id="modificarDatos" class="btn btn-success">Modificar</button>
+				<button type="submit" id="modificarDatos" class="btn btn-success">Aceptar</button>
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
     </div>
