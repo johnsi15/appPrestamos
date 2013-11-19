@@ -252,7 +252,7 @@
 						$objeto->verInteres();
 					?>
 				</div>
-				<br><a class="btn btn-large btn-danger" id="interes">Hacer Gasto</a>
+				<br><a class="btn btn-large btn-danger" id="interes">Hacer Gasto</a> -
 					<a class="btn btn-large btn-info" href="gastos.php" target="_blank">Ver gastos</a>
 			</div>
 		</div>
@@ -269,9 +269,9 @@
 				<input type="text" name="base" id="dbase" autofocus/>
 				<label>Tipo de actualización</label>
 				<select name="tipo">
-					<option value="1">Actualizar Base</option>
-					<option value="2">Agregar a la Base</option>
 					<option value="3">Agregar de interes</option>
+					<option value="2">Agregar a la Base</option>
+					<option value="1">Actualizar Base</option>
 				</select>
 				<input type="hidden" name="modificarBase">
 				<button type="submit" id="modificarBase" class="btn btn-success">Aceptar</button>

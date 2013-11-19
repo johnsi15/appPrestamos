@@ -289,6 +289,16 @@
         }      
     }
 
+    public function verDetallesPrestamos(){
+        $resultado = mysql_query("SELECT * FROM prestamos");
+        while($fila = mysql_fetch_array($resultado)){
+             echo '<tr class="success"> 
+                <td>'.$fila['codigo'].'</td>
+                <td>'.number_format($fila['monto']).'</td>
+            </tr>';
+        }
+    }
+
     /*ver gastos sacados de los intereses*/
     public function verGastos(){
         $resultado = mysql_query("SELECT * FROM gastos");
@@ -321,8 +331,16 @@
         $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedula=clientes.cedula ORDER BY codigo DESC LIMIT $inicio,$cant_reg");   
         
         while($fila = mysql_fetch_array($resultado)){
+            $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedula']."");
+            $fila2 = mysql_fetch_array($contador);
             echo '<tr class="success"> 
-                    <td>'.$fila['nombre'].'</td>
+                    <td><a id="info"
+                         data-toggle="popover" data-placement="top" 
+                         data-content="#CuotasPagas: '.$fila2['0'].'"
+
+                         data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
+                        </a>
+                    </td>
                     <td>'.$fila['fecha'].'</td>
                     <td>'.number_format($fila['abonoCapital']).'</td>
                     <td>'.number_format($fila['abonoInteres']).'</td>

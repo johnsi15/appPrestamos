@@ -24,9 +24,28 @@ footer{
     font-weight: bold;
 }
 
+#detallesPrestamos{
+    float: right; 
+    margin-left: 80%;
+    top: 58%;
+    position: fixed;
+}
+
+#minimizar{
+    margin-left: 85%;
+}
+
+#scroll{
+    width: 73%;
+    height: 280px;
+    background-color:#F2F2F2;
+    overflow:auto;
+}
+
 #cabeza {
     height: 100%;
 }
+
 #IrInicio:hover{
     text-decoration: underline;
 }
@@ -66,6 +85,10 @@ footer{
 }
 
 @media all and (max-width: 720px){
+    header{
+        position: fixed;
+        width: 95%;
+    }
     .hero-unit h1{
         font-size: 30px;
     }
@@ -79,6 +102,18 @@ footer{
     }
     #formMenu{
         color: white;
+    }
+    #pres{
+      margin-left: 75%;
+      top:90%;  
+    }
+    #detallesPrestamos{
+        margin-left: 60%;
+        top: 25%;
+    }
+    #scroll{
+        width: 95%;
+        height: 280px;
     }
 }
 

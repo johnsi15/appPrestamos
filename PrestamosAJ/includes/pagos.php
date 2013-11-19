@@ -63,6 +63,8 @@
 	</style>	
 	<script>
       $(document).ready(function(){
+      	// ver mas detalles del pago
+      	$('[data-toggle=popover]').popover({html:true});
       	/*funcionalidad del combo box*/
       	$('#nombre').change(function(){
       		var id = $('#nombre').val();
@@ -150,6 +152,16 @@
 					  $('.pagination').remove();
 				}
 		  	}
+		});
+		// codigo de los detalles de los prestamos
+		$('#pres').click(function(){
+			$('#detallesPrestamos').toggle("fast");
+			$('#pres').css('display','none');
+		});
+
+		$('#minimizar').click(function(){
+			$('#detallesPrestamos').css('display','none');
+			$('#pres').css('display','block');
 		});
 
 
@@ -302,7 +314,29 @@
 				<button id="cancelar" class="btn btn-danger">Cancelar</button>
      	</form>
      </div>
-     <a href="#" id="pres" class="btn btn-large">Prestamos</a>
+
+     <!-- detalles de prestamos -->
+     <div class="hide" id="detallesPrestamos">
+     		<a class="btn btn-small btn-primary" id="minimizar"> - </a>
+     	<div class="span3 well" id="scroll">
+     		<table  class="table table-hover table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th>Codigo</th>
+						<th>Prestamo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+						require_once('funciones.php');
+						$objeto = new funciones();
+						$objeto->verDetallesPrestamos();
+					?>
+				</tbody>
+			</table>
+		</div>
+     </div>
+     <a href="#" id="pres" class="btn btn-large btn-primary">Prestamos</a>
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>
