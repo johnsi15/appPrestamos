@@ -61,6 +61,15 @@ footer{
     display: block;
 }
 
+.bloqueFijo{
+    position: fixed;
+    margin-left: 85%;
+    top: 40%;
+    padding-top: 25px;
+    line-height: 20px;
+    width: 140px;
+}
+
 /* Responsive Desing */
 /* media queries para hero-unit h1 */
 @media all and (max-width: 480px){
@@ -114,6 +123,9 @@ footer{
     #scroll{
         width: 95%;
         height: 280px;
+    }
+    .bloqueFijo{
+        width: 100px;
     }
 }
 

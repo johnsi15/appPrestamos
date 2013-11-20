@@ -61,7 +61,9 @@
 	</style>	
 	<script>
       $(document).ready(function(){
+      	// ver mas datos de los prestamos
       	$('[data-toggle=popover]').popover({html:true});
+
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
 		var menu_offset = menu.offset();
@@ -97,27 +99,29 @@
 	        $("#foco").focus();
         });
 
-	    /*_______________________________________________
+	    //buscador de los prestamos____________________________
 	    $('#buscar').live('keyup',function(){
-		  	var data = 'queryTiempo='+$(this).val();
+		  	var data = 'queryPrestamo='+$(this).val();
 		  	//console.log(data);
-      	    if(data =='queryTiempo=' ){
+      	    if(data =='queryPrestamo=' ){
       	       	$.post('acciones.php',data , function(resp){
 			  	   	//console.log(resp);
-			  	   	$('#verDatos').empty();//limpiar los datos
-			  	   	$('#verDatos').html(resp);
-	      	    	console.log('poraca paso joder....');
+			  	   	$('#verPrestamos').empty();//limpiar los datos
+			  	   	$('#verPrestamos').html(resp);
+	      	    	//console.log('poraca paso joder....');
+	      	    	$('[data-toggle=popover]').popover({html:true});
 			  	},'html');
       	    }else{
       	       	$.post('acciones.php',data , function(resp){
 			  	   	  //console.log(resp);
 			  	   	$('.pagination').remove();
-			  	   	$('#verDatos').empty();//limpiar los datos
-			  	   	$('#verDatos').html(resp);
-	      	    	console.log(resp);
+			  	   	$('#verPrestamos').empty();//limpiar los datos
+			  	   	$('#verPrestamos').html(resp);
+	      	    	//console.log(resp);
+	      	    	$('[data-toggle=popover]').popover({html:true});
 			  	},'html');
       	    }
-		});*/
+		});
 
 		/*_________________________________________*/
 		$(window).scroll(function(){
@@ -136,6 +140,7 @@
 					  	    tabla.find('tbody').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
+					  	 	$('[data-toggle=popover]').popover({html:true});
 					  	}
 					});
 					  $('.pagination').remove();
@@ -143,6 +148,7 @@
 		  	}
 		});
 
+		// calculo para sacar los meses
 		$('#quin').keyup(function(){
     			var quin = $(this).val();
     			var meses = quin/2;
@@ -162,7 +168,7 @@
     		var interes = div * quin;
     		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
 
-    		$("#vcuota").val(cuota);
+    		$("#vcuota").val(Math.round(cuota));
     		$("#interes").val(interes);
     	}
 	</script>
@@ -259,7 +265,7 @@
 							<th>N°</th>
 							<th>Nombre</th>
 							<th>Prestamo</th>
-							<th>V-cuota</th>
+							<th>Cuota</th>
 							<th>Interes</th>
 						</tr>
 					</thead>
@@ -271,6 +277,14 @@
 						?>
 					</tbody>
 				</table>
+				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
+		        <div id="paginacion">
+		    	 	 <?php 
+		    	 	  require_once('funciones.php');
+		    	 	  $objeto = new funciones();
+		    	 	  $objeto->paginacionPrestamos();
+			    	 ?>
+		    	</div>
 			</div>
 		</div>
 		<div class="row">

@@ -83,8 +83,8 @@ $(document).ready(function(){
 
         var pet = $('#nuevoPrestamo form').attr('action');
         var met = $('#nuevoPrestamo form').attr('method');
-        console.log(pet);
-        console.log(met);
+        //console.log(pet);
+        //console.log(met);
            $.ajax({
                    beforeSend: function(){
 
@@ -93,7 +93,7 @@ $(document).ready(function(){
                    type: met,
                    data: $('#nuevoPrestamo form').serialize(),
                    success: function(resp){
-                       console.log(resp);
+                       //console.log(resp);
                        if(resp == "Error"){
                              setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
                              var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo procesar el prestamo'+'</div>';
@@ -110,6 +110,7 @@ $(document).ready(function(){
                           $("#formMenu").removeClass('open');//cerramos el sub menu del registro
                           $('#foco').focus();///indicamos el foco al primer valor del formulario.
                           $('#nuevoPrestamo').dialog('close');
+                          $('[data-toggle=popover]').popover({html:true});
                        }
                    },
                    error: function(jqXHR,estado,error){
@@ -117,7 +118,7 @@ $(document).ready(function(){
                        console.log(error);
                    },
                    complete: function(jqXHR,estado){
-                       console.log(estado);
+                       //console.log(estado);
                    },
                    timeout: 10000//10 segundos.
                });

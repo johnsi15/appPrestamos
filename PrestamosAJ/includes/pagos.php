@@ -322,7 +322,7 @@
      		<table  class="table table-hover table-bordered table-condensed">
 				<thead>
 					<tr>
-						<th>Codigo</th>
+						<th>N°</th>
 						<th>Prestamo</th>
 					</tr>
 				</thead>
@@ -336,7 +336,7 @@
 			</table>
 		</div>
      </div>
-     <a href="#" id="pres" class="btn btn-large btn-primary">Prestamos</a>
+     <a href="#detalles" id="pres" class="btn btn-large btn-primary">Prestamos</a>
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>

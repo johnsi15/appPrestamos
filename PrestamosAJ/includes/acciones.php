@@ -135,13 +135,13 @@
 
    /*buscador en tiempo real para modificar los datos personales de los estudiantes*/
    if(isset($_POST['query'])){
-       // $palabra = $_POST['query'];
-       // $objeto->buscarEstudiante($palabra);
+       $palabra = $_POST['query'];
+       $objeto->buscarCliente($palabra);
    }
-   /*buscador en tiempo real para los estudiantes que estan pagos y van a renovar el tiempo de uso del gim*/
-   if(isset($_POST['queryTiempo'])){
-       $palabra = $_POST['queryTiempo'];
-       $objeto->buscarEstudiantePago($palabra);
+   /*buscador en tiempo real prestamos*/
+   if(isset($_POST['queryPrestamo'])){
+       $palabra = $_POST['queryPrestamo'];
+       $objeto->buscarPrestamo($palabra);
    }
    /*buscador en tiempo real para buscar los clientes en el menu principal de todas las condiciones de pago*/
    if(isset($_POST['queryMenu'])){
