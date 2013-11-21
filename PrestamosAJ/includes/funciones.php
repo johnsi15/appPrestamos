@@ -35,8 +35,9 @@
         /*actualizando la caja despues del prestamo*/                           
         $resultado2 = mysql_query("SELECT baseTotal FROM caja");
         $fila2 = mysql_fetch_array($resultado2);
-        if($fila2['baseTotal'] == '0'){
-
+        if($fila2['baseTotal'] <= $prestamo){
+            echo "Error";
+            return false;
         }else{
             $saldo = $prestamo;
             $saldoIn = $interes;
@@ -53,6 +54,7 @@
             $nuevaCaja = $fila2['baseTotal'] - $prestamo;
             mysql_query("UPDATE caja SET baseTotal='$nuevaCaja'") 
                                         or die ("Error en el update");
+            return true;
         }
     }
 
@@ -111,17 +113,22 @@
     public function sacarInteres($base){
         $resultado = mysql_query("SELECT interesTotal FROM caja");
         if($fila = mysql_fetch_array($resultado)){
+            if($base <= $fila['interesTotal']){  
+                $nvInteres = $fila['interesTotal'] - $base;
+                mysql_query("UPDATE caja SET interesTotal='$nvInteres'") 
+                                        or die ("Error en el update");
 
-            $nvInteres = $fila['interesTotal'] - $base;
-            mysql_query("UPDATE caja SET interesTotal='$nvInteres'") 
-                                    or die ("Error en el update");
+                $resultado2 = mysql_query("SELECT baseTotal FROM caja");
+                $fila2 = mysql_fetch_array($resultado2);
 
-            $resultado2 = mysql_query("SELECT baseTotal FROM caja");
-            $fila2 = mysql_fetch_array($resultado2);
-
-            $nvBase = $fila2['baseTotal'] + $base; 
-            mysql_query("UPDATE caja SET baseTotal='$nvBase'") 
-                                    or die ("Error en el update");
+                $nvBase = $fila2['baseTotal'] + $base; 
+                mysql_query("UPDATE caja SET baseTotal='$nvBase'") 
+                                        or die ("Error en el update");
+                return true;
+            }else{
+                echo "Error";
+                return false;
+            }
         }
     }
 
@@ -779,10 +786,19 @@
                                     or die ("Error en el update");
     }
 
-     /*metodos para ELIMINAR estudiantes del gim*/
+     /*metodos para ELIMINAR clientes*/
     public function deleteCliente($cod){
         mysql_query("DELETE FROM clientes WHERE cedula='$cod'");
         //mysql_query("DELETE FROM fechasclientes WHERE codigoEstudiante='$cod'");
+    }
+
+    // metodo para limpiar la base de datos
+    public function limpiarBaseDatos(){
+        mysql_query("TRUNCATE caja");
+        mysql_query("TRUNCATE clientes");
+        mysql_query("TRUNCATE gastos");
+        mysql_query("TRUNCATE pagos");
+        mysql_query("TRUNCATE prestamos");
     }
 
    /*aca comienzo con la partde de actulizar datos de los estudiantes que van al gim*/

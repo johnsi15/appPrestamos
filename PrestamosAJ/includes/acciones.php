@@ -40,8 +40,9 @@
       date_default_timezone_set('America/Bogota'); 
       $fechaI = date("Y-m-d");
       $condicion = "nopago";
-      $objeto->registrarPrestamo($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion);
-      $objeto->verPrestamos();
+      if($objeto->registrarPrestamo($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion)){
+        $objeto->verPrestamos();
+      }
    }
 
    /*actualizamos la base de la caja*/
@@ -57,8 +58,10 @@
             $objeto->agragarBase($base);
             $objeto->verCaja();
           }else{
-            $objeto->sacarInteres($base);
-            $objeto->verCaja();
+            if($objeto->sacarInteres($base)){
+                $objeto->verCaja();
+            }
+            
           }
         }
    }
@@ -108,10 +111,8 @@
        $objeto->verTodosClientes();
    }
 
-   if(isset($_POST['deleteEstudianteMenu'])){
-       $cod = $_POST['id_delete'];
-       $objeto->eliminarEstudiante($cod);
-       $objeto->verEstudiantes();
+   if(isset($_POST['deleteBaseDatos'])){
+       $objeto->limpiarBaseDatos();
    }
 
    if(isset($_POST['deleteEstudianteTiempo'])){

@@ -99,7 +99,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a href="../menu.php" class="brand">Nombre del Gim</a>
+					<a href="../menu.php" class="brand">Prestamos AJ</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav" >
 							<li class="divider-vertical"></li>
@@ -158,11 +158,11 @@
     <!--Primer articulo... -->
 	<article class="container well" id="fondo">
 		<div class="row">
-			<div class="span1"></div>
-			<div class="span8 well" id="fondo" style="margin-left: 8%;">
+			<div class="span2"></div>
+			<div class="span8 well">
 				<h1>Registrar Usuario</h1><br>
 				<div class="mensaje"></div><!--mensaje de confirmacion o de error-->
-				<div class="span3 well" id="registrarUser" style="margin-left: 30%;">
+				<div class="span3 well" id="registrarUser">
 					<form action="acciones.php" method="post" id="validarRegistroUser">
 						<div class="control-group">
 							<label for="nombre">Nombre</label>

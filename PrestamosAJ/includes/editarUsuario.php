@@ -14,7 +14,7 @@
 	<script src="../js/editar.js"></script>
 	<script src="../js/funciones.js"></script>
 	<!--<script src="../js/registrar.js"></script>-->
-	<!--<script src="../js/eliminar.js"></script>-->
+	<script src="../js/eliminar.js"></script>
 	<style>
 	    h1{
 	    	text-align: center;
@@ -103,29 +103,6 @@
 							<li class="divider-vertical"></li>
 							<li><a href="../menu.php"><i class="icon-home icon-white"></i>Inicio</a></li>
 							<li class="divider-vertical"></li>
-							<li id="formMenu" class="dropdown">
-									<a id="menuOpen" class="dropdown-toggle" data-toggle="dropdown">
-										Registrar
-										<span class="caret"></span>
-									</a>
-								<ul class="dropdown-menu pull-right">
-									<div class="span4" id="registrarNew">
-										<form action="acciones.php" method="post" id="registrarCliente" style="margin-left: 30px;" class="limpiar">
-											<label>N° Identificación:</label>
-											<input type="text" name="codigo" id="foco" autofocus required>
-											<label>Nombre:</label>
-											<input type="text" name="nombre" required/>
-											<label>Dirección:</label>
-											<input type="text" name="dir" required/>
-											<label>Telefono</label>
-											<input type="text" name="tel" required/>
-							    			<input type="hidden" name="registrarCliente">
-							    			<button type="submit" class="btn btn-success">Registrar</button>
-										</form>
-									</div>
-								</ul>
-							</li>
-							<li class="divider-vertical"></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									Clientes
@@ -133,7 +110,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="caja.php">Caja</a></li>
-									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
+									<li><a href="actualizarDatos.php">Registrar</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
@@ -179,7 +156,8 @@
     <!--Primer articulo... -->
 	<article class="container well" id="fondo">
 		<div class="row">
-			<div class="span8 well" id="fondo">
+			<div class="span2"></div>
+			<div class="span8 well">
 				<h1>Configuración de la cuenta</h1><br>
 				<div class="mensaje"></div><!--mensaje de confirmacion o de error-->
 				<table class="table table-hover table-condensed">
@@ -196,6 +174,7 @@
 						</tr>
 					</tbody>
 				</table>
+				<a class="btn btn-danger" id="limpiar">Limpiar Base de Datos</a>
 			</div>
 		</div>
 	</article>
@@ -242,6 +221,20 @@
      		</div>
      	</form>
      </div>
+
+     <!--codigo para eliminar-->
+    <div class="hide" id="deleteBase" title="Limpiar Base de Datos">
+	    <form action="acciones.php" method="post">
+	    	<div class="control-group">
+	    		<label for="activoElim" class="alert alert-danger">
+	    		    <strong>Esta seguro de Limpiar la Base de datos</strong><br>
+	    		</label>
+	    		<input type="hidden" name="deleteBaseDatos"/> 
+			    <button type="submit" class="btn btn-success">Aceptar</button>
+			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
+	    	</div>
+	    </form>
+	</div>
 	<footer>
 		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
 		<div id="pie"> <br>

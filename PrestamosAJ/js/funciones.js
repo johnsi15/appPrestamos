@@ -95,8 +95,8 @@ $(document).ready(function(){
                    success: function(resp){
                        //console.log(resp);
                        if(resp == "Error"){
-                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
-                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo procesar el prestamo'+'</div>';
+                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo procesar el prestamo Revise la Caja'+'</div>';
                              $('#mensajeError .alert').remove();
                              $('#mensajeError').html(error);
                              $('#nuevoPrestamo').dialog('close');
@@ -138,8 +138,8 @@ $(document).ready(function(){
 
         var pet = $('#nuevaBase form').attr('action');
         var met = $('#nuevaBase form').attr('method');
-        console.log(pet);
-        console.log(met);
+        //console.log(pet);
+       // console.log(met);
            $.ajax({
                    beforeSend: function(){
 
@@ -148,9 +148,9 @@ $(document).ready(function(){
                    type: met,
                    data: $('#nuevaBase form').serialize(),
                    success: function(resp){
-                       console.log(resp);
+                       //console.log(resp);
                        if(resp == "Error"){
-                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
+                             setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(800).fadeOut(300);}, 1000); 
                              var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo realizar la acción'+'</div>';
                              $('#mensajeError .alert').remove();
                              $('#mensajeError').html(error);
@@ -158,13 +158,14 @@ $(document).ready(function(){
                        }else{
                           $('#verCaja').empty();//limpiar la tabla.
                           $('#verCaja').html(resp);//imprimir datos de la tabla.
-                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
+                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(800).fadeOut(300);}, 1000); 
                           var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' La caja fue actualizada'+'</div>';
                           $('#mensaje').html(exito);//impresion del mensaje exitoso.
                           $('#modificarBase')[0].reset();///limpiamos los campos del formulario.
                           $("#formMenu").removeClass('open');//cerramos el sub menu del registro
                           $('#foco').focus();///indicamos el foco al primer valor del formulario.
                           $('#nuevaBase').dialog('close');
+                          $('#verInteres').load('refresInteres.php');
                        }
                    },
                    error: function(jqXHR,estado,error){
@@ -277,6 +278,8 @@ $(document).ready(function(){
                           $("#formMenu").removeClass('open');//cerramos el sub menu del registro
                           $('#foco').focus();///indicamos el foco al primer valor del formulario.
                           $('#nuevoPago').dialog('close');
+                          // ver mas detalles del pago
+                          $('[data-toggle=popover]').popover({html:true});
                        }
                    },
                    error: function(jqXHR,estado,error){
