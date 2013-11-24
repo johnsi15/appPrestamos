@@ -24,6 +24,7 @@
         $dir = $_POST['dir'];
         $tel = $_POST['tel'];
         $objeto->registrarCliente($codigo,$nom,$dir,$tel);
+        $objeto->paginacionDatosPersonales();
         $objeto->verTodosClientes();
    }
 
@@ -41,6 +42,7 @@
       $fechaI = date("Y-m-d");
       $condicion = "nopago";
       if($objeto->registrarPrestamo($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion)){
+        $objeto->paginacionPrestamos();
         $objeto->verPrestamos();
       }
    }
@@ -83,6 +85,7 @@
       date_default_timezone_set('America/Bogota'); 
       $fecha = date("Y-m-d");
       $objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo);
+      $objeto->paginacionPagos();
       $objeto->verPagos();
    }
 
@@ -152,7 +155,7 @@
    /*buscador en tiempo real para los pagos que se vencieron*/
    if(isset($_POST['queryPago'])){
       $palabra = $_POST['queryPago'];
-     // $objeto->buscarVencimientos($palabra);
+      $objeto->buscarPagos($palabra);
    }
 
 

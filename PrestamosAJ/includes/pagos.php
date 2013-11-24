@@ -113,19 +113,21 @@
 		  	var data = 'queryPago='+$(this).val();
 		  	//console.log(data);
       	    if(data =='queryPago=' ){
+			  	   	//cuando mandamos datos vacios pasa poraca
       	       	$.post('acciones.php',data , function(resp){
-			  	   	//console.log(resp);
-			  	   	$('#verVencimiento').empty();//limpiar los datos
-			  	   	$('#verVencimiento').html(resp);
+			  	   	$('#verPagos').empty();//limpiar los datos
+			  	   	$('#verPagos').html(resp);
+			  	   	$('[data-toggle=popover]').popover({html:true});
 	      	    	console.log('poraca paso joder....');
 			  	},'html');
       	    }else{
       	       	$.post('acciones.php',data , function(resp){
-			  	   	  //console.log(resp);
+			  	   	  console.log('porque pasa poraca en que momento');
 			  	   	$('.pagination').remove();
-			  	   	$('#verVencimiento').empty();//limpiar los datos
-			  	   	$('#verVencimiento').html(resp);
-	      	    	console.log(resp);
+			  	   	$('#verPagos').empty();//limpiar los datos
+			  	   	$('#verPagos').html(resp);
+			  	   	$('[data-toggle=popover]').popover({html:true});
+	      	    	//console.log(resp);
 			  	},'html');
       	    }
 		});
@@ -144,9 +146,10 @@
 					  	 	var nuevosGastos = $(html).find('table tbody'),
 					  	 		nuevaPag     = $(html).find('.pagination'),
 					  	 		tabla        = $('table');
-					  	    tabla.find('tbody').append(nuevosGastos.html());
+					  	    tabla.find('#verPagos').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
+					  	 	$('[data-toggle=popover]').popover({html:true});
 					  	}
 					});
 					  $('.pagination').remove();
@@ -180,7 +183,7 @@
 	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">
-				<div class="container" >
+				<div class="container">
 					<a  class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -276,7 +279,7 @@
 			    	 	 <?php 
 			    	 	  require_once('funciones.php');
 			    	 	  $objeto = new funciones();
-			    	 	  //$objeto->paginacionVensimientos();
+			    	 	  $objeto->paginacionPagos();
 				    	 ?>
 			    	</div>
 				</div>
