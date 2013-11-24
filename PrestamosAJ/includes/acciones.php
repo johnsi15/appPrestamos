@@ -150,7 +150,7 @@
    /*buscador en tiempo real para buscar los clientes en el menu principal de todas las condiciones de pago*/
    if(isset($_POST['queryMenu'])){
       $palabra = $_POST['queryMenu'];
-      $objeto->buscarEstudianteMenu($palabra);
+      $objeto->buscarClientesMenu($palabra);
    }
    /*buscador en tiempo real para los pagos que se vencieron*/
    if(isset($_POST['queryPago'])){

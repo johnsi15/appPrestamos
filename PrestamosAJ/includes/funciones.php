@@ -200,7 +200,7 @@
 
     /*funcion para ver los clientes activos*/
     public function verClientes(){
-        /*$cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
+        $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
 
         if(isset($_GET["pagina"])){
             $num_pag = $_GET["pagina"];//numero de la pagina
@@ -214,15 +214,10 @@
         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
-        */
-        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");
+
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");
    
         while($fila = mysql_fetch_array($resultado)){
-          //  $codigo = $fila['codigo'];
-          //  $result = mysql_query("SELECT sum(dias) AS total FROM fechasclientes WHERE codigoEstudiante = '$codigo' ");
-          //  $dias = mysql_fetch_array($result);
-         //style="font-weight: bold;
-            
             echo '<tr> 
                 <td>'.$fila['codigo'].'</td>
                 <td>'.$fila['nombre'].'</td>
@@ -242,11 +237,122 @@
                         </a>
                     </td>
             </tr>';
-            
-           
-                          // echo $salida;
         }      
     }/*cierre del metodo*/
+
+    /*paginacion de los clientes en el MENU principal */
+    public function paginacionClientesMenu(){
+            $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
+
+            if(isset($_GET["pagina"])){
+                $num_pag = $_GET["pagina"];//numero de la pagina
+            }else{
+                $num_pag = 1;
+            }
+
+            if(!$num_pag){//preguntamos si hay algun valor en $num_pag.
+                $inicio = 0;
+                $num_pag = 1;
+
+            }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
+                $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
+            }
+
+            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+           
+            $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
+
+            $total_paginas = ceil($total_registros/$cant_reg);
+
+            echo '<div class="pagination" style="display: none;">
+                    ';
+            if(($num_pag+1)<=$total_paginas){//preguntamos si el numero de la pagina es menor o = al total de paginas para que aparesca el siguiente
+                
+                echo "<ul><li class='next'> <a href='menu.php?pagina=".($num_pag+1)."'> Next </a></li></ul>";
+            } ;echo '
+                   </div>';
+    }
+
+    /*buscador en tiempo real de los clientes del menu principal */
+    public function buscarClientesMenu($palabra){
+        if($palabra == ''){
+            $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
+
+            if(isset($_GET["pagina"])){
+                $num_pag = $_GET["pagina"];//numero de la pagina
+            }else{
+                $num_pag = 1;
+            }
+
+            if(!$num_pag){//preguntamos si hay algun valor en $num_pag.
+                $inicio = 0;
+                $num_pag = 1;
+            }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
+                $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
+            }
+
+            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+           
+            $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
+
+            $total_paginas = ceil($total_registros/$cant_reg);
+
+            echo '<div class="pagination" style="display: none;">
+                    ';
+            if(($num_pag+1)<=$total_paginas){//preguntamos si el numero de la pagina es menor o = al total de paginas para que aparesca el siguiente
+                
+                echo "<ul><li class='next'> <a href='menu.php?pagina=".($num_pag+1)."'> Next </a></li></ul>";
+            } ;echo '
+                   </div>';
+
+            $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+            while($fila = mysql_fetch_array($resultado)){
+                 echo '<tr> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.$fila['nombre'].'</td>
+                    <td>'.$fila['direccion'].'</td>
+                    <td>'.$fila['telefono'].'</td>
+                    <td>'.number_format($fila['saldo']).'</td>
+                    <td><a id="info" class="btn btn-mini btn-info" 
+                             data-toggle="popover" data-placement="top" 
+                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                           NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                           Prestamo:'.number_format($fila['monto']).'<br>
+                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                           FechaFin: '.$fila['fechaPago'].' <br>
+                                           N° Prestamos: '.$fila['nPrestamos'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
+                </tr>';
+            }/*cierre del while*/
+        }else{
+             $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE (prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND cedulaCliente LIKE'$palabra%') ");
+            //echo json_encode($resultado);
+            while($fila = mysql_fetch_array($resultado)){
+                echo '<tr> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.$fila['nombre'].'</td>
+                    <td>'.$fila['direccion'].'</td>
+                    <td>'.$fila['telefono'].'</td>
+                    <td>'.number_format($fila['saldo']).'</td>
+                    <td><a id="info" class="btn btn-mini btn-info" 
+                             data-toggle="popover" data-placement="top" 
+                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                           NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                           Prestamo:'.number_format($fila['monto']).'<br>
+                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                           FechaFin: '.$fila['fechaPago'].' <br>
+                                           N° Prestamos: '.$fila['nPrestamos'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
+                </tr>';
+            }/*cierre del while*/
+        }
+    }
 
     public function verPrestamos(){
         $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
@@ -416,7 +522,7 @@
                 }
             }   
         }else{
-             $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%' ");
+             $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE (prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND cedulaCliente LIKE'$palabra%') ");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
                    if($fila['condicion']=='nopago'){
@@ -609,10 +715,10 @@
                 </tr>';
             }/*cierre del while*/
         }else{
-            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE (pagos.cedula=clientes.cedulaCliente) AND (nombre LIKE'%$palabra%') OR (cedulaCliente='$palabra')");
+            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE (pagos.cedula=clientes.cedulaCliente AND (cedulaCliente LIKE '$palabra%') )  OR (pagos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%')");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
-                $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedula']."");
+                $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedulaCliente']."");
                 $fila2 = mysql_fetch_array($contador);
                echo '<tr class="success"> 
                     <td><a id="info"
@@ -758,7 +864,7 @@
                     </tr>';
             } 
         }else{
-             $resultado = mysql_query("SELECT * FROM clientes WHERE nombre LIKE'%$palabra%'");
+             $resultado = mysql_query("SELECT * FROM clientes WHERE nombre LIKE'%$palabra%' OR cedulaCliente LIKE'$palabra%'");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
                    echo '<tr> 
@@ -864,155 +970,6 @@
     //         if(($num_pag+1)<=$total_paginas){//preguntamos si el numero de la pagina es menor o = al total de paginas para que aparesca el siguiente
                 
     //             echo "<ul><li class='next'> <a href='actualizarTiempo.php?pagina=".($num_pag+1)."'> Next </a></li></ul>";
-    //         } ;echo '
-    //                </div>';
-    // }
-
-
-    /*buscador en tiempo real de los estudiantes o clientes en el menu principal */
-    // public function buscarEstudianteMenu($palabra){
-    //     if($palabra == ''){
-    //         $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
-
-    //         if(isset($_GET["pagina"])){
-    //             $num_pag = $_GET["pagina"];//numero de la pagina
-    //         }else{
-    //             $num_pag = 1;
-    //         }
-
-    //         if(!$num_pag){//preguntamos si hay algun valor en $num_pag.
-    //             $inicio = 0;
-    //             $num_pag = 1;
-    //         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
-    //             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
-    //         }
-
-    //         $result = mysql_query("SELECT * FROM estudiantes");///hacemos una consulta de todos los datos de cinternet
-           
-    //         $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
-
-    //         $total_paginas = ceil($total_registros/$cant_reg);
-
-    //         echo '<div class="pagination" style="display: none;">
-    //                 ';
-    //         if(($num_pag+1)<=$total_paginas){//preguntamos si el numero de la pagina es menor o = al total de paginas para que aparesca el siguiente
-                
-    //             echo "<ul><li class='next'> <a href='menu.php?pagina=".($num_pag+1)."'> Next </a></li></ul>";
-    //         } ;echo '
-    //                </div>';
-
-    //         $resultado = mysql_query("SELECT * FROM estudiantes ORDER BY condicion, fechaFinal DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
-    //         while($fila = mysql_fetch_array($resultado)){
-    //                 if($fila['condicion'] == 'Pago'){
-    //                          echo '<tr class="success"> 
-    //                                  <td>'.$fila['nombre'].'</td>
-    //                                  <td>'.$fila['fechaInicial'].'</td>
-    //                                  <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-    //                                  <td>'.$fila['dinero'].'</td>
-    //                                  <td>'.$fila['condicion'].'</td>
-    //                                  <td><a disabled class="btn btn-mini btn-info"><strong disabled>Editar</strong></a></td>
-    //                                  <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                              </tr>';
-    //                 }else{
-    //                     if($fila['condicion'] == 'No Pago'){
-    //                             echo '<tr class="error"> 
-    //                                  <td>'.$fila['nombre'].'</td>
-    //                                  <td>'.$fila['fechaInicial'].'</td>
-    //                                  <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-    //                                  <td>'.$fila['dinero'].'</td>
-    //                                  <td>'.$fila['condicion'].'</td>
-    //                                  <td><a id="editPago" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-    //                                  <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                              </tr>';
-    //                     }else{
-    //                         if($fila['condicion'] == 'Abono'){
-    //                                     echo '<tr class="warning"> 
-    //                                              <td>'.$fila['nombre'].'</td>
-    //                                              <td>'.$fila['fechaInicial'].'</td>
-    //                                              <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-    //                                              <td>'.$fila['dinero'].'</td>
-    //                                              <td>'.$fila['condicion'].'</td>
-    //                                              <td><a id="editPago" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-    //                                              <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                                          </tr>';
-    //                         }
-    //                     }
-    //                 }
-    //                                   // echo $salida;
-    //         }/*cierre del while*/
-    //     }else{
-    //          $resultado = mysql_query("SELECT * FROM estudiantes WHERE nombre LIKE'%$palabra%'");
-    //         //echo json_encode($resultado);
-    //        while($fila = mysql_fetch_array($resultado)){
-    //                 if($fila['condicion'] == 'Pago'){
-    //                      echo '<tr class="success"> 
-    //                              <td>'.$fila['nombre'].'</td>
-    //                              <td>'.$fila['fechaInicial'].'</td>
-    //                              <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-    //                              <td>'.$fila['dinero'].'</td>
-    //                              <td>'.$fila['condicion'].'</td>
-    //                              <td><a disabled class="btn btn-mini btn-info"><strong disabled>Editar</strong></a></td>
-    //                              <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                          </tr>';
-    //                 }else{
-    //                     if($fila['condicion'] == 'No Pago'){
-    //                         echo '<tr class="error"> 
-    //                              <td>'.$fila['nombre'].'</td>
-    //                              <td>'.$fila['fechaInicial'].'</td>
-    //                              <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-    //                              <td>'.$fila['dinero'].'</td>
-    //                              <td>'.$fila['condicion'].'</td>
-    //                              <td><a id="editPago" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-    //                              <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                          </tr>';
-    //                     }else{
-    //                         if($fila['condicion'] == 'Abono'){
-    //                             echo '<tr class="warning"> 
-    //                                      <td>'.$fila['nombre'].'</td>
-    //                                      <td>'.$fila['fechaInicial'].'</td>
-    //                                      <td style="font-weight: bold;">'.$fila['fechaFinal'].'</td>
-    //                                      <td>'.$fila['dinero'].'</td>
-    //                                      <td>'.$fila['condicion'].'</td>
-    //                                      <td><a id="editPago" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-    //                                      <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                                  </tr>';
-    //                         }
-    //                     }
-    //                 }
-    //                               // echo $salida;
-    //             }/*cierre del while*/
-    //     }
-    // }
-
-    /*paginacion de los clientes en el MENU principal */
-    // public function paginacionEstudianteMenu(){
-    //         $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
-
-    //         if(isset($_GET["pagina"])){
-    //             $num_pag = $_GET["pagina"];//numero de la pagina
-    //         }else{
-    //             $num_pag = 1;
-    //         }
-
-    //         if(!$num_pag){//preguntamos si hay algun valor en $num_pag.
-    //             $inicio = 0;
-    //             $num_pag = 1;
-
-    //         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
-    //             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
-    //         }
-
-    //         $result = mysql_query("SELECT * FROM estudiantes");///hacemos una consulta de todos los datos de cinternet
-           
-    //         $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
-
-    //         $total_paginas = ceil($total_registros/$cant_reg);
-
-    //         echo '<div class="pagination" style="display: none;">
-    //                 ';
-    //         if(($num_pag+1)<=$total_paginas){//preguntamos si el numero de la pagina es menor o = al total de paginas para que aparesca el siguiente
-                
-    //             echo "<ul><li class='next'> <a href='menu.php?pagina=".($num_pag+1)."'> Next </a></li></ul>";
     //         } ;echo '
     //                </div>';
     // }

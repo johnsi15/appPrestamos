@@ -78,17 +78,19 @@
       	    if(data =='queryMenu=' ){
       	       	$.post('includes/acciones.php',data , function(resp){
 			  	   	//console.log(resp);
-			  	   	$('#verEstu').empty();//limpiar los datos
-			  	   	$('#verEstu').html(resp);
-	      	    	console.log('poraca paso joder....');
+			  	   	$('#verClien').empty();//limpiar los datos
+			  	   	$('#verClien').html(resp);
+	      	    	// console.log('poraca paso joder....');
+	      	    	$('[data-toggle=popover]').popover({html:true});
 			  	},'html');
       	    }else{
       	       	$.post('includes/acciones.php',data , function(resp){
 			  	   	  //console.log(resp);
 			  	   	$('.pagination').remove();
-			  	   	$('#verEstu').empty();//limpiar los datos
-			  	   	$('#verEstu').html(resp);
-	      	    	console.log(resp);
+			  	   	$('#verClien').empty();//limpiar los datos
+			  	   	$('#verClien').html(resp);
+	      	    	// console.log(resp);
+	      	    	$('[data-toggle=popover]').popover({html:true});
 			  	},'html');
       	    }
 		});
@@ -109,6 +111,7 @@
 					  	    tabla.find('tbody').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
+					  	 	$('[data-toggle=popover]').popover({html:true});
 					  	}
 					});
 					  $('.pagination').remove();
@@ -226,7 +229,7 @@
 		    	 	 <?php 
 		    	 	  require_once('includes/funciones.php');
 		    	 	  $objeto = new funciones();
-		    	 	  //$objeto->paginacionEstudianteMenu();
+		    	 	  $objeto->paginacionClientesMenu();
 			    	 ?>
 		    	</div>
 			</div>
