@@ -146,7 +146,7 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav" >
 							<li class="divider-vertical"></li>
-							<li class="active"><a href="#"><i class="icon-home icon-white"></i>Inicio</a></li>
+							<li class="active"><a href="menu.php"><i class="icon-home icon-white"></i>Inicio</a></li>
 							<li class="divider-vertical"></li>
 							<li class="dropdown" id="espacio">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -179,7 +179,29 @@
 							<li class="divider-vertical"></li>
 								<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="icon-globe icon-white"></i>
+									<i class="icon-globe" id="conteo">
+										<!--notificamos en el menu cuantos clientes deben pagar-->
+									<?php 
+										require_once('includes/funciones.php');
+										$objeto = new funciones();
+										$conteo = $objeto->verificar();
+										if($conteo > '0'){
+											echo "<h4 id='aviso'>$conteo</h4>";
+											?>
+										<script>
+										 	$(document).ready(function(){
+										 		$('#conteo').addClass('icon-white');
+										 		$('#conteo').click(function(){
+										 			$('#conteo').removeClass('icon-white');
+										 			// $('#aviso').css('background','rgba(255,0,0,0.8)');
+										 			$('#aviso').remove();
+										 		});
+										 	});
+										</script>
+									<?php
+										}
+									?>
+									</i>
 								</a>
 								<ul class="dropdown-menu">
 									<div id="scrollNotif">
@@ -230,7 +252,7 @@
 
     <!--Primer articulo... -->
 	<article class="container well" id="fondo">
-		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>
+		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar" autofocus>
 		<div class="row">         
 			<h1>Prestamos AJ Clientes</h1><br>
 			<div class="span12">
@@ -303,21 +325,7 @@
 	    	</div>
 	    </form>
 	</div>
-	<!--vencimiento de tiempo en pago de los clientes o gimnastas-->
-	<?php 
-		require_once('includes/funciones.php');
-		$objeto = new funciones();
-		//if($objeto->verificar()){
-			?>
-
-			<!--<div id="aviso">
-				<div id="cerrar"><a class="btn btn-inverse cerrar">X</a></div>
-				<h1 style='color: #df0024;'>Clientes que deben Pagar</h1>
-				<a href="includes/pagoTiempo.php" id="ver" class="btn btn-inverse btn-large cerrar">VER</a>
-			</div>-->
-	<?php
-		//}
-	?>
+	
 	<footer>
 		<h2 id="pie"><img src="img/twitter.png">  @Jandrey15 - 2013</h2>
 		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->

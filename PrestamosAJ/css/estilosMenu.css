@@ -28,16 +28,8 @@
 	    	width: 250px;
 	    }
 	    #aviso{
-	    	float: left;
-	    	margin-left: 29%;
-	    	position: fixed;
-	    	top: 18%;
-	    	display: block;
-	    	background: rgba(255,255,255,0.9);
-	    	box-shadow: 1px 1px 5px #000;
-	    	width: 45%;
-	    	height: 40%;
-	    	border-radius: 25px;
+	    	background: rgba(255,0,0,0.8);
+	    	color: white;
 	    }
 	    #cerrar{
 	        padding: 35px; 

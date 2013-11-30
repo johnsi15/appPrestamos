@@ -330,7 +330,7 @@
                 </tr>';
             }/*cierre del while*/
         }else{
-             $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE (prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND cedulaCliente LIKE'$palabra%') ");
+             $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE (prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND cedulaCliente LIKE'$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND fechaPrestamo LIKE'%$palabra%')");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
                 echo '<tr> 
@@ -710,7 +710,7 @@
                 </tr>';
             }/*cierre del while*/
         }else{
-            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE (pagos.cedula=clientes.cedulaCliente AND (cedulaCliente LIKE '$palabra%') )  OR (pagos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%')");
+            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE (pagos.cedula=clientes.cedulaCliente AND (cedulaCliente LIKE '$palabra%') )  OR (pagos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (pagos.cedula=clientes.cedulaCliente AND fecha LIKE'%$palabra%')");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
                 $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedulaCliente']."");
@@ -732,25 +732,37 @@
         }
     }
 
-    /*verificamos si hay personas que se les cumplio la fecha de pago*/
+    /*verificamos si hay clientes que deben pagar notificamoscuantos*/
     public function verificar(){
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");//fecha actual bien 
         $fechaD = date("d");
-
-        $resultado = mysql_query("SELECT * FROM estudiantes WHERE condicion='No Pago' OR condicion='Abono'");
-        
+        $fechaM = date("m");
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+        $con = 0;
         while($fila = mysql_fetch_array($resultado)){
-            $dia = substr($fila['fechaFinal'],8,10); 
-            $dia = $dia-3;
-            if($fechaD == $dia){
-                return true;
+            $dia = substr($fila['fechaPrestamo'],8,10);
+            $diaNoti = $dia -3;
+            $diaNoti2 = $dia -2;
+            $diaNoti3 = $dia -1;
+            $diaNoti4 = $dia + 1;
+
+            $diaP = substr($fila['fechaPago'],8,10);
+            $diaPnot = $diaP -3;
+            $diaPnot2 = $diaP -2;
+            $diaPnot3 = $diaP -1;
+            $diaPnot4 = $diaP +1;
+            if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
+               
+               $con = $con +1;
             }else{
-                if($fecha == $fila['fechaFinal']){
-                    return true;
+                if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                   
+                   $con = $con +1;
                 }
-            }
-        }   
+            } 
+        }/*cierre del while*/ 
+            return $con;
     }
 
    
@@ -880,26 +892,32 @@
         $fechaM = date("m");
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
         while($fila = mysql_fetch_array($resultado)){
-            if($fechaD == '27' or $fechaD == '28' or $fechaD == '29' or $fechaD == '30' or $fechaD == '31' or $fechaD == '01'){
-                if($fila['tipoPago'] == 'm'){
-                    echo '<tr> 
+            $dia = substr($fila['fechaPrestamo'],8,10);
+            $diaNoti = $dia -3;
+            $diaNoti2 = $dia -2;
+            $diaNoti3 = $dia -1;
+            $diaNoti4 = $dia + 1;
+
+            $diaP = substr($fila['fechaPago'],8,10);
+            $diaPnot = $diaP -3;
+            $diaPnot2 = $diaP -2;
+            $diaPnot3 = $diaP -1;
+            $diaPnot4 = $diaP +1;
+            if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
+                echo '<tr class="success"> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.$fila['nombre'].'</td>
+                    <td>'.number_format($fila['Vcuota']).'</td>
+                </tr>';
+            }else{
+                if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                    echo '<tr class="success"> 
                          <td>'.$fila['codigo'].'</td>
                         <td>'.$fila['nombre'].'</td>
                         <td>'.number_format($fila['Vcuota']).'</td>
                     </tr>';
                 }
-            }else{
-                if($fechaD == '13' or $fechaD == '14' or $fechaD == '15' or $fechaD == '16'){
-                    if($fila['tipoPago'] == 'q'){
-                        echo '<tr> 
-                            <td>'.$fila['codigo'].'</td>
-                            <td>'.$fila['nombre'].'</td>
-                            <td>'.number_format($fila['Vcuota']).'</td>
-                        </tr>';
-                    } 
-                }
-            }
-                 
+            } 
         }/*cierre del while*/
     }
 

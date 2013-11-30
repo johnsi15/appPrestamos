@@ -250,7 +250,7 @@
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
 		<div class="row" id="aviso">
-            <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>
+            <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar" autofocus>
 				<h1 style='color: #df0024;'>Pagos</h1><br>
 				<div class="span4">
 					<a class="btn btn-large btn-primary" id="nuevo">Hacer Pago</a>
