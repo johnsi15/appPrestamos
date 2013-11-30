@@ -20,6 +20,7 @@ footer{
 }
 
 #pie{
+    font-size : 1.3em ;
     text-align: center;
     font-weight: bold;
 }
@@ -27,7 +28,7 @@ footer{
 #detallesPrestamos{
     float: right; 
     margin-left: 80%;
-    top: 58%;
+    top: 54%;
     position: fixed;
 }
 
@@ -38,6 +39,13 @@ footer{
 #scroll{
     width: 73%;
     height: 280px;
+    background-color:#F2F2F2;
+    overflow:auto;
+}
+
+#scrollNotif{
+    width: 130%;
+    height: 450px;
     background-color:#F2F2F2;
     overflow:auto;
 }

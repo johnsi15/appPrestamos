@@ -47,6 +47,30 @@
       }
    }
 
+   /*renovar prestamo de los clientes*/
+   if(isset($_POST['renovarPrest'])){
+      $cedula = $_POST['id_registro'];
+      $dinero = $_POST['dinero'];
+      $NcQ = $_POST['NcuotasQ'];
+      $NcM = $_POST['NcuotasM'];
+      $valor = $_POST['valor'];
+      $fechaP = $_POST['fechaP'];
+      $interes = $_POST['interes'];
+      date_default_timezone_set('America/Bogota'); 
+      $fechaI = date("Y-m-d");
+      $condicion = "nopago";
+      if($objeto->renovarPrestamos($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion)){
+        $objeto->verRenovar();
+      }
+   }
+
+   /*eliminar credito y cliente*/
+   if(isset($_POST['deletePrestamo'])){
+      $cedula = $_POST['id_delete'];
+      $objeto->eliminarPrestamo($cedula);
+      $objeto->verRenovar();
+   }
+
    /*actualizamos la base de la caja*/
    if(isset($_POST['modificarBase'])){
         $base = $_POST['base'];
@@ -74,7 +98,8 @@
       date_default_timezone_set('America/Bogota'); 
       $fecha = date("Y-m-d");
       $objeto->gastoInteres($dinero);
-      $objeto->registrasGasto($dinero,$conp,$fecha);
+      $objeto->registrarGasto($dinero,$conp,$fecha);
+      $objeto->verInteres();
    }
 
    if(isset($_POST['registrarPago'])){
@@ -84,9 +109,10 @@
       $interes = $_POST['interes'];
       date_default_timezone_set('America/Bogota'); 
       $fecha = date("Y-m-d");
-      $objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo);
-      $objeto->paginacionPagos();
-      $objeto->verPagos();
+      if($objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo)){
+        $objeto->paginacionPagos();
+        $objeto->verPagos();
+      }
    }
 
    /*modificamos el pago de los que les vencio las fechas */

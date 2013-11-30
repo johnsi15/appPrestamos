@@ -211,8 +211,8 @@ $(document).ready(function(){
                              $('#mensajeError').html(error);
                              $('#nuevoInteres').dialog('close');
                        }else{
-                          $('#verCaja').empty();//limpiar la tabla.
-                          $('#verCaja').html(resp);//imprimir datos de la tabla.
+                          $('#verInteres').empty();//limpiar la tabla.
+                          $('#verInteres').html(resp);//imprimir datos de la tabla.
                           setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(300);}, 1000); 
                           var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' La caja fue actualizada'+'</div>';
                           $('#mensaje').html(exito);//impresion del mensaje exitoso.
@@ -261,10 +261,10 @@ $(document).ready(function(){
                    type: met,
                    data: $('#nuevoPago form').serialize(),
                    success: function(resp){
-                       console.log(resp);
+                       //console.log(resp);
                        if(resp == "Error"){
                              setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
-                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se pudo realizar el pago'+'</div>';
+                             var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Renovar o Eliminar Credito'+'</strong>'+'<br> No se pudo realizar el pago'+'</div>';
                              $('#mensajeError .alert').remove();
                              $('#mensajeError').html(error);
                              $('#nuevoPago').dialog('close');
@@ -425,8 +425,8 @@ $(document).ready(function(){
                              $('.span6 .alert').remove();
                              $('#mensaje').html(error);
                        }else{
-                          $('#resul').empty();//limpiar la tabla.
-                          $('#resul').html(resp);//imprimir datos de la tabla.
+                          $('#verInteres').empty();//limpiar la tabla.
+                          $('#verInteres').html(resp);//imprimir datos de la tabla.
                           setTimeout(function(){ $("#mensaje .alert").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 800); 
                           var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Gasto Exitoso '+'</strong>'+' El Gasto se hizo correctamente'+'</div>';
                           $('#mensaje').html(exito);//impresion del mensaje exitoso.

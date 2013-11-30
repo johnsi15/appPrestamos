@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Registrar Cliente</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Renovar</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui.css">
@@ -12,11 +13,18 @@
 	<script src="../js/jquery.validate.js"></script>
 	<script src="../js/funciones.js"></script>
 	<script src="../js/bootstrap.js"></script>
-	<script src="../js/registrar.js"></script>
-	<script src="../js/editar.js"></script>
-	<script src="../js/eliminar.js"></script>
+	<script src="../js/prestamos.js"></script>
+	<script src="../js/caja.js"></script>
+	<!--<script src="../js/eliminar.js"></script> -->
 </head>
-<body>
+	<?php
+      session_start();
+      if(isset($_SESSION['id_user'])){
+           $user = $_SESSION['nombre'];
+      }else{
+      	header('Location: ../index.php');
+      }
+	?>
 	<style>
 		h1{
 			text-align: center;
@@ -145,19 +153,31 @@
 		  	}
 		});
 
+		// calculo para sacar los meses
+		$('#quin').keyup(function(){
+    			var quin = $(this).val();
+    			var meses = quin/2;
+    			$('#meses').val(meses);
+    	}).keyup();
+
 
 	  });/*fin del document------------------*/
+
+		function calculo(){
+    		//var contador = document.getElementById("totalDia");
+    		var quin = $('#quin').val();
+    		var prestamo = $('#prestamo').val();
+    		var porc = $('#porc').val();
+    		var resuPorce = (prestamo*porc)/100;
+    		var div = resuPorce/2;
+    		var interes = div * quin;
+    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
+
+    		$("#vcuota").val(Math.round(cuota));
+    		$("#interes").val(interes);
+    	}
 	</script>
-
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-           $user = $_SESSION['nombre'];
-      }else{
-      	header('Location: ../index.php');
-      }
-	?>
-
+<body onLoad="setInterval('calculo()',1000);">
 	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">
@@ -179,11 +199,11 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="caja.php">Caja</a></li>
-									<li class="active"><a href="#">Registrar</a></li>
+									<li><a  href="#">Caja</a></li>
+									<li><a href="actualizarDatos.php">Registrar</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
-									<li><a href="renovar.php">Renovar Credito</a></li>
+									<li  class="active"><a href="#">Renovar Credito</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -227,88 +247,66 @@
 
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
-		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
+		<!-- <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	 -->
 		<div class="row">
-			<h1>Registrar Clientes</h1> <br>
-			<div class="span12">
-				<a class="btn btn-large btn-primary" id="nuevo">Registrar cliente</a>
-				<hr>
+			<h1>Renovar o Eliminar Creditos</h1> <hr>
+			<div class="span2"></div>
+			<div class="span8">
 				<table class="table table-hover table-bordered table-condensed">
 					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Dirección</th>
-							<th>Teléfono</th>
-						</tr>
+						<th>N°</th>
+						<th>Nombre</th>
+						<th>Prestamo</th>	
 					</thead>
-					<tbody id="verDatos" style="text-aling:center;">
+					<tbody id="verRenovar">
 						<?php
-						    require_once('funciones.php');
-						   	$objeto = new funciones();
-						   	$objeto->verTodosClientes();
-						 ?>
+							require_once('funciones.php');
+							$objeto = new funciones();
+							$objeto->verRenovar();
+						?>
 					</tbody>
 				</table>
-				<div id="cargando" style="display: none;"><img src="../img/loader.gif" alt=""></div>
-		        <div id="paginacion">
-		    	 	 <?php 
-		    	 	  require_once('funciones.php');
-		    	 	  $objeto = new funciones();
-		    	 	  $objeto->paginacionDatosPersonales();
-			    	 ?>
-		    	</div>
 			</div>
-		</div>
-		<div class="row">
-			
 		</div>
 	</section>
 
-	<!-- codigo para registrar clientes -->
-	<div class="hide" id="registrarDatos" title="Registrar Cliente">
-		<form action="acciones.php" method="post" id="registrarCliente"  class="limpiar">
-			<label>N° Identificación:</label>
-			<input type="text" name="codigo" required>
-			<label>Nombre:</label>
-			<input type="text" name="nombre" required/>
-			<label>Dirección:</label>
-			<input type="text" name="dir" required/>
-			<label>Telefono</label>
-			<input type="text" name="tel" required/>
-			<input type="hidden" name="registrarCliente">
-			<button type="submit" id="registrarCliente" class="btn btn-success">Registrar</button>
-			<button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
-		</form>
-	</div>
-
-	<!--codigo para modificar los campos personales-->
-	<div class="hide" id="editarDatos" title="Editar Registro">
-     	<form action="acciones.php" method="post">
+	<!--codigo para renovar el credito o prestamo del cliente-->
+	<div class="hide" id="renovarPrestamo" title="Renovar Prestamo">
+     	<form action="acciones.php" method="post" id="renovarPrest" class="limpiar">
      		<input type="hidden" id="id_registro" name="id_registro" value="0">
      			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre" autofocus/>
-     			<label>Dirección:</label>
-				<input type="text" name="direccion" id="direccion"/>
-				<label>Teléfono:</label>
-				<input type="text" name="telefono" id="telefono">
-				<input type="hidden" name="modificarDatos">
-				<button type="submit" id="modificarDatos" class="btn btn-success">Aceptar</button>
-				<button id="cancelar" class="btn btn-danger">Cancelar</button>
+				<input type="text" name="nombre" id="nombre" disabled>
+     			<label>Prestamo:</label>
+				<input type="text" name="dinero" required id="prestamo"/>
+				<label>%</label>
+				<input type="text" name="porcentaje" required id="porc">
+				<label>N-cuotas-Q:</label>
+				<input type="text" name="NcuotasQ" id="quin"/>
+				<label>N-cuotas-M:</label>
+				<input type="text" name="NcuotasM" id="meses"/>
+				<label>Valor Cuota:</label>
+				<input type="text" name="valor" value="0" required id="vcuota"/>
+				<label>Fecha Pago:</label>
+				<input type="date" name="fechaP"/>
+				<label>Interes:</label>
+				<input type="text" name="interes" required id="interes">
+				<input type="hidden" name="renovarPrest">
+				<button  class="btn btn-primary" type="submit" id="renovarPrest">Renovar</button>
+				<button  class="btn btn-danger" id="cancelar">Cancelar</button>
      	</form>
     </div>
-
      <!--codigo para eliminar-->
-    <div class="hide" id="deleteReg" title="Eliminar Cliente">
+    <div class="hide" id="deleteReg" title="Eliminar Credito">
 	    <form action="acciones.php" method="post">
 	    	<fieldset id="datosOcultos">
 	    		<input type="hidden" id="id_delete" name="id_delete" value="0"/>
 	    	</fieldset>
 	    	<div class="control-group">
 	    		<label for="activoElim" class="alert alert-danger">
-	    		    <strong>Esta seguro de Eliminar este Cliente</strong><br>
+	    		    <strong>Esta seguro de Eliminar este Credito</strong><br>
 	    		</label>
-	    		<input type="hidden" name="deleteCliente"/> 
-			    <button type="submit" class="btn btn-success">Aceptar</button>
+	    		<input type="hidden" name="deletePrestamo"/> 
+			    <button type="submit" class="btn btn-success" id="eliminarPrest">Aceptar</button>
 			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
 	    	</div>
 	    </form>

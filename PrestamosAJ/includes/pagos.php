@@ -205,6 +205,7 @@
 									<li><a href="actualizarDatos.php">Registrar</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li class="active"><a href="#">Pagos</a></li>
+									<li><a href="renovar.php">Renovar Credito</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -341,9 +342,10 @@
      </div>
      <a href="#detalles" id="pres" class="btn btn-large btn-primary">Prestamos</a>
 	<footer>
-		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
-		<div id="pie"> <br>
-			<p>Prestamos AJ Version 1.0</p>
+		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>
+		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->
+		<div> <br>
+			<p id="pie">AJ 1.0</p>
 		</div>
 	</footer>
 </body>

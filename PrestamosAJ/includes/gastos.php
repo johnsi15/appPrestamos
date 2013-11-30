@@ -201,6 +201,7 @@
 									<li><a href="actualizarDatos.php">Registrar</a></li>
 									<li><a href="#">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
+									<li><a href="renovar.php">Renovar Credito</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -244,7 +245,7 @@
 
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
-		<input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	
+		<!-- <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar Nombre" autofocus>	 -->
 		<div class="row">
 			<h1>Gastos</h1> <br>
 			<div class="span12">
@@ -272,9 +273,10 @@
 	</section>
 
 	<footer>
-		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
-		<div id="pie"> <br>
-			<p>Prestamos AJ Version 1.0</p>
+		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>
+		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->
+		<div> <br>
+			<p id="pie">AJ 1.0</p>
 		</div>
 	</footer>
 </body>

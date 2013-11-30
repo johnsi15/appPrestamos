@@ -44,13 +44,17 @@
 		}
 		#mensaje{
 	        float: left;
-	        margin-left: 480px;
-	        position: fixed;
+	    	margin-left: 45%;
+	    	position: fixed;
+	    	top: 18%;
+	    	display: block;
        	}
        	#mensajeError{
        		float: left;
-	        margin-left: 680px;
-	        position: fixed;
+	    	margin-left: 45%;
+	    	position: fixed;
+	    	top: 18%;
+	    	display: block;
        	}
 		#titulo{
 			text-align: center;
@@ -58,9 +62,9 @@
 			color: #ba0d0d;
 		}
         .hero-unit{
-        	margin-top: 30px;
+        	margin-top: 7%;
         	height: 200px;
-        	background-image: url('../img/gim6.jpg');
+        	background-image: url('../img/dinero-1.jpg');
         }
 	</style>	
 	<script>
@@ -94,46 +98,11 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a href="../menu.php" class="brand">Nombre del Gim</a>
+					<a href="../menu.php" class="brand">Prestamos AJ</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav" >
 							<li class="divider-vertical"></li>
 							<li><a href="../menu.php"><i class="icon-home icon-white"></i>Inicio</a></li>
-							<li class="divider-vertical"></li>
-								<li id="formMenu" class="dropdown">
-									<a id="menuOpen" class="dropdown-toggle" data-toggle="dropdown">
-										Registrar
-										<span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu pull-right">
-										<div class="span4" id="registrarNew">
-											<form action="acciones.php" method="post" id="registrarEstudiante" style="margin-left: 30px;" class="limpiar">
-												<label>N° Identificación:</label>
-												<input type="text" name="codigo" id="foco" autofocus required>
-												<label>Nombre:</label>
-												<input type="text" name="nombre" required/>
-												<label>Edad:</label>
-												<input type="text" name="edad" required/>
-												<label>Peso - Kg:</label>
-												<input type="text" name="peso" required/>
-												<label>Altura - M:</label>
-												<input type="text" name="altura" required/>
-												<label>Fecha Vencimiento:</label>
-												<input type="date" name="fecha2" required/>
-												<label>Pago:</label>
-												<input type="text" name="pago" value="0"/>
-												<label>Condición:</label>
-												<select name="condicion" id="recar">
-							    					<option value="No Pago">No Pago</option>
-							    					<option value="Pago">Pago</option>
-							    					<option value="Abono">Abono</option>
-							    				</select>
-							    				<input type="hidden" name="registrarEstudiante">
-							    				<button type="submit" class="btn btn-success">Registrar</button>
-											</form>
-										</div>
-									</ul>
-								</li>
 							<li class="divider-vertical"></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -141,9 +110,10 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="actualizarDatos.php">Actualizar Datos Personales</a></li>
-									<li><a href="actualizarTiempo.php">Actualizar Tiempo</a></li>
-									<li><a href="pagoTiempo.php">Deben Pagar</a></li>
+									<li><a href="caja.php">Caja</a></li>
+									<li><a href="actualizarDatos.php">Registrar</a></li>
+									<li><a href="prestamos.php">Prestamos</a></li>
+									<li><a href="pagos.php">Pagos</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -217,7 +187,7 @@
 							<?php
 							  require_once('funciones.php');
 							  $objeto = new funciones();
-							  $objeto->calculosMes(); 
+							  //$objeto->calculosMes(); 
 							?>
 						</tbody>
 					</table>
@@ -226,9 +196,10 @@
 	</article>
 
 	<footer>
-		<h2 id="pie"><img src="../img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
-		<div id="pie"> <br>
-			<p>Gim Version 1.0</p>
+		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>
+		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->
+		<div> <br>
+			<p id="pie">AJ 1.0</p>
 		</div>
 	</footer>
 </body>

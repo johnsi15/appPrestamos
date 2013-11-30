@@ -104,11 +104,11 @@
 					  	type: 'GET',
 					  	url: $('.pagination ul li.next a').attr('href'),
 					  	success: function(html){
-					  	 		//console.log(html);
-					  	 	var nuevosGastos = $(html).find('table tbody'),
+					  	 		console.log(html);
+					  	 	var nuevosGastos = $(html).find('#clientes tbody'),
 					  	 		nuevaPag     = $(html).find('.pagination'),
-					  	 		tabla        = $('table');
-					  	    tabla.find('tbody').append(nuevosGastos.html());
+					  	 		tabla        = $('#clientes');
+					  	    tabla.find('#verClien').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
 					  	 	$('[data-toggle=popover]').popover({html:true});
@@ -151,13 +151,14 @@
 							<li class="dropdown" id="espacio">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									Clientes
-									<span class="caret"></span>
+									<span class="caret"></span
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="includes/caja.php">Caja</a></li>
 									<li><a href="includes/actualizarDatos.php">Registrar</a></li>
 									<li><a href="includes/prestamos.php">Prestamos</a></li>
 									<li><a href="includes/pagos.php">Pagos</a></li>
+									<li><a href="includes/renovar.php">Renovar Credito</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -173,6 +174,33 @@
 									<li><a href="includes/editarUsuario.php"><i class="icon-wrench"></i> Configuración de la cuenta</a></li>
 									<li class="divider"></li>
 									<li><a href="includes/cerrar.php">Cerrar Sesion</a></li>
+								</ul>
+							</li>
+							<li class="divider-vertical"></li>
+								<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<i class="icon-globe icon-white"></i>
+								</a>
+								<ul class="dropdown-menu">
+									<div id="scrollNotif">
+										<table class="table table-hover table-bordered table-condensed">
+											<thead>
+												<tr>
+													<th>N°</th>
+													<th>Nombre</th>
+													<th>Cuota</th>
+												</tr>
+											</thead>
+											<tbody id="noticaciones">
+												<?php 
+												   require_once('includes/funciones.php');
+												   $objeto = new funciones();
+												   $objeto->verClientesDias();
+												?>
+											</tbody>
+										</table>
+											<div id="cargando" style="display: none;"><img src="img/loader.gif" alt=""></div>
+							    	</div>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -206,7 +234,7 @@
 		<div class="row">         
 			<h1>Prestamos AJ Clientes</h1><br>
 			<div class="span12">
-				<table class="table table-hover table-bordered table-condensed">
+				<table id="clientes" class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>N°</th>
@@ -291,9 +319,10 @@
 		//}
 	?>
 	<footer>
-		<h2 id="pie"><img src="img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
-		<div id="pie"> <br>
-			<p>Prestamos AJ 1.0</p>
+		<h2 id="pie"><img src="img/twitter.png">  @Jandrey15 - 2013</h2>
+		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->
+		<div> <br>
+			<p id="pie">AJ 1.0</p>
 		</div>
 	</footer>
 </body>
