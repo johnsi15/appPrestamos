@@ -21,7 +21,14 @@
 	<style>
 	  
 	</style>
-
+		<?php
+	      session_start();
+	      if(isset($_SESSION['id_user'])){
+	            $user = $_SESSION['nombre'];
+	      }else{
+	      	header('Location: index.php');
+	      }
+		?>
 	<script>
       $(document).ready(function(){
       	//activar el ver mas
@@ -123,14 +130,6 @@
 
 	  });//cierre del document
 	</script>
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-            $user = $_SESSION['nombre'];
-      }else{
-      	header('Location: index.php');
-      }
-	?>
 </head>
 <body>
 	<header>
@@ -184,6 +183,7 @@
 									<?php 
 										require_once('includes/funciones.php');
 										$objeto = new funciones();
+            							$objeto->notificarFecha();
 										$conteo = $objeto->verificar();
 										if($conteo > '0'){
 											echo "<h4 id='aviso'>$conteo</h4>";

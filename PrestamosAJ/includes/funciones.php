@@ -69,11 +69,11 @@
             $nuevoInteres = $fila['saldoInteres'] - $interes;
             $nuevoSaldo = $fila['saldo'] - $pago;
 
-            mysql_query("INSERT INTO pagos (cedula,fecha,abonoCapital,abonoInteres,saldo)
+            mysql_query("INSERT INTO pagos (cedulaPagos,fecha,abonoCapital,abonoInteres,saldo)
                                           VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo')")
                                           or die ("Error");
 
-            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres' WHERE codigo='$nPrestamo'") 
+            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1' WHERE codigo='$nPrestamo'") 
                                         or die ("Error en el update");
 
             $resultado2 = mysql_query("SELECT * FROM caja");
@@ -602,10 +602,11 @@
         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
-        $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");   
-        
+        $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");   
+        $resultado2 = mysql_query("SELECT * FROM prestamos");
+        $nPrestamo = 0;
         while($fila = mysql_fetch_array($resultado)){
-            $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedula']."");
+            $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedulaPagos=".$fila['cedulaPagos']."");
             $fila2 = mysql_fetch_array($contador);
             echo '<tr class="success"> 
                     <td><a id="info"
@@ -620,6 +621,12 @@
                     <td>'.number_format($fila['abonoInteres']).'</td>
                     <td>'.number_format($fila['saldo']).'</td>
             </tr>';
+            if($fila['saldo'] == '0'){
+                $fila2 = mysql_fetch_array($resultado2);
+                $nPrestamo = $fila2['codigo'];
+                mysql_query("UPDATE prestamos SET notificacion='3' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error en el update");
+            }
         }/*cierre del while*/
     }
 
@@ -641,7 +648,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -674,7 +681,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos
+            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -691,9 +698,9 @@
             $fecha = date("Y-m-d");
             $fechaD = date("d");
 
-            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
            while($fila = mysql_fetch_array($resultado)){
-                 $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedula']."");
+                 $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedulaPagos=".$fila['cedulaPagos']."");
                  $fila2 = mysql_fetch_array($contador);
                 echo '<tr class="success"> 
                     <td><a id="info"
@@ -710,10 +717,10 @@
                 </tr>';
             }/*cierre del while*/
         }else{
-            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE (pagos.cedula=clientes.cedulaCliente AND (cedulaCliente LIKE '$palabra%') )  OR (pagos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (pagos.cedula=clientes.cedulaCliente AND fecha LIKE'%$palabra%')");
+            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE (pagos.cedulaPagos=clientes.cedulaCliente AND (cedulaCliente LIKE '$palabra%') )  OR (pagos.cedulaPagos=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (pagos.cedulaPagos=clientes.cedulaCliente AND fecha LIKE'%$palabra%')");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
-                $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedula=".$fila['cedulaCliente']."");
+                $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedulaPagos=".$fila['cedulaCliente']."");
                 $fila2 = mysql_fetch_array($contador);
                echo '<tr class="success"> 
                     <td><a id="info"
@@ -753,12 +760,14 @@
             $diaPnot3 = $diaP -1;
             $diaPnot4 = $diaP +1;
             if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
-               
-               $con = $con +1;
+               if($fila['notificacion'] == '0'){
+                $con = $con +1;
+               }
             }else{
                 if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
-                   
-                   $con = $con +1;
+                    if($fila['notificacion'] == '0'){
+                        $con = $con +1;
+                    }
                 }
             } 
         }/*cierre del while*/ 
@@ -904,21 +913,43 @@
             $diaPnot3 = $diaP -1;
             $diaPnot4 = $diaP +1;
             if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
-                echo '<tr class="success"> 
-                    <td>'.$fila['codigo'].'</td>
-                    <td>'.$fila['nombre'].'</td>
-                    <td>'.number_format($fila['Vcuota']).'</td>
-                </tr>';
-            }else{
-                if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                if($fila['notificacion'] == '0'){
                     echo '<tr class="success"> 
-                         <td>'.$fila['codigo'].'</td>
-                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['codigo'].'</td>
+                        <td><a href="includes/pagos.php">'.$fila['nombre'].'</a></td>
                         <td>'.number_format($fila['Vcuota']).'</td>
                     </tr>';
                 }
+            }else{
+                if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                    if($fila['notificacion'] == '0'){
+                        echo '<tr class="success"> 
+                             <td>'.$fila['codigo'].'</td>
+                            <td><a href="includes/pagos.php">'.$fila['nombre'].'</td>
+                            <td>'.number_format($fila['Vcuota']).'</td>
+                        </tr>';
+                    }
+                }
             } 
         }/*cierre del while*/
+    }
+
+    public function notificarFecha(){
+        date_default_timezone_set('America/Bogota'); 
+        $fecha = date("Y-m-d");//fecha actual bien 
+        $fechaD = date("d");
+        $resultado = mysql_query("SELECT * FROM pagos,prestamos WHERE (pagos.cedulaPagos=prestamos.cedula)");
+        while($fila = mysql_fetch_array($resultado)){
+            if($fila['notificacion'] == '1'){
+                $dia = substr($fila['fecha'],8,10);
+                $dia = $dia + 5;
+                if($fechaD == $dia){
+                    $nPrestamo = $fila['codigo'];
+                    mysql_query("UPDATE prestamos SET notificacion='0' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error en el update");
+                }
+            }
+        }
     }
 
     public function modificarPago($pago,$con,$cod){
