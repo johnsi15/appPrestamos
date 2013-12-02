@@ -15,8 +15,14 @@
 	<script src="../js/pagos.js"></script>
 	<script src="../js/editar.js"></script>
 	<script src="../js/eliminar.js"></script>
-</head>
-<body>
+	<?php
+      session_start();
+      if(isset($_SESSION['id_user'])){
+           $user = $_SESSION['nombre'];
+      }else{
+      	header('Location: ../index.php');
+      }
+	?>
 	<style>
 		h1{
 			text-align: center;
@@ -170,16 +176,8 @@
 
 	  });/*fin del document------------------*/
 	</script>
-
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-           $user = $_SESSION['nombre'];
-      }else{
-      	header('Location: ../index.php');
-      }
-	?>
-
+</head>
+<body>
 	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">

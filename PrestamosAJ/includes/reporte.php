@@ -12,6 +12,14 @@
 	<script src="../js/calculos.js"></script>
 	<script src="../js/funciones.js"></script>
 	<!--<script src="../js/calcularReporte.js"></script>-->
+	<?php
+      session_start();
+      if(isset($_SESSION['id_user'])){
+         $user = $_SESSION['nombre'];
+      }else{
+      	header('Location: ../index.php');
+      }
+	?>
 	<style>
 	    body{
 	    	font-family: "Helvetica Neue", "Helvetica", Arial, Verdana, sans-serif;
@@ -79,14 +87,6 @@
 
 	  });//cierre del document
 	</script>
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-         $user = $_SESSION['nombre'];
-      }else{
-      	header('Location: ../index.php');
-      }
-	?>
 </head>
 <body>
 	<header class="container">

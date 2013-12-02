@@ -15,6 +15,14 @@
 	<script src="../js/editar.js"></script>
 	<script src="../js/prestamos.js"></script>
 	<script src="../js/eliminar.js"></script>
+	<?php
+      session_start();
+      if(isset($_SESSION['id_user'])){
+           $user = $_SESSION['nombre'];
+      }else{
+      	header('Location: ../index.php');
+      }
+	?>
 	<style>
 		h1{
 			text-align: center;
@@ -141,41 +149,10 @@
 				}
 		  	}
 		});
-
-		$('#quin').keyup(function(){
-    			var quin = $(this).val();
-    			var meses = quin/2;
-    			$('#meses').val(meses);
-    	}).keyup();
-
-
 	  });/*fin del document------------------*/
-		
-		function calculo(){
-    		//var contador = document.getElementById("totalDia");
-    		var quin = $('#quin').val();
-    		var prestamo = $('#prestamo').val();
-    		var porc = $('#porc').val();
-    		var resuPorce = (prestamo*porc)/100;
-    		var div = resuPorce/2;
-    		var interes = div * quin;
-    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
-
-    		$("#vcuota").val(cuota);
-    		$("#interes").val(interes);
-    	}
 	</script>
 </head>
-<body onLoad="setInterval('calculo()',1000);">
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-           $user = $_SESSION['nombre'];
-      }else{
-      	header('Location: ../index.php');
-      }
-	?>
-
+<body>
 	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">

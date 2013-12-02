@@ -15,6 +15,14 @@
 	<script src="../js/editar.js"></script>
 	<script src="../js/prestamos.js"></script>
 	<script src="../js/eliminar.js"></script>
+	<?php
+      session_start();
+      if(isset($_SESSION['id_user'])){
+           $user = $_SESSION['nombre'];
+      }else{
+      	header('Location: ../index.php');
+      }
+	?>
 	<style>
 		h1{
 			text-align: center;
@@ -174,15 +182,6 @@
 	</script>
 </head>
 <body onLoad="setInterval('calculo()',1000);">
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-           $user = $_SESSION['nombre'];
-      }else{
-      	header('Location: ../index.php');
-      }
-	?>
-
 	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">

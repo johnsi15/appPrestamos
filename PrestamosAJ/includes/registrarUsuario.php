@@ -14,6 +14,15 @@
 	<script src="../js/funciones.js"></script>
 	<!--<script src="../js/registrar.js"></script>-->
 	<!--<script src="../js/eliminar.js"></script>-->
+	<?php
+      session_start();
+      if(isset($_SESSION['id_user'])){
+            $user = $_SESSION['nombre'];
+            $id = $_SESSION['id_user'];
+      }else{
+      		header('Location: index.php');
+      }
+	?>
 	<style>
 	    h1{
 	    	text-align: center;
@@ -78,16 +87,6 @@
 
 	  });//cierre del document
 	</script>
-
-	<?php
-      session_start();
-      if(isset($_SESSION['id_user'])){
-            $user = $_SESSION['nombre'];
-            $id = $_SESSION['id_user'];
-      }else{
-      		header('Location: index.php');
-      }
-	?>
 </head>
 <body>
 	<header>

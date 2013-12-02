@@ -18,17 +18,18 @@
 	<script src="js/eliminar.js"></script>
 	<!--<script src="js/registrarPrecios.js"></script>-->
 	<!--<script src="js/notas.js"></script>-->
-	<style>
-	  
-	</style>
-		<?php
+	<?php
 	      session_start();
 	      if(isset($_SESSION['id_user'])){
 	            $user = $_SESSION['nombre'];
 	      }else{
 	      	header('Location: index.php');
 	      }
-		?>
+	?>
+	<style>
+	  
+	</style>
+		
 	<script>
       $(document).ready(function(){
       	//activar el ver mas

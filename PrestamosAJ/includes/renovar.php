@@ -16,7 +16,6 @@
 	<script src="../js/prestamos.js"></script>
 	<script src="../js/caja.js"></script>
 	<!--<script src="../js/eliminar.js"></script> -->
-</head>
 	<?php
       session_start();
       if(isset($_SESSION['id_user'])){
@@ -177,6 +176,7 @@
     		$("#interes").val(interes);
     	}
 	</script>
+</head>
 <body onLoad="setInterval('calculo()',1000);">
 	<header>
 		<div class="navbar navbar-fixed-top navbar-inverse">
