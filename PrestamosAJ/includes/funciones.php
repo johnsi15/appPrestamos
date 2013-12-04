@@ -87,6 +87,34 @@
         } 
     }
 
+    public function registrarPago2($cedula,$fecha,$pago,$interes,$nPrestamo){
+        $resultado = mysql_query("SELECT * FROM prestamos WHERE codigo='$nPrestamo'");
+        $fila = mysql_fetch_array($resultado);
+        if($fila['saldo'] == '0'){
+             echo "Error";
+             return false;
+        }else{
+            $nuevoInteres = $fila['saldoInteres'] - $interes;
+            $nuevoSaldo = $fila['saldo'] - $pago;
+
+            mysql_query("INSERT INTO pagos (cedulaPagos,fecha,abonoCapital,abonoInteres,saldo)
+                                          VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo')")
+                                          or die ("Error");
+
+            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='1' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error en el update");
+
+            $resultado2 = mysql_query("SELECT * FROM caja");
+            $fila2 = mysql_fetch_array($resultado2);
+            $nuevaBase = $fila2['baseTotal'] + $pago;
+            $nuevoInteres = $fila2['interesTotal'] + $interes;
+
+            mysql_query("UPDATE caja SET interesTotal='$nuevoInteres', baseTotal='$nuevaBase'") 
+                                        or die ("Error en el update");
+            return true;
+        } 
+    }
+
     /*actualizar la base de la caja si es la primera vez lo registramos*/
     public function actualizarBase($base){
         $resultado = mysql_query("SELECT * FROM caja");
@@ -983,70 +1011,51 @@
                                     or die ("Error");
     }
 
+    public function fechasMes(){
+        $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+        echo '<h2 id="mes"> Mes Actual - '.$arrayMeses[date('m')-1].'</h2>';
 
-    /*codigo para actulizar el tiempo del estudiante en el gim...... VA VERDATOS, PAGINACION DE LOS DATOS*/
-    // public function verActualizarTiempo(){
-    //     $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
+        date_default_timezone_set('America/Bogota'); 
+        $fecha = date("Y-m-d");//fecha actual bien 
+        $m = date("m");
 
-    //     if(isset($_GET["pagina"])){
-    //         $num_pag = $_GET["pagina"];//numero de la pagina
-    //     }else{
-    //         $num_pag = 1;
-    //     }
-
-    //     if(!$num_pag){//preguntamos si hay algun valor en $num_pag.
-    //         $inicio = 0;
-    //         $num_pag = 1;
-    //     }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
-    //         $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
-    //     }
-    //     $resultado = mysql_query("SELECT * FROM estudiantes WHERE condicion='Pago' ORDER BY fechaFinal DESC LIMIT $inicio,$cant_reg");
-
-    //     while($fila = mysql_fetch_array($resultado)){
-    //              echo '<tr class="success"> 
-    //                      <td>'.$fila['nombre'].'</td>
-    //                      <td>'.$fila['fechaInicial'].'</td>
-    //                      <td>'.$fila['fechaFinal'].'</td>
-    //                      <td>'.$fila['dinero'].'</td>
-    //                      <td>'.$fila['condicion'].'</td>
-    //                      <td><a id="tiempoEstudiante" class="btn btn-mini btn-info" href="'.$fila['codigo'].'"><strong>Editar</strong></a></td>
-    //                      <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['codigo'].'"><strong>Eliminar</strong></a></td>
-    //                  </tr>';
-    //                       // echo $salida;
-    //     }      
-    // }
-
-    // public function paginacionActulizarTiempo(){
-    //         $cant_reg = 10;//definimos la cantidad de datos que deseamos tenes por pagina.
-
-    //         if(isset($_GET["pagina"])){
-    //             $num_pag = $_GET["pagina"];//numero de la pagina
-    //         }else{
-    //             $num_pag = 1;
-    //         }
-
-    //         if(!$num_pag){//preguntamos si hay algun valor en $num_pag.
-    //             $inicio = 0;
-    //             $num_pag = 1;
-
-    //         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
-    //             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
-    //         }
-
-    //         $result = mysql_query("SELECT * FROM estudiantes WHERE condicion='Pago'");///hacemos una consulta de todos los datos de cinternet
-           
-    //         $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
-
-    //         $total_paginas = ceil($total_registros/$cant_reg);
-
-    //         echo '<div class="pagination" style="display: none;">
-    //                 ';
-    //         if(($num_pag+1)<=$total_paginas){//preguntamos si el numero de la pagina es menor o = al total de paginas para que aparesca el siguiente
+        $resultado = mysql_query("SELECT * FROM pagos,prestamos WHERE (pagos.cedulaPagos=prestamos.cedula)");
+        while($fila = mysql_fetch_array($resultado)){
+            $mes = substr($fila['fecha'],5,-3);
+            if($mes == '12'){
                 
-    //             echo "<ul><li class='next'> <a href='actualizarTiempo.php?pagina=".($num_pag+1)."'> Next </a></li></ul>";
-    //         } ;echo '
-    //                </div>';
-    // }
+            }else{
+                if($fila['mes'] == '1'){
+                        $nPrestamo = $fila['codigo'];
+                        mysql_query("UPDATE prestamos SET mes='0' WHERE codigo='$nPrestamo'") 
+                                            or die ("Error en el update");
+                }
+            }
+        }
+        
+    }//cierre metodo
+
+    public function mesualidad(){
+        date_default_timezone_set('America/Bogota'); 
+        $fecha = date("Y-m-d");//fecha actual bien 
+        $año = date("Y");
+        $fechaD = date("d");
+        $fechaM = date("m");
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+        while($fila = mysql_fetch_array($resultado)){
+            if($fila['saldo'] != '0'){
+                if($fila['mes'] == '0'){
+                    echo '<tr>
+                          <td>'.$fila['codigo'].'</td>
+                          <td>'.$fila['nombre'].'</td>
+                          <td>'.number_format($fila['saldo']).'</td>
+                          <td><a id="pagar" class="btn btn-mini btn-success" href="'.$fila['cedulaCliente'].'"><strong>Pagar</strong></a></td>
+                    </tr>';
+                }
+            }
+        }/*cierre del while*/
+    }
 
     public function actulizarTiempo($fechaV,$pago,$con,$cod){
         date_default_timezone_set('America/Bogota'); 

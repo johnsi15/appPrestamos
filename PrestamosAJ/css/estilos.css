@@ -25,6 +25,11 @@ footer{
     font-weight: bold;
 }
 
+#mes{
+    color: red;
+    margin-left: 18%;
+}
+
 #detallesPrestamos{
     float: right; 
     margin-left: 80%;

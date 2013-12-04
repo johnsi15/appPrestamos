@@ -159,6 +159,7 @@
 									<li><a href="includes/prestamos.php">Prestamos</a></li>
 									<li><a href="includes/pagos.php">Pagos</a></li>
 									<li><a href="includes/renovar.php">Renovar Credito</a></li>
+									<li><a href="includes/mes.php">Mes</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
@@ -229,7 +230,7 @@
 							<li class="divider-vertical"></li>
 							<?php 
 								date_default_timezone_set('America/Bogota'); 
-						        $fecha = date("Y-m-d");
+						        $fecha = date("Y-M-d");
 						        echo '<li><a href="#" style="font-weight: bold;">Fecha: '.$fecha.'</a></li>';
 					        ?>
 						</ul>
