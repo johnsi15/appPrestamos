@@ -258,7 +258,7 @@
 		<div class="row">         
 			<h1>Prestamos AJ Clientes</h1><br>
 			<div class="span12">
-				<table id="clientes" class="table table-hover table-bordered table-condensed">
+				<table id="clientes" class="table table-hover table-striped table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>N°</th>

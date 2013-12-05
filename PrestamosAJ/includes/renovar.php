@@ -39,7 +39,7 @@
 	    	font-size: 2em;
 	    }
 	    td{
-	    	font-size: 1em;
+	    	font-size: 1.3em;
 	    }
 		p{
 	    	color: #df0024;
@@ -204,6 +204,7 @@
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 									<li  class="active"><a href="#">Renovar Credito</a></li>
+									<li><a href="mes.php">Mes</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>

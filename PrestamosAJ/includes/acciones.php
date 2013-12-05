@@ -64,6 +64,12 @@
       }
    }
 
+   /*refrescar prestamos del mes */
+   if(isset($_POST['refrescarPrestamos'])){
+      $objeto->quienesDebenPagar();
+      $objeto->mesualidad();
+   }
+
    /*eliminar credito y cliente*/
    if(isset($_POST['deletePrestamo'])){
       $cedula = $_POST['id_delete'];
@@ -112,6 +118,20 @@
       if($objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo)){
         $objeto->paginacionPagos();
         $objeto->verPagos();
+      }
+   }
+
+   if(isset($_POST['registrarPago2'])){
+      //$cedula = $_POST['nombre'];
+      //$prestamo = $_POST['prestamo'];
+      $cedula = $_REQUEST['id_registro'];
+      $prestamo = $_REQUEST['prestamo'];
+      $pago = $_POST['pago'];
+      $interes = $_POST['interes'];
+      date_default_timezone_set('America/Bogota'); 
+      $fecha = date("Y-m-d");
+      if($objeto->registrarPago2($cedula,$fecha,$pago,$interes,$prestamo)){
+        $objeto->mesualidad();
       }
    }
 

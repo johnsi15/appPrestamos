@@ -1019,22 +1019,18 @@
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");//fecha actual bien 
         $m = date("m");
+    }//cierre metodo
 
-        $resultado = mysql_query("SELECT * FROM pagos,prestamos WHERE (pagos.cedulaPagos=prestamos.cedula)");
+    public function quienesDebenPagar(){
+        $resultado = mysql_query("SELECT * FROM prestamos");
         while($fila = mysql_fetch_array($resultado)){
-            $mes = substr($fila['fecha'],5,-3);
-            if($mes == '12'){
-                
-            }else{
-                if($fila['mes'] == '1'){
+            if($fila['mes'] == '1'){
                         $nPrestamo = $fila['codigo'];
                         mysql_query("UPDATE prestamos SET mes='0' WHERE codigo='$nPrestamo'") 
                                             or die ("Error en el update");
-                }
             }
         }
-        
-    }//cierre metodo
+    }
 
     public function mesualidad(){
         date_default_timezone_set('America/Bogota'); 

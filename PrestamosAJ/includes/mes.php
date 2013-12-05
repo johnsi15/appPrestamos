@@ -176,7 +176,7 @@
 								<ul class="dropdown-menu">
 									<li><a href="caja.php">Caja</a></li>
 									<li><a href="actualizarDatos.php">Registrar</a></li>
-									<li><a href="#">Prestamos</a></li>
+									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 									<li><a href="renovar.php">Renovar Credito</a></li>
 									<li class="active"><a href="mes.php">Mes</a></li>
@@ -233,6 +233,26 @@
 					$objeto->fechasMes();
 				?>
 			</aside>
+			<?php
+				date_default_timezone_set('America/Bogota'); 
+		        $fecha = date("Y-m-d  H:i:s");//fecha actual bien 
+		        $d = date("d");
+		        if($d == '02' or $d == '03' or $d == '04' or $d == '05' or $d == '06'){
+		    ?>
+		    <div id="refrescarPrestamos">
+			    <form action="acciones.php" method="post">
+			    	<input type="hidden" name="refrescarPrestamos">
+					<button type="submit" class="btn btn-success" id="clickPrestamo">Activar Prestamos</button>
+			    </form>
+		    </div>
+		    <?php
+		        }else{
+		    	?>
+		    	<button class="btn btn-success" id="clickPrestamo" disabled>Activar Prestamos</button>
+		    <?php
+		        }
+
+			?>
 			<div class="span12">
 			<hr>
 				<table class="table table-hover table-bordered table-striped table-condensed">

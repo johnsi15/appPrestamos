@@ -73,6 +73,9 @@ footer{
     top: 95%;
     display: block;
 }
+#clickPrestamo{
+    margin-left: 5%;
+}
 
 .bloqueFijo{
     position: fixed;
