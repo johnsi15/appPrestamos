@@ -162,6 +162,15 @@
 				}
 		  	}
 		});
+
+		$('#otroMomen').click(function(){
+			$('#notiRenovar').remove();
+		});
+
+		$('#cerrar').click(function(){
+			$('#notiRenovar').remove();
+		});
+
 		// codigo de los detalles de los prestamos
 		$('#pres').click(function(){
 			$('#detallesPrestamos').toggle("fast");
@@ -340,6 +349,15 @@
 		</div>
      </div>
      <a href="#detalles" id="pres" class="btn btn-large btn-primary">Prestamos</a>
+
+	<section id="notiRenovar" class="span5">
+		<div class="well">
+			<a class="btn btn-primary" href="renovar.php">Renovar o Eliminar</a> -
+			<a class="btn btn-warning" id="otroMomen">En otro momento</a>
+			<a class="btn btn-danger" id="cerrar">X</a>
+		</div>
+	</section>
+
 	<footer>
 		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>
 		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->
