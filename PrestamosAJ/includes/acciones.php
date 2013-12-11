@@ -118,7 +118,17 @@
       if($objeto->registrarPago($cedula,$fecha,$pago,$interes,$prestamo)){
         $objeto->paginacionPagos();
         $objeto->verPagos();
-      }
+        if($objeto->saldoCero()){
+              
+          echo'<section id="notiRenovar" class="span5">
+                            <div class="well">
+                                <a class="btn btn-primary" href="renovar.php">Renovar o Eliminar</a> -
+                                <a class="btn btn-warning" id="otroMomen">En otro momento</a>
+                                <a class="btn btn-danger" id="cerrar">X</a>
+                            </div>
+                    </section>';
+        }
+      }//cierre del if
    }
 
    if(isset($_POST['registrarPago2'])){

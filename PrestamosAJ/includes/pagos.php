@@ -149,9 +149,9 @@
 					  	url: $('.pagination ul li.next a').attr('href'),
 					  	success: function(html){
 					  	 		//console.log(html);
-					  	 	var nuevosGastos = $(html).find('table tbody'),
+					  	 	var nuevosGastos = $(html).find('#pagos tbody'),
 					  	 		nuevaPag     = $(html).find('.pagination'),
-					  	 		tabla        = $('table');
+					  	 		tabla        = $('#pagos');
 					  	    tabla.find('#verPagos').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
@@ -232,6 +232,55 @@
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<i class="icon-globe" id="conteo">
+										<!--notificamos en el menu cuantos clientes deben pagar-->
+									<?php 
+										require_once('funciones.php');
+										$objeto = new funciones();
+            							$objeto->notificarFecha();
+										$conteo = $objeto->verificar();
+										if($conteo > '0'){
+											echo "<h4 id='aviso'>$conteo</h4>";
+											?>
+										<script>
+										 	$(document).ready(function(){
+										 		$('#conteo').addClass('icon-white');
+										 		$('#conteo').click(function(){
+										 			$('#conteo').removeClass('icon-white');
+										 			// $('#aviso').css('background','rgba(255,0,0,0.8)');
+										 			$('#aviso').remove();
+										 		});
+										 	});
+										</script>
+									<?php
+										}
+									?>
+									</i>
+								</a>
+								<ul class="dropdown-menu">
+									<div id="scrollNotif">
+										<table class="table table-hover table-bordered table-condensed">
+											<thead>
+												<tr>
+													<th>N°</th>
+													<th>Nombre</th>
+													<th>Cuota</th>
+												</tr>
+											</thead>
+											<tbody id="noticaciones">
+												<?php 
+												   require_once('funciones.php');
+												   $objeto = new funciones();
+												   $objeto->verClientesDias();
+												?>
+											</tbody>
+										</table>
+							    	</div>
+								</ul>
+							</li>
+							<li class="divider-vertical"></li>
 							<?php 
 								date_default_timezone_set('America/Bogota'); 
 						        $fecha = date("Y-m-d");
@@ -243,6 +292,7 @@
 			</div>
 		</div>
 	</header>
+	
 	<aside id="mensaje"></aside><!--menssaje de exito del registro o de error-->
 	<aside id="mensajeError"></aside><!--menssaje de exito del registro o de error-->
 	<section>
@@ -257,7 +307,7 @@
 
     <!--seccion principal de la pagina-->
 	<section class="container well" id="fondo">
-		<div class="row" id="aviso">
+		<div class="row">
             <input type="text" name="buscar" id="buscar" class="search-query" placeholder="Buscar" autofocus>
 				<h1 style='color: #df0024;'>Pagos</h1><br>
 				<div class="span4">
@@ -265,7 +315,7 @@
 				</div>
 				<div class="span12">
 					<hr>
-					<table  class="table table-hover table-bordered table-condensed">
+					<table  id="pagos" class="table table-hover table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th>Nombre</th>
@@ -349,15 +399,7 @@
 		</div>
      </div>
      <a href="#detalles" id="pres" class="btn btn-large btn-primary">Prestamos</a>
-
-	<section id="notiRenovar" class="span5">
-		<div class="well">
-			<a class="btn btn-primary" href="renovar.php">Renovar o Eliminar</a> -
-			<a class="btn btn-warning" id="otroMomen">En otro momento</a>
-			<a class="btn btn-danger" id="cerrar">X</a>
-		</div>
-	</section>
-
+     
 	<footer>
 		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>
 		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->

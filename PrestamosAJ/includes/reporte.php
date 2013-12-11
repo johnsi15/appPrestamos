@@ -176,7 +176,8 @@
 	    <div class="row">
 				<div class="span3"></div>
 				<div class="span6 well" id="fondo">
-					<p id="titulo">Ganancias por Mes</p><br><br>
+					<p id="titulo">Ganancias por Mes</p><br>
+					<h6>Las ganancias se calculan sobre los Interes.</h6>
 					<table class="table table-hover table-bordered">
 						<thead>
 							<tr>
@@ -189,7 +190,7 @@
 							<?php
 							  require_once('funciones.php');
 							  $objeto = new funciones();
-							  //$objeto->calculosMes(); 
+							  $objeto->calculosMes(); 
 							?>
 						</tbody>
 					</table>

@@ -58,8 +58,16 @@
         }
     }
 
+    public function saldoCero(){
+        $resultado = mysql_query("SELECT * FROM prestamos WHERE saldo='0'");
+        while($fila = mysql_fetch_array($resultado)){
+            return true;
+        }
+    }
+
     /*funcion para registrar los pagos de los prestamos */
     public function registrarPago($cedula,$fecha,$pago,$interes,$nPrestamo){
+
         $resultado = mysql_query("SELECT * FROM prestamos WHERE codigo='$nPrestamo'");
         $fila = mysql_fetch_array($resultado);
         if($fila['saldo'] == '0'){
@@ -69,12 +77,12 @@
             $nuevoInteres = $fila['saldoInteres'] - $interes;
             $nuevoSaldo = $fila['saldo'] - $pago;
 
-            mysql_query("INSERT INTO pagos (cedulaPagos,fecha,abonoCapital,abonoInteres,saldo)
-                                          VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo')")
+            mysql_query("INSERT INTO pagos (cedulaPagos,fecha,abonoCapital,abonoInteres,saldo,numeroPresta)
+                                          VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo','$nPrestamo')")
                                           or die ("Error");
 
-            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1' WHERE codigo='$nPrestamo'") 
-                                        or die ("Error en el update");
+            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='1' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error");
 
             $resultado2 = mysql_query("SELECT * FROM caja");
             $fila2 = mysql_fetch_array($resultado2);
@@ -82,8 +90,12 @@
             $nuevoInteres = $fila2['interesTotal'] + $interes;
 
             mysql_query("UPDATE caja SET interesTotal='$nuevoInteres', baseTotal='$nuevaBase'") 
-                                        or die ("Error en el update");
+                                        or die ("Error");
             return true;
+            if($fila['saldo'] == '0'){
+                mysql_query("UPDATE prestamos SET notificacion='3' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error");
+            }
         } 
     }
 
@@ -97,8 +109,8 @@
             $nuevoInteres = $fila['saldoInteres'] - $interes;
             $nuevoSaldo = $fila['saldo'] - $pago;
 
-            mysql_query("INSERT INTO pagos (cedulaPagos,fecha,abonoCapital,abonoInteres,saldo)
-                                          VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo')")
+            mysql_query("INSERT INTO pagos (cedulaPagos,fecha,abonoCapital,abonoInteres,saldo,numeroPresta)
+                                          VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo','$nPrestamo')")
                                           or die ("Error");
 
             mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='1' WHERE codigo='$nPrestamo'") 
@@ -112,6 +124,11 @@
             mysql_query("UPDATE caja SET interesTotal='$nuevoInteres', baseTotal='$nuevaBase'") 
                                         or die ("Error en el update");
             return true;
+            if($fila['saldo'] == '0'){
+                mysql_query("UPDATE prestamos SET notificacion='3' WHERE codigo='$nPrestamo'") 
+                                        or die ("Error");
+                echo'cero';
+            }
         } 
     }
 
@@ -630,7 +647,7 @@
         }else{//se activara si la variable $num_pag ha resivido un valor oasea se encuentra en la pagina 2 o ha si susecivamente 
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
-        $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");   
+        $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY id DESC LIMIT $inicio,$cant_reg");   
         $resultado2 = mysql_query("SELECT * FROM prestamos");
         $nPrestamo = 0;
         while($fila = mysql_fetch_array($resultado)){
@@ -676,7 +693,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY id DESC");///hacemos una consulta de todos los datos de cinternet
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -709,7 +726,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos
+            $result = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY id DESC");///hacemos una consulta de todos los datos
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -726,7 +743,7 @@
             $fecha = date("Y-m-d");
             $fechaD = date("d");
 
-            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+            $resultado = mysql_query("SELECT * FROM clientes,pagos WHERE pagos.cedulaPagos=clientes.cedulaCliente ORDER BY id DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
            while($fila = mysql_fetch_array($resultado)){
                  $contador = mysql_query("SELECT count(*) FROM pagos WHERE cedulaPagos=".$fila['cedulaPagos']."");
                  $fila2 = mysql_fetch_array($contador);
@@ -966,17 +983,15 @@
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");//fecha actual bien 
         $fechaD = date("d");
-        $resultado = mysql_query("SELECT * FROM pagos,prestamos WHERE (pagos.cedulaPagos=prestamos.cedula)");
+        $resultado = mysql_query("SELECT * FROM pagos,prestamos WHERE prestamos.codigo=pagos.numeroPresta and notificacion='1'");
         while($fila = mysql_fetch_array($resultado)){
-            if($fila['notificacion'] == '1'){
                 $dia = substr($fila['fecha'],8,10);
-                $dia = $dia + 5;
-                if($fechaD == $dia){
+                $dia2 = $dia + 5;
+                if($fechaD == $dia2){
                     $nPrestamo = $fila['codigo'];
                     mysql_query("UPDATE prestamos SET notificacion='0' WHERE codigo='$nPrestamo'") 
                                         or die ("Error en el update");
                 }
-            }
         }
     }
 
@@ -1063,28 +1078,28 @@
 
     /*CALCULO DE LOS REPORTES DE GANANCIAS POR FECHA*/
     public function calcularReporte($fecha1,$fecha2){
-        $resultado = mysql_query("SELECT sum(dinero) AS total FROM fechasclientes WHERE condicion='Pago' AND fechaInicial AND fechaFinal between'$fecha1' AND '$fecha2'");
+        $resultado = mysql_query("SELECT sum(abonoCapital) AS total FROM pagos WHERE fecha AND fecha between'$fecha1' AND '$fecha2'");
+        $resultado2 = mysql_query("SELECT sum(abonoInteres) AS total2 FROM pagos WHERE fecha AND fecha between'$fecha1' AND '$fecha2'");
         $fila = mysql_fetch_array($resultado);
-            $salida = '<h3 class="well"> Calculo: $'.number_format($fila['total']).'</h3>';
-            echo $salida;     
+        $fila2 = mysql_fetch_array($resultado2);
+            $salida = '<h3 class="well"> Calculo Prestamos: $'.number_format($fila['total']).'</h3>';
+             $salida2 = '<h3 class="well"> Calculo Interes: $'.number_format($fila2['total2']).'</h3>';
+            echo $salida;
+            echo $salida2;     
     }
 
 
     public function calculosMes(){
-        $resultado = mysql_query("SELECT * FROM fechasclientes WHERE condicion='Pago'");
+        $resultado = mysql_query("SELECT * FROM pagos");
          $conE = 0; $conF=0; $conM=0; $conA=0; $conMy=0; $conJ=0;
          $conJl=0; $conAg=0; $conS=0; $conO=0; $conN=0; $conD=0;
         while($fila = mysql_fetch_array($resultado)){
-                    $fecha1 = $fila['fechaInicial'];
-                    $fecha2 = $fila['fechaFinal'];
-
+                    $fecha1 = $fila['fecha'];
+                $dia = substr($fila['fecha'],8,10);
                 $mes = substr($fecha1,5,-3);
-
-                /*tener en cuenta la fecha2 por el mes que se pasa*/
                 $año = substr($fecha1,0,4);
-
-                    $resul = mysql_query("SELECT sum(dinero) AS total FROM fechasclientes
-                                        WHERE condicion='Pago' AND mes='$mes'");
+                $fecha2 = $año.'-'.$mes.'-'.'31'; 
+                    $resul = mysql_query("SELECT sum(abonoInteres) AS total FROM pagos WHERE fecha AND fecha between'$fecha1' AND '$fecha2'");
                     $fila2 = mysql_fetch_array($resul);
 
                 if($mes=='01' and $conE==0){

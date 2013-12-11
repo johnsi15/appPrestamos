@@ -33,7 +33,7 @@ footer{
 #detallesPrestamos{
     float: right; 
     margin-left: 80%;
-    top: 54%;
+    top: 51%;
     position: fixed;
 }
 
@@ -59,6 +59,11 @@ footer{
     height: 100%;
 }
 
+#aviso{
+    background: rgba(255,0,0,0.8);
+    color: white;
+}
+
 #IrInicio:hover{
     text-decoration: underline;
 }
@@ -70,11 +75,18 @@ footer{
     margin-left: 85%;
     margin-right: 15%;
     position: fixed;
-    top: 95%;
+    top: 94%;
     display: block;
 }
 #clickPrestamo{
     margin-left: 5%;
+}
+
+#notiRenovar{
+    float: right;
+    margin-left: 25%;
+    position: fixed;
+    top: 50%;
 }
 
 .bloqueFijo{

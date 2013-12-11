@@ -223,7 +223,6 @@
 												?>
 											</tbody>
 										</table>
-											<div id="cargando" style="display: none;"><img src="img/loader.gif" alt=""></div>
 							    	</div>
 								</ul>
 							</li>

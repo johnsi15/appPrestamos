@@ -251,8 +251,8 @@ $(document).ready(function(){
 
         var pet = $('#nuevoPago form').attr('action');
         var met = $('#nuevoPago form').attr('method');
-        console.log(pet);
-        console.log(met);
+        //console.log(pet);
+        //console.log(met);
            $.ajax({
                    beforeSend: function(){
 
@@ -261,7 +261,7 @@ $(document).ready(function(){
                    type: met,
                    data: $('#nuevoPago form').serialize(),
                    success: function(resp){
-                       //console.log(resp);
+                       console.log(resp);
                        if(resp == "Error"){
                              setTimeout(function(){ $("#mensajeError .alert").fadeOut(1000).fadeIn(1000).fadeOut(800).fadeIn(500).fadeOut(300);}, 1000); 
                              var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Renovar o Eliminar Credito'+'</strong>'+'<br> No se pudo realizar el pago'+'</div>';
@@ -269,17 +269,17 @@ $(document).ready(function(){
                              $('#mensajeError').html(error);
                              $('#nuevoPago').dialog('close');
                        }else{
-                          $('#verPagos').empty();//limpiar la tabla.
-                          $('#verPagos').html(resp);//imprimir datos de la tabla.
-                          setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(600);}, 1000); 
-                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' El pago se hizo correctamente'+'</div>';
-                          $('#mensaje').html(exito);//impresion del mensaje exitoso.
-                          $('#registrarPago')[0].reset();///limpiamos los campos del formulario.
-                          $("#formMenu").removeClass('open');//cerramos el sub menu del registro
-                          $('#foco').focus();///indicamos el foco al primer valor del formulario.
-                          $('#nuevoPago').dialog('close');
-                          // ver mas detalles del pago
-                          $('[data-toggle=popover]').popover({html:true});
+                            $('#verPagos').empty();//limpiar la tabla.
+                            $('#verPagos').html(resp);//imprimir datos de la tabla.
+                            setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(1000).fadeOut(900).fadeIn(800).fadeOut(600);}, 1000); 
+                            var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Registro guardado '+'</strong>'+' El pago se hizo correctamente'+'</div>';
+                            $('#mensaje').html(exito);//impresion del mensaje exitoso.
+                            $('#registrarPago')[0].reset();///limpiamos los campos del formulario.
+                            $("#formMenu").removeClass('open');//cerramos el sub menu del registro
+                            $('#foco').focus();///indicamos el foco al primer valor del formulario.
+                            $('#nuevoPago').dialog('close');
+                            // ver mas detalles del pago
+                            $('[data-toggle=popover]').popover({html:true});  
                        }
                    },
                    error: function(jqXHR,estado,error){
