@@ -641,10 +641,10 @@
         $resultado = mysql_query("SELECT * FROM prestamos");
         while($fila = mysql_fetch_array($resultado)){
             if($fila['tipo'] == 'm'){
-                $resuPorce = ($fila['monto'] * $fila['porcentaje'])/100;
-                $valorCuota = ($fila['monto'] + $fila['interes'])/$fila['NcuotasM'];
-                $capital = $valorCuota/1.5;
-                $interes = $valorCuota - $capital;
+                //$resuPorce = ($fila['monto'] * $fila['porcentaje'])/100;
+                //$valorCuota = ($fila['monto'] + $fila['interes'])/$fila['NcuotasM'];
+                $capital = $fila['monto']/$fila['NcuotasM'];
+                $interes = $fila['interes']/$fila['NcuotasM'];
                 echo '<tr class="success"> 
                     <td>'.$fila['codigo'].'</td>
                     <td>'.number_format($fila['Vcuota']).'</td>
@@ -652,10 +652,10 @@
                     <td>'.number_format($interes).'</td>
                 </tr>';
             }else{
-                $resuPorce = ($fila['monto'] * $fila['porcentaje'])/100;
-                $valorCuota = ($fila['monto'] + $fila['interes'])/$fila['NcuotasQ'];
-                $capital = $valorCuota/1.5;
-                $interes = $valorCuota - $capital;
+                //$resuPorce = ($fila['monto'] * $fila['porcentaje'])/100;
+                //$valorCuota = ($fila['monto'] + $fila['interes'])/$fila['NcuotasQ'];
+                $capital = $fila['monto']/$fila['NcuotasQ'];
+                $interes = $fila['interes']/$fila['NcuotasQ'];
                 echo '<tr class="success"> 
                     <td>'.$fila['codigo'].'</td>
                     <td>'.number_format($fila['Vcuota']).'</td>
