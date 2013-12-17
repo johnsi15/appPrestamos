@@ -32,13 +32,13 @@ footer{
 
 #detallesPrestamos{
     float: right; 
-    margin-left: 80%;
+    margin-left: 70%;
     top: 51%;
     position: fixed;
 }
 
 #minimizar{
-    margin-left: 85%;
+    margin-left: 80%;
 }
 
 #scroll{
@@ -145,7 +145,7 @@ footer{
       top:90%;  
     }
     #detallesPrestamos{
-        margin-left: 60%;
+        margin-left: 40%;
         top: 25%;
     }
     #scroll{

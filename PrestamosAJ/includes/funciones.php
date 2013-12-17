@@ -9,8 +9,8 @@
 
     public function login($user,$pass){
          session_start();
-         //$truco=sha1($pass);
-         $resultado = mysql_query("SELECT * FROM usuarios WHERE nombre='$user' AND clave='$pass'");
+         $truco=sha1($pass);
+         $resultado = mysql_query("SELECT * FROM usuarios WHERE nombre='$user' AND clave='$truco'");
          $fila = mysql_fetch_array($resultado);
          if($fila>0){
          	$id_user=$fila['id'];
@@ -25,13 +25,13 @@
 
     /*funcion para registrar los clientes */
     public function registrarCliente($codigo,$nom,$dir,$tel){/**/
-        mysql_query("INSERT INTO clientes (cedulaCliente,nombre,direccion,telefono)
-                                      VALUES ('$codigo','$nom','$dir','$tel')")
+        mysql_query("INSERT INTO clientes (cedulaCliente,nombre,direccion,telefono,nPrestamos)
+                                      VALUES ('$codigo','$nom','$dir','$tel','0')")
                                       or die ("Error");
     }
 
     /*funcion para registrar prestamo */
-    public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$condicion){
+    public function registrarPrestamo($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$tipo,$porcentaje){
         /*actualizando la caja despues del prestamo*/                           
         $resultado2 = mysql_query("SELECT baseTotal FROM caja");
         $fila2 = mysql_fetch_array($resultado2);
@@ -41,8 +41,8 @@
         }else{
             $saldo = $prestamo;
             $saldoIn = $interes;
-            mysql_query("INSERT INTO prestamos (cedula,monto,saldo,NcuotasQ,NcuotasM,Vcuota,fechaPrestamo,fechaPago,interes,saldoInteres,condicion)
-                                          VALUES ('$cedula','$prestamo','$saldo','$NcQ','$NcM','$Vcuota','$fechaPrestamo','$fechaPago','$interes','$saldoIn','$condicion')")
+            mysql_query("INSERT INTO prestamos (cedula,monto,saldo,NcuotasQ,NcuotasM,Vcuota,fechaPrestamo,fechaPago,interes,saldoInteres,inicio,notificacion,mes,tipo,porcentaje)
+                                          VALUES ('$cedula','$prestamo','$saldo','$NcQ','$NcM','$Vcuota','$fechaPrestamo','$fechaPago','$interes','$saldoIn','0','0','0','$tipo','$porcentaje')")
                                           or die ("Error");
             $resultado = mysql_query("SELECT * FROM clientes WHERE cedulaCliente='$cedula' ");
             $fila = mysql_fetch_array($resultado);
@@ -81,7 +81,7 @@
                                           VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo','$nPrestamo')")
                                           or die ("Error");
 
-            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='1' WHERE codigo='$nPrestamo'") 
+            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='0' WHERE codigo='$nPrestamo'") 
                                         or die ("Error");
 
             $resultado2 = mysql_query("SELECT * FROM caja");
@@ -113,7 +113,7 @@
                                           VALUES ('$cedula','$fecha','$pago','$interes','$nuevoSaldo','$nPrestamo')")
                                           or die ("Error");
 
-            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='1' WHERE codigo='$nPrestamo'") 
+            mysql_query("UPDATE prestamos SET saldo='$nuevoSaldo', saldoInteres='$nuevoInteres',notificacion='1',mes='0' WHERE codigo='$nPrestamo'") 
                                         or die ("Error en el update");
 
             $resultado2 = mysql_query("SELECT * FROM caja");
@@ -139,9 +139,7 @@
             mysql_query("UPDATE caja SET baseTotal='$base'") 
                                     or die ("Error en el update");
         }else{
-            mysql_query("INSERT INTO caja (baseTotal)
-                                      VALUES ('$base')")
-                                      or die ("Error");
+            mysql_query("INSERT INTO caja (baseTotal,interesTotal) VALUES ('$base','0')") or die ("Error");
         }
     }
 
@@ -262,28 +260,52 @@
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
 
-        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC LIMIT $inicio,$cant_reg");
    
         while($fila = mysql_fetch_array($resultado)){
-            echo '<tr> 
-                <td>'.$fila['codigo'].'</td>
-                <td>'.$fila['nombre'].'</td>
-                <td>'.$fila['direccion'].'</td>
-                <td>'.$fila['telefono'].'</td>
-                <td>'.number_format($fila['saldo']).'</td>
-                <td><a id="info" class="btn btn-mini btn-info" 
-                         data-toggle="popover" data-placement="top" 
-                         data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                       NcuotasM: '.$fila['NcuotasM'].'   <br>
-                                       Prestamo:'.number_format($fila['monto']).'<br>
-                                       FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                       FechaFin: '.$fila['fechaPago'].' <br>
-                                       N° Prestamos: '.$fila['nPrestamos'].'"
+            if($fila['tipo'] == 'm'){
+                 echo '<tr> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.$fila['nombre'].'</td>
+                    <td>'.$fila['direccion'].'</td>
+                    <td>'.$fila['telefono'].'</td>
+                    <td>'.number_format($fila['saldo']).'</td>
+                    <td><a id="info" class="btn btn-mini btn-info" 
+                             data-toggle="popover" data-placement="top" 
+                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                           NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                           TipoPago: '.$fila['tipo'].'   <br>
+                                           Prestamo:'.number_format($fila['monto']).'<br>
+                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                           FechaFin: '.$fila['fechaPago'].' <br>
+                                           N° Prestamos: '.$fila['nPrestamos'].'"
 
-                         data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                        </a>
-                    </td>
-            </tr>';
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
+                </tr>';
+            }else{
+                echo '<tr> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.$fila['nombre'].'</td>
+                    <td>'.$fila['direccion'].'</td>
+                    <td>'.$fila['telefono'].'</td>
+                    <td>'.number_format($fila['saldo']).'</td>
+                    <td><a id="info" class="btn btn-mini btn-info" 
+                             data-toggle="popover" data-placement="top" 
+                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                           NcuotasQ: '.$fila['NcuotasQ'].'   <br>
+                                           TipoPago: '.$fila['tipo'].'   <br>
+                                           Prestamo:'.number_format($fila['monto']).'<br>
+                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                           FechaFin: '.$fila['fechaPago'].' <br>
+                                           N° Prestamos: '.$fila['nPrestamos'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
+                </tr>';
+            }
         }      
     }/*cierre del metodo*/
 
@@ -305,7 +327,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC");///hacemos una consulta de todos los datos de cinternet
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -338,7 +360,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC");///hacemos una consulta de todos los datos de cinternet
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -352,51 +374,99 @@
             } ;echo '
                    </div>';
 
-            $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
+            $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
             while($fila = mysql_fetch_array($resultado)){
-                 echo '<tr> 
-                    <td>'.$fila['codigo'].'</td>
-                    <td>'.$fila['nombre'].'</td>
-                    <td>'.$fila['direccion'].'</td>
-                    <td>'.$fila['telefono'].'</td>
-                    <td>'.number_format($fila['saldo']).'</td>
-                    <td><a id="info" class="btn btn-mini btn-info" 
-                             data-toggle="popover" data-placement="top" 
-                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                           NcuotasM: '.$fila['NcuotasM'].'   <br>
-                                           Prestamo:'.number_format($fila['monto']).'<br>
-                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                           FechaFin: '.$fila['fechaPago'].' <br>
-                                           N° Prestamos: '.$fila['nPrestamos'].'"
+                if($fila['tipo'] == 'm'){
+                     echo '<tr> 
+                        <td>'.$fila['codigo'].'</td>
+                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.number_format($fila['saldo']).'</td>
+                        <td><a id="info" class="btn btn-mini btn-info" 
+                                 data-toggle="popover" data-placement="top" 
+                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                               NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
+                                               Prestamo:'.number_format($fila['monto']).'<br>
+                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                               FechaFin: '.$fila['fechaPago'].' <br>
+                                               N° Prestamos: '.$fila['nPrestamos'].'"
 
-                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                            </a>
-                        </td>
-                </tr>';
+                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                </a>
+                            </td>
+                    </tr>';
+                }else{
+                    echo '<tr> 
+                        <td>'.$fila['codigo'].'</td>
+                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.number_format($fila['saldo']).'</td>
+                        <td><a id="info" class="btn btn-mini btn-info" 
+                                 data-toggle="popover" data-placement="top" 
+                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                               NcuotasQ: '.$fila['NcuotasQ'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
+                                               Prestamo:'.number_format($fila['monto']).'<br>
+                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                               FechaFin: '.$fila['fechaPago'].' <br>
+                                               N° Prestamos: '.$fila['nPrestamos'].'"
+
+                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                </a>
+                            </td>
+                    </tr>';
+                }
             }/*cierre del while*/
         }else{
              $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE (prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND cedulaCliente LIKE'$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND fechaPrestamo LIKE'%$palabra%')");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
-                echo '<tr> 
-                    <td>'.$fila['codigo'].'</td>
-                    <td>'.$fila['nombre'].'</td>
-                    <td>'.$fila['direccion'].'</td>
-                    <td>'.$fila['telefono'].'</td>
-                    <td>'.number_format($fila['saldo']).'</td>
-                    <td><a id="info" class="btn btn-mini btn-info" 
-                             data-toggle="popover" data-placement="top" 
-                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                           NcuotasM: '.$fila['NcuotasM'].'   <br>
-                                           Prestamo:'.number_format($fila['monto']).'<br>
-                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                           FechaFin: '.$fila['fechaPago'].' <br>
-                                           N° Prestamos: '.$fila['nPrestamos'].'"
+                if($fila['tipo'] == 'm'){
+                     echo '<tr> 
+                        <td>'.$fila['codigo'].'</td>
+                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.number_format($fila['saldo']).'</td>
+                        <td><a id="info" class="btn btn-mini btn-info" 
+                                 data-toggle="popover" data-placement="top" 
+                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                               NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
+                                               Prestamo:'.number_format($fila['monto']).'<br>
+                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                               FechaFin: '.$fila['fechaPago'].' <br>
+                                               N° Prestamos: '.$fila['nPrestamos'].'"
 
-                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                            </a>
-                        </td>
-                </tr>';
+                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                </a>
+                            </td>
+                    </tr>';
+                }else{
+                    echo '<tr> 
+                        <td>'.$fila['codigo'].'</td>
+                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.number_format($fila['saldo']).'</td>
+                        <td><a id="info" class="btn btn-mini btn-info" 
+                                 data-toggle="popover" data-placement="top" 
+                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                               NcuotasQ: '.$fila['NcuotasQ'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
+                                               Prestamo:'.number_format($fila['monto']).'<br>
+                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                               FechaFin: '.$fila['fechaPago'].' <br>
+                                               N° Prestamos: '.$fila['nPrestamos'].'"
+
+                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                </a>
+                            </td>
+                    </tr>';
+                }
             }/*cierre del while*/
         }
     }
@@ -417,7 +487,7 @@
             $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
         }
 
-        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");
+        $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC LIMIT $inicio,$cant_reg");
        
         while($fila = mysql_fetch_array($resultado)){
             if($fila['saldo']=='0'){
@@ -433,6 +503,7 @@
                          data-toggle="popover" data-placement="top" 
                          data-content="NcuotasQ: '.$fila['NcuotasQ'].'  <br>
                                        NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                       TipoPago: '.$fila['tipo'].'   <br>
                                        FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
                                        FechaFin: '.$fila['fechaPago'].' <br>
                                        N° Prestamos: '.$fila['nPrestamos'].'"
@@ -463,7 +534,7 @@
                 $inicio = ($num_pag-1)*$cant_reg;//si la pagina seleccionada es la numero 2 entonces 2-1 es = 1 por 10 = 10 empiesa a contar desde la 10 para la pagina 2 ok.
             }
 
-            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");///hacemos una consulta de todos los datos de cinternet
+            $result = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC");///hacemos una consulta de todos los datos de cinternet
            
             $total_registros=mysql_num_rows($result);//obtenesmos el numero de datos que nos devuelve la consulta
 
@@ -509,7 +580,7 @@
             } ;echo '
                    </div>';
 
-            $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC LIMIT $inicio,$cant_reg");
+            $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC LIMIT $inicio,$cant_reg");
             while($fila = mysql_fetch_array($resultado)){
                 if($fila['saldo']=='0'){
                     
@@ -524,6 +595,7 @@
                              data-toggle="popover" data-placement="top" 
                              data-content="NcuotasQ: '.$fila['NcuotasQ'].'  <br>
                                            NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                           TipoPago: '.$fila['tipo'].'   <br>
                                            FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
                                            FechaFin: '.$fila['fechaPago'].' <br>
                                            N° Prestamos: '.$fila['nPrestamos'].'"
@@ -551,6 +623,7 @@
                                  data-toggle="popover" data-placement="top" 
                                  data-content="NcuotasQ: '.$fila['NcuotasQ'].'  <br>
                                                NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
                                                FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
                                                FechaFin: '.$fila['fechaPago'].' <br>
                                                N° Prestamos: '.$fila['nPrestamos'].'"
@@ -567,10 +640,29 @@
     public function verDetallesPrestamos(){
         $resultado = mysql_query("SELECT * FROM prestamos");
         while($fila = mysql_fetch_array($resultado)){
-             echo '<tr class="success"> 
-                <td>'.$fila['codigo'].'</td>
-                <td>'.number_format($fila['monto']).'</td>
-            </tr>';
+            if($fila['tipo'] == 'm'){
+                $resuPorce = ($fila['monto'] * $fila['porcentaje'])/100;
+                $valorCuota = ($fila['monto'] + $fila['interes'])/$fila['NcuotasM'];
+                $capital = $valorCuota/1.5;
+                $interes = $valorCuota - $capital;
+                echo '<tr class="success"> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.number_format($fila['Vcuota']).'</td>
+                    <td>'.number_format($capital).'</td>
+                    <td>'.number_format($interes).'</td>
+                </tr>';
+            }else{
+                $resuPorce = ($fila['monto'] * $fila['porcentaje'])/100;
+                $valorCuota = ($fila['monto'] + $fila['interes'])/$fila['NcuotasQ'];
+                $capital = $valorCuota/1.5;
+                $interes = $valorCuota - $capital;
+                echo '<tr class="success"> 
+                    <td>'.$fila['codigo'].'</td>
+                    <td>'.number_format($fila['Vcuota']).'</td>
+                    <td>'.number_format($capital).'</td>
+                    <td>'.number_format($interes).'</td>
+                </tr>';
+            }
         }
     }
 
@@ -805,13 +897,17 @@
             $diaPnot3 = $diaP -1;
             $diaPnot4 = $diaP +1;
             if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
-               if($fila['notificacion'] == '0'){
-                $con = $con +1;
+               if($fila['inicio'] == 1){
+                   if($fila['notificacion'] == '0'){
+                        $con = $con +1;
+                   }
                }
             }else{
                 if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
-                    if($fila['notificacion'] == '0'){
-                        $con = $con +1;
+                    if($fila['inicio'] == 1){
+                       if($fila['notificacion'] == '0'){
+                            $con = $con +1;
+                       }
                     }
                 }
             } 
@@ -958,22 +1054,26 @@
             $diaPnot3 = $diaP -1;
             $diaPnot4 = $diaP +1;
             if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
-                if($fila['notificacion'] == '0'){
-                    echo '<tr class="success"> 
-                        <td>'.$fila['codigo'].'</td>
-                        <td><a href="includes/pagos.php">'.$fila['nombre'].'</a></td>
-                        <td>'.number_format($fila['Vcuota']).'</td>
-                    </tr>';
-                }
-            }else{
-                if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                if($fila['inicio'] == '1'){
                     if($fila['notificacion'] == '0'){
                         echo '<tr class="success"> 
-                             <td>'.$fila['codigo'].'</td>
-                            <td><a href="includes/pagos.php">'.$fila['nombre'].'</td>
+                            <td>'.$fila['codigo'].'</td>
+                            <td><a href="includes/pagos.php">'.$fila['nombre'].'</a></td>
                             <td>'.number_format($fila['Vcuota']).'</td>
                         </tr>';
                     }
+                } 
+            }else{
+                if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                    if($fila['inicio'] == '1'){
+                        if($fila['notificacion'] == '0'){
+                            echo '<tr class="success"> 
+                                 <td>'.$fila['codigo'].'</td>
+                                <td><a href="includes/pagos.php">'.$fila['nombre'].'</td>
+                                <td>'.number_format($fila['Vcuota']).'</td>
+                            </tr>';
+                        }
+                    } 
                 }
             } 
         }/*cierre del while*/
@@ -987,13 +1087,27 @@
         while($fila = mysql_fetch_array($resultado)){
                 $dia = substr($fila['fecha'],8,10);
                 $dia2 = $dia + 5;
-                if($fechaD == $dia2){
+                if($fechaD >= $dia2){
                     $nPrestamo = $fila['codigo'];
                     mysql_query("UPDATE prestamos SET notificacion='0' WHERE codigo='$nPrestamo'") 
                                         or die ("Error en el update");
                 }
+                
         }
-    }
+
+        $resultado = mysql_query("SELECT * FROM prestamos WHERE inicio='0'");
+        while($fila = mysql_fetch_array($resultado)){
+            $dia = substr($fila['fechaPrestamo'],8,10);
+            $dia2 = $dia + 2;
+            if($fila['inicio'] == '0'){
+                if($fechaD >= $dia2){
+                        $nPrestamo = $fila['codigo'];
+                        mysql_query("UPDATE prestamos SET inicio='1' WHERE codigo='$nPrestamo'") 
+                                            or die ("Error en el update");
+                }
+            } 
+        }
+    }//cierre metodo 
 
     public function modificarPago($pago,$con,$cod){
         mysql_query("UPDATE estudiantes SET dinero='$pago', condicion='$con' WHERE codigo='$cod'") 
@@ -1013,11 +1127,87 @@
 
     // metodo para limpiar la base de datos
     public function limpiarBaseDatos(){
-        mysql_query("TRUNCATE caja");
-        mysql_query("TRUNCATE clientes");
-        mysql_query("TRUNCATE gastos");
-        mysql_query("TRUNCATE pagos");
-        mysql_query("TRUNCATE prestamos");
+        /*$resultado = mysql_query("SELECT * FROM clientes");
+        while($fila = mysql_fetch_array($resultado)){
+            $cod = $fila['cedulaCliente'];
+            mysql_query("DELETE FROM clientes WHERE cedulaCliente='$cod'");
+        }*/
+        $numero = 0;
+        while($numero < 5){
+            if($numero == 0){
+                 mysql_query("DROP  TABLE caja");
+                 mysql_query("CREATE TABLE IF NOT EXISTS `caja` (
+                             `baseTotal` int(11) NOT NULL,
+                                  `interesTotal` int(11) NOT NULL
+                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+                 $numero++;
+            }else{
+                if($numero == 1){
+                    mysql_query("DROP TABLE prestamos");
+                    mysql_query("CREATE TABLE IF NOT EXISTS `prestamos` (
+                      `codigo` int(11) NOT NULL AUTO_INCREMENT,
+                      `cedula` int(11) NOT NULL,
+                      `monto` int(11) NOT NULL,
+                      `saldo` int(11) NOT NULL,
+                      `NcuotasQ` varchar(15) NOT NULL,
+                      `NcuotasM` varchar(15) NOT NULL,
+                      `Vcuota` int(11) NOT NULL,
+                      `fechaPrestamo` date NOT NULL,
+                      `fechaPago` date NOT NULL,
+                      `interes` int(11) NOT NULL,
+                      `saldoInteres` int(11) NOT NULL,
+                      `inicio` varchar(2) NOT NULL,
+                      `notificacion` int(11) NOT NULL,
+                      `mes` int(11) NOT NULL,
+                      `tipo` varchar(5) NOT NULL,
+                      `porcentaje` int(11) NOT NULL,
+                      PRIMARY KEY (`codigo`),
+                      KEY `cedula` (`cedula`)
+                    ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3");
+                    $numero++;
+                }else{
+                    if($numero == 2){
+                        mysql_query("DROP TABLE clientes");
+                        mysql_query("CREATE TABLE IF NOT EXISTS `clientes` (
+                                      `cedulaCliente` int(11) NOT NULL,
+                                      `nombre` varchar(60) NOT NULL,
+                                      `direccion` varchar(60) NOT NULL,
+                                      `telefono` varchar(20) NOT NULL,
+                                      `nPrestamos` int(11) NOT NULL,
+                                      PRIMARY KEY (`cedulaCliente`)
+                                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+                        $numero++;
+                    }else{
+                        if($numero == 3){
+                            mysql_query("DROP TABLE pagos");
+                            mysql_query("CREATE TABLE IF NOT EXISTS `pagos` (
+                              `id` int(11) NOT NULL AUTO_INCREMENT,
+                              `cedulaPagos` int(11) NOT NULL,
+                              `fecha` date NOT NULL,
+                              `abonoCapital` int(11) NOT NULL,
+                              `abonoInteres` int(11) NOT NULL,
+                              `saldo` int(11) NOT NULL,
+                              `numeroPresta` int(11) NOT NULL,
+                              PRIMARY KEY (`id`),
+                              KEY `cedula` (`cedulaPagos`),
+                              KEY `numeroPresta` (`numeroPresta`)
+                            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ");
+                            $numero++;
+                        }else{
+                            if($numero == 4){
+                                mysql_query("TRUNCATE TABLE gastos");
+                                mysql_query("ALTER TABLE `pagos`
+                                  ADD CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`numeroPresta`) REFERENCES `prestamos` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+                                  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`cedulaPagos`) REFERENCES `clientes` (`cedulaCliente`) ON DELETE CASCADE ON UPDATE CASCADE");
+                                mysql_query("ALTER TABLE `prestamos`
+                                ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`cedula`) REFERENCES `clientes` (`cedulaCliente`) ON DELETE CASCADE ON UPDATE CASCADE");
+                                $numero++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
    /*aca comienzo con la partde de actulizar datos de los estudiantes que van al gim*/
@@ -1039,9 +1229,9 @@
     public function quienesDebenPagar(){
         $resultado = mysql_query("SELECT * FROM prestamos");
         while($fila = mysql_fetch_array($resultado)){
-            if($fila['mes'] == '1'){
+            if($fila['mes'] == '0'){
                         $nPrestamo = $fila['codigo'];
-                        mysql_query("UPDATE prestamos SET mes='0' WHERE codigo='$nPrestamo'") 
+                        mysql_query("UPDATE prestamos SET mes='1' WHERE codigo='$nPrestamo'") 
                                             or die ("Error en el update");
             }
         }
@@ -1056,13 +1246,15 @@
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
         while($fila = mysql_fetch_array($resultado)){
             if($fila['saldo'] != '0'){
-                if($fila['mes'] == '0'){
-                    echo '<tr>
-                          <td>'.$fila['codigo'].'</td>
-                          <td>'.$fila['nombre'].'</td>
-                          <td>'.number_format($fila['saldo']).'</td>
-                          <td><a id="pagar" class="btn btn-mini btn-success" href="'.$fila['cedulaCliente'].'"><strong>Pagar</strong></a></td>
-                    </tr>';
+                if($fila['inicio'] == '1'){
+                    if($fila['mes'] == '1'){
+                        echo '<tr>
+                              <td>'.$fila['codigo'].'</td>
+                              <td>'.$fila['nombre'].'</td>
+                              <td>'.number_format($fila['saldo']).'</td>
+                              <td><a id="pagar" class="btn btn-mini btn-success" href="'.$fila['cedulaCliente'].'"><strong>Pagar</strong></a></td>
+                        </tr>';
+                    }
                 }
             }
         }/*cierre del while*/
@@ -1270,12 +1462,12 @@
     }
 
     public function cambiarClave($conA,$conN,$cod){
-        $resultado = mysql_query("SELECT clave FROM usuarios WHERE clave='$conA'");
+        $resultado = mysql_query("SELECT clave FROM usuarios WHERE id='$cod'");
         
         if($row = mysql_fetch_array($resultado)){
             echo "Bien";
             $hash=sha1($conN);//incriptamos la contraseña
-            mysql_query("UPDATE usuarios SET clave='$hash' WHERE clave='$conA'");
+            mysql_query("UPDATE usuarios SET clave='$hash' WHERE id='$cod'");
         }else{
             echo "Error";
         }

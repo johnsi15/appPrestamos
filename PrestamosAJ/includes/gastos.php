@@ -179,6 +179,7 @@
 									<li><a href="#">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
 									<li><a href="renovar.php">Renovar Credito</a></li>
+									<li><a href="mes.php">Mes</a></li>
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>

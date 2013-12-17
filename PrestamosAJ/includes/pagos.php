@@ -385,7 +385,9 @@
 				<thead>
 					<tr>
 						<th>N°</th>
-						<th>Prestamo</th>
+						<th>Vcuota</th>
+						<th>Capital</th>
+						<th>Interes</th>
 					</tr>
 				</thead>
 				<tbody>

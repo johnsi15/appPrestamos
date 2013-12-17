@@ -384,18 +384,15 @@ $(document).ready(function(){
             height:'auto',
             resizable: false,
             close:function(){
-                  $('#id_registro').val('0');
+                  $('#id_registro2').val('0');
             }
       });
-      $('body').on('click','#UserCancelar',function(e){
-             e.preventDefault();
-             $('#formularioContraseña').dialog('close');
-      });
+     
       /*EDITAR NOMBRE DE USUARIOOOO*/
       $('body').on('click','#editContraUser',function(e){
             e.preventDefault();
            // alert($(this).attr('href'));
-            $('#id_registro').val($(this).attr('href'));
+            $('#id_registro2').val($(this).attr('href'));
             //abreimos el formulario
             $('#formularioContraseña').dialog('open');
             //estraemos los campos.
@@ -403,8 +400,14 @@ $(document).ready(function(){
             //$('#dinero').val($(this).parent().parent().children('td:eq(0)').text());
       });
 
-      var petContra = $('#formulario form').attr('action');
-      var metContra = $('#formulario form').attr('method');
+       $('body').on('click','#UserCancelar',function(e){
+             e.preventDefault();
+             $('#formularioContraseña').dialog('close');
+      });
+
+      var petContra = $('#formularioContraseña form').attr('action');
+      var metContra = $('#formularioContraseña form').attr('method');
+
       $("#contraseñaValidar").validate({
             rules:{
                   contraseñaA:{

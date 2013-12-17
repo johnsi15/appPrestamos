@@ -11,8 +11,16 @@
   <script src="js/jquery.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/ajaxInicio.js"></script>
-</head>
-    <style>
+    <?php  
+       //Iniciar Sesión
+       session_start();//iniciamos una session con session_start es necesario para poder definir o usar las variables de session
+        //Validar si se está ingresando con sesión correctamente
+        if (isset($_SESSION['id_user'])){
+            header('Location: menu.php');//si esta bien la session lo mandamos al menu principal...
+        }else{
+        }    
+    ?>
+   <style>
        #centrar{
           text-align: center;
           padding-left: 2%;
@@ -25,9 +33,14 @@
           margin-left: 40%;
           margin-top: 7%;
        }
+       #sombra{
+        color: white;
+        text-shadow:-3px 1px 5px #000000;
+       }
        .hero-unit{
           margin-top: 7%;
           text-align: center;
+          background-image: url('img/dinero-1.jpg');
        }
        form{
         margin-left: 10%;
@@ -58,17 +71,8 @@
         });
     });
     </script>
+</head>
 <body>
-    <?php  
-       //Iniciar Sesión
-       session_start();//iniciamos una session con session_start es necesario para poder definir o usar las variables de session
-        //Validar si se está ingresando con sesión correctamente
-        if (isset($_SESSION['id_user'])){
-            header('Location: menu.php');//si esta bien la session lo mandamos al menu principal...
-        }else{
-        }    
-    ?>
-      
   <header>
     <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="navbar-inner">
@@ -113,9 +117,8 @@
   <section>
     <div class="container">
       <div class="hero-unit"> 
-        <p class="page-header">
-            <h1>Prestamos AJ</h1> 
-        </p>
+            <h1 id="sombra">Prestamos AJ</h1> 
+            <br><br><br>
       </div>
     </div>
   </section>
@@ -149,7 +152,7 @@
     </article>
     <!-- pie de pagina-->
   <footer>
-      <h2 id="centrar"><img src="img/copyright.png" alt="Autor"> John Andrey Serrano - 2013</h2>
+      <h2 id="centrar"><img src="img/copyright.png" alt="Autor"> AJ 1.0 - 2013</h2>
       <div id="pie">
           <p>Twitter: @Jandrey15</p>
       </div>

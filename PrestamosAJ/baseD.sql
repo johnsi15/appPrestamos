@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-12-2013 a las 16:03:57
+-- Tiempo de generación: 17-12-2013 a las 17:05:54
 -- Versión del servidor: 5.5.27
 -- Versión de PHP: 5.3.10
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `caja` (
 --
 
 INSERT INTO `caja` (`baseTotal`, `interesTotal`) VALUES
-(5600300, 2200000);
+(3100000, 100000);
 
 -- --------------------------------------------------------
 
@@ -60,19 +60,8 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 --
 
 INSERT INTO `clientes` (`cedulaCliente`, `nombre`, `direccion`, `telefono`, `nPrestamos`) VALUES
-(12548, 'prueba_2', '1234568', 'direcion_prueba', 3),
-(24586, 'prueba_5', 'prueba', '1325487', 0),
-(158796, 'prueba_3', 'mz_prueba', '125487955', 2),
-(254879, 'prueba_7', 'final_combo', '2547986', 2),
-(1243568, 'prueba_6', 'prueba_combo', '312458796', 2),
-(1254896, 'prueba_nuevoclien', 'prueba', '235487', 0),
-(12348577, 'prueba registro', 'prueba', '1235873', 2),
-(12348578, 'prueba registro', 'prueba', '1235873', 1),
-(12354487, 'prueba registro2', 'prueba', '1254875', 2),
-(109045258, 'prueba', 'prueba_dir', '312458695', 2),
-(123456789, 'prueba_4', 'prueba', '312456687', 1),
-(125468745, 'registro de prueba', 'prueba', '123456789', 1),
-(1093763837, 'john andrey', 'Mz E-9 lote 12', '3016015787', 1);
+(1093, 'andrey', 'mz x9', '3016015787', 1),
+(1093763837, 'john', 'mz e9 lote 12', '3016015787', 1);
 
 -- --------------------------------------------------------
 
@@ -86,16 +75,7 @@ CREATE TABLE IF NOT EXISTS `gastos` (
   `concepto` text NOT NULL,
   `fecha` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Volcado de datos para la tabla `gastos`
---
-
-INSERT INTO `gastos` (`id`, `dinero`, `concepto`, `fecha`) VALUES
-(1, 100000, 'Factura\r\n				', '2013-11-28'),
-(2, 50000, 'factura celular				', '2013-11-28'),
-(3, 50000, 'prueba\r\n				', '2013-11-28');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -114,20 +94,14 @@ CREATE TABLE IF NOT EXISTS `pagos` (
   PRIMARY KEY (`id`),
   KEY `cedula` (`cedulaPagos`),
   KEY `numeroPresta` (`numeroPresta`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Volcado de datos para la tabla `pagos`
 --
 
 INSERT INTO `pagos` (`id`, `cedulaPagos`, `fecha`, `abonoCapital`, `abonoInteres`, `saldo`, `numeroPresta`) VALUES
-(1, 254879, '2013-12-10', 100000, 100000, 800000, 7),
-(2, 1243568, '2013-12-10', 100000, 100000, 0, 6),
-(3, 1243568, '2013-12-10', 100000, 100000, 0, 6),
-(4, 254879, '2013-12-10', 100000, 100000, 0, 7),
-(5, 254879, '2013-12-10', 100000, 100000, 0, 7),
-(6, 12348577, '2013-12-11', 100000, 100000, 700000, 16),
-(7, 12548, '2013-12-11', 100000, 100000, 900000, 17);
+(1, 1093, '2013-12-17', 100000, 100000, 900000, 1);
 
 -- --------------------------------------------------------
 
@@ -147,34 +121,22 @@ CREATE TABLE IF NOT EXISTS `prestamos` (
   `fechaPago` date NOT NULL,
   `interes` int(11) NOT NULL,
   `saldoInteres` int(11) NOT NULL,
-  `condicion` varchar(8) NOT NULL,
+  `inicio` varchar(2) NOT NULL,
   `notificacion` int(11) NOT NULL,
   `mes` int(11) NOT NULL,
+  `tipo` varchar(5) NOT NULL,
+  `porcentaje` int(11) NOT NULL,
   PRIMARY KEY (`codigo`),
   KEY `cedula` (`cedula`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `prestamos`
 --
 
-INSERT INTO `prestamos` (`codigo`, `cedula`, `monto`, `saldo`, `NcuotasQ`, `NcuotasM`, `Vcuota`, `fechaPrestamo`, `fechaPago`, `interes`, `saldoInteres`, `condicion`, `notificacion`, `mes`) VALUES
-(5, 12548, 1000000, 1000000, '10', '5', 150000, '2013-11-29', '2013-12-23', 500000, 500000, 'nopago', 3, 0),
-(6, 1243568, 1000000, 0, '10', '5', 150000, '2013-11-12', '2014-04-11', 500000, 0, 'nopago', 3, 1),
-(7, 254879, 1000000, 0, '10', '5', 150000, '2013-11-12', '2014-04-11', 450000, 0, 'nopago', 3, 1),
-(8, 158796, 1000000, 500000, '10', '5', 150000, '2013-11-12', '2014-05-12', 500000, 50000, 'nopago', 3, 1),
-(9, 12348577, 1000000, 500000, '15', '7.5', 116667, '2013-11-20', '2014-03-20', 750000, 350000, 'nopago', 0, 0),
-(10, 12354487, 1000000, 1000000, '12', '6', 133333, '2013-11-20', '2014-04-20', 600000, 600000, 'nopago', 0, 0),
-(11, 12354487, 2000000, 2000000, '10', '5', 300000, '2013-11-20', '2014-03-20', 1000000, 1000000, 'nopago', 0, 0),
-(13, 1243568, 1000000, 900000, '10', '5', 150000, '2013-11-20', '2013-11-30', 500000, 400000, 'nopago', 0, 0),
-(14, 123456789, 1000000, 1000000, '15', '7.5', 116667, '2013-11-20', '2014-02-21', 750000, 750000, 'nopago', 0, 0),
-(15, 158796, 1000000, 1000000, '10', '5', 150000, '2013-11-20', '2014-03-31', 500000, 500000, 'nopago', 0, 0),
-(16, 12348577, 1000000, 700000, '10', '5', 150000, '2013-11-20', '2014-04-20', 500000, 300000, 'nopago', 1, 1),
-(17, 12548, 1000000, 900000, '10', '5', 150000, '2013-11-29', '2013-12-23', 500000, 400000, 'nopago', 1, 1),
-(18, 254879, 1000000, 1000000, '15', '7.5', 116667, '2013-11-23', '2014-03-23', 750000, 750000, 'nopago', 0, 0),
-(19, 12348578, 1000000, 900000, '10', '5', 150000, '2013-11-23', '2014-03-24', 500000, 400000, 'nopago', 1, 0),
-(20, 1093763837, 1000000, 900000, '10', '5', 150000, '2013-12-01', '2014-03-31', 500000, 400000, 'nopago', 0, 0),
-(21, 125468745, 2000000, 1800000, '10', '5', 300000, '2013-12-02', '2013-12-16', 1000000, 900000, 'nopago', 1, 0);
+INSERT INTO `prestamos` (`codigo`, `cedula`, `monto`, `saldo`, `NcuotasQ`, `NcuotasM`, `Vcuota`, `fechaPrestamo`, `fechaPago`, `interes`, `saldoInteres`, `inicio`, `notificacion`, `mes`, `tipo`, `porcentaje`) VALUES
+(1, 1093, 1000000, 900000, '10', '5', 300000, '2013-12-16', '2014-01-01', 500000, 400000, '0', 1, 0, 'm', 10),
+(2, 1093763837, 1000000, 1000000, '10', '5', 150000, '2013-12-17', '2014-01-02', 500000, 500000, '0', 0, 0, 'q', 10);
 
 -- --------------------------------------------------------
 
@@ -194,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `clave`) VALUES
-(1, 'alvaro', '123456');
+(1, 'alvaro', '8cb2237d0679ca88db6464eac60da96345513964');
 
 --
 -- Restricciones para tablas volcadas
@@ -204,8 +166,8 @@ INSERT INTO `usuarios` (`id`, `nombre`, `clave`) VALUES
 -- Filtros para la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  ADD CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`numeroPresta`) REFERENCES `prestamos` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`cedulaPagos`) REFERENCES `clientes` (`cedulaCliente`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`cedulaPagos`) REFERENCES `clientes` (`cedulaCliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`numeroPresta`) REFERENCES `prestamos` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `prestamos`

@@ -40,8 +40,9 @@
       $interes = $_POST['interes'];
       date_default_timezone_set('America/Bogota'); 
       $fechaI = date("Y-m-d");
-      $condicion = "nopago";
-      if($objeto->registrarPrestamo($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion)){
+      $tipo = $_POST['tipo'];
+      $porcentaje = $_POST['porcentaje'];
+      if($objeto->registrarPrestamo($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$tipo,$porcentaje)){
         $objeto->paginacionPrestamos();
         $objeto->verPrestamos();
       }
@@ -81,7 +82,6 @@
    if(isset($_POST['modificarBase'])){
         $base = $_POST['base'];
         $tipo = $_POST['tipo'];
-
         if($tipo=='1'){
             $objeto->actualizarBase($base);
             $objeto->verCaja();
@@ -460,7 +460,7 @@
    if(isset($_POST['UserModificarContra'])){
      $conA = $_POST['contraseñaA'];
      $conN = $_POST['contraseñaN'];
-     $cod = $_POST['id_registro'];
+     $cod = $_POST['id_registro2'];
      $objeto->cambiarClave($conA,$conN,$cod);
    }
 

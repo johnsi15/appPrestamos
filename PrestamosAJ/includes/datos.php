@@ -1,7 +1,7 @@
 <?php
 	/*codigo para combox de los clientes y los prestamos*/
 	///realizamos la conexion:
-  $con= mysql_connect("localhost","root","") or die ("Problemas en la conexion...");
+  $con= mysql_connect("localhost","root","andrey15") or die ("Problemas en la conexion...");
   ///selecionamos la base de tados:
   mysql_select_db("prestamosaj") or die ("Problema en la selecion de la base de datos");
   

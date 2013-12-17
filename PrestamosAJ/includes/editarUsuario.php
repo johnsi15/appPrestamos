@@ -200,9 +200,9 @@
      </div>
 
 	<!--Modificamos la contraseña del usuairo-->
-	<div class="hide" id="formularioContraseña" title="Editar Nombre">
+	<div class="hide" id="formularioContraseña" title="Editar Clave">
      	<form action="acciones.php" method="post" id="contraseñaValidar">
-     		<input type="hidden" id="id_registro" name="id_registro" value="0">
+     		<input type="hidden" id="id_registro2" name="id_registro2" value="0">
      		<div class="control-group">
      			<label for="contraseñaActual" class="control-label">Contraseña Actual</label>
      			<div class="controls">
@@ -236,6 +236,7 @@
 	    	</div>
 	    </form>
 	</div>
+
 	<footer>
 		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>
 		<!-- <h2 id="pie"><img src="img/copyright.png" alt="Autor"> JA Serrano</h2> -->

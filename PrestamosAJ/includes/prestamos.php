@@ -168,17 +168,39 @@
 		
 		function calculo(){
     		//var contador = document.getElementById("totalDia");
-    		var quin = $('#quin').val();
-    		var prestamo = $('#prestamo').val();
-    		var porc = $('#porc').val();
-    		var resuPorce = (prestamo*porc)/100;
-    		var div = resuPorce/2;
-    		var interes = div * quin;
-    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
+    		for(i=0;i<document.formu.tipo.length;i++){
+				if(document.formu.tipo[i].checked) {
+					marcado=i;
+				}
+			}
+			//alert("El valor seleccionado es: "+document.formu.tipo[marcado].value);
+    		//var valor = document.getElementById("tipo").value;
+    		if(document.formu.tipo[marcado].value == 'm'){
+    			var quin = $('#quin').val();
+	    		var prestamo = $('#prestamo').val();
+	    		var porc = $('#porc').val();
+	    		var resuPorce = (prestamo*porc)/100;
+	    		var div = resuPorce/2;
+	    		var interes = div * quin;
+	    		var meses = quin/2;
+	    		var cuota = (parseInt(prestamo) + parseInt(interes))/meses;
 
-    		$("#vcuota").val(Math.round(cuota));
-    		$("#interes").val(interes);
-    	}
+	    		$("#vcuota").val(Math.round(cuota));
+	    		$("#interes").val(interes);
+    		}else{
+    			var quin = $('#quin').val();
+	    		var prestamo = $('#prestamo').val();
+	    		var porc = $('#porc').val();
+	    		var resuPorce = (prestamo*porc)/100;
+	    		var div = resuPorce/2;
+	    		var interes = div * quin;
+	    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
+
+	    		$("#vcuota").val(Math.round(cuota));
+	    		$("#interes").val(interes);
+    		}
+    		
+    	}//cierre funcion
 	</script>
 </head>
 <body onLoad="setInterval('calculo()',1000);">
@@ -295,7 +317,7 @@
 
 	<!--codigo para hacer un nuevo prestamo-->
 	<div class="hide" id="nuevoPrestamo" title="Nuevo Prestamo">
-     	<form action="acciones.php" method="post" id="registrarPrestamo" class="limpiar">
+     	<form action="acciones.php" method="post" id="registrarPrestamo" class="limpiar" name="formu">
      			<label>Nombre:</label>
 				<select id='nombre' name='nombre' autofocus>
 					<?php
@@ -308,6 +330,9 @@
 				<input type="text" name="dinero" required id="prestamo"/>
 				<label>%</label>
 				<input type="text" name="porcentaje" required id="porc">
+				<label>Mensual <input type="radio" name="tipo" id="tipo" value="m" checked>
+					   Quincenal <input type="radio" name="tipo" id="tipo" value="q">
+				</label>
 				<label>N-cuotas-Q:</label>
 				<input type="text" name="NcuotasQ" id="quin"/>
 				<label>N-cuotas-M:</label>
