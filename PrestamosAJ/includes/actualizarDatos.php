@@ -69,7 +69,7 @@
 	</style>	
 	<script>
       $(document).ready(function(){
-
+      	$('[data-toggle=popover]').popover({html:true});
       	var menu = $('#bloque');
 		var contenedor = $('#bloque-contenedor');
 		var menu_offset = menu.offset();
@@ -114,6 +114,7 @@
 			  	   	//console.log(resp);
 			  	   	$('#verDatos').empty();//limpiar los datos
 			  	   	$('#verDatos').html(resp);
+			  	   	$('[data-toggle=popover]').popover({html:true});
 	      	    	console.log('poraca paso joder....');
 			  	},'html');
       	    }else{
@@ -122,7 +123,8 @@
 			  	   	$('.pagination').remove();
 			  	   	$('#verDatos').empty();//limpiar los datos
 			  	   	$('#verDatos').html(resp);
-	      	    	console.log(resp);
+	      	    	$('[data-toggle=popover]').popover({html:true});
+	      	    	//console.log(resp);
 			  	},'html');
       	    }
 		});
@@ -138,12 +140,13 @@
 					  	url: $('.pagination ul li.next a').attr('href'),
 					  	success: function(html){
 					  	 		//console.log(html);
-					  	 	var nuevosGastos = $(html).find('table tbody'),
+					  	 	var nuevosGastos = $(html).find('#datos tbody'),
 					  	 		nuevaPag     = $(html).find('.pagination'),
-					  	 		tabla        = $('table');
-					  	    tabla.find('tbody').append(nuevosGastos.html());
+					  	 		tabla        = $('#datos');
+					  	    tabla.find('#verDatos').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
+					  	 	$('[data-toggle=popover]').popover({html:true});
 					  	}
 					});
 					  $('.pagination').remove();
@@ -233,7 +236,7 @@
 			<div class="span12">
 				<a class="btn btn-large btn-primary" id="nuevo">Registrar cliente</a>
 				<hr>
-				<table class="table table-hover table-bordered table-condensed">
+				<table id="datos" class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>Nombre</th>

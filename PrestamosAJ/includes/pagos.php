@@ -385,9 +385,9 @@
 				<thead>
 					<tr>
 						<th>N°</th>
-						<th>Vcuota</th>
-						<th>Capital</th>
-						<th>Interes</th>
+						<th>Cut</th>
+						<th>Cpt</th>
+						<th>Int</th>
 					</tr>
 				</thead>
 				<tbody>

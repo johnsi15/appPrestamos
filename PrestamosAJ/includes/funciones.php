@@ -272,7 +272,8 @@
                     <td>'.number_format($fila['saldo']).'</td>
                     <td><a id="info" class="btn btn-mini btn-info" 
                              data-toggle="popover" data-placement="top" 
-                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                             data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                           ValorCuota: '.number_format($fila['Vcuota']).'  <br>
                                            NcuotasM: '.$fila['NcuotasM'].'   <br>
                                            TipoPago: '.$fila['tipo'].'   <br>
                                            Prestamo:'.number_format($fila['monto']).'<br>
@@ -293,7 +294,8 @@
                     <td>'.number_format($fila['saldo']).'</td>
                     <td><a id="info" class="btn btn-mini btn-info" 
                              data-toggle="popover" data-placement="top" 
-                             data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                             data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                           ValorCuota: '.number_format($fila['Vcuota']).'  <br>
                                            NcuotasQ: '.$fila['NcuotasQ'].'   <br>
                                            TipoPago: '.$fila['tipo'].'   <br>
                                            Prestamo:'.number_format($fila['monto']).'<br>
@@ -385,7 +387,8 @@
                         <td>'.number_format($fila['saldo']).'</td>
                         <td><a id="info" class="btn btn-mini btn-info" 
                                  data-toggle="popover" data-placement="top" 
-                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
                                                NcuotasM: '.$fila['NcuotasM'].'   <br>
                                                TipoPago: '.$fila['tipo'].'   <br>
                                                Prestamo:'.number_format($fila['monto']).'<br>
@@ -406,7 +409,8 @@
                         <td>'.number_format($fila['saldo']).'</td>
                         <td><a id="info" class="btn btn-mini btn-info" 
                                  data-toggle="popover" data-placement="top" 
-                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
                                                NcuotasQ: '.$fila['NcuotasQ'].'   <br>
                                                TipoPago: '.$fila['tipo'].'   <br>
                                                Prestamo:'.number_format($fila['monto']).'<br>
@@ -433,7 +437,8 @@
                         <td>'.number_format($fila['saldo']).'</td>
                         <td><a id="info" class="btn btn-mini btn-info" 
                                  data-toggle="popover" data-placement="top" 
-                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
                                                NcuotasM: '.$fila['NcuotasM'].'   <br>
                                                TipoPago: '.$fila['tipo'].'   <br>
                                                Prestamo:'.number_format($fila['monto']).'<br>
@@ -454,7 +459,8 @@
                         <td>'.number_format($fila['saldo']).'</td>
                         <td><a id="info" class="btn btn-mini btn-info" 
                                  data-toggle="popover" data-placement="top" 
-                                 data-content="ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
                                                NcuotasQ: '.$fila['NcuotasQ'].'   <br>
                                                TipoPago: '.$fila['tipo'].'   <br>
                                                Prestamo:'.number_format($fila['monto']).'<br>
@@ -935,7 +941,13 @@
         $resultado = mysql_query("SELECT * FROM clientes LIMIT $inicio,$cant_reg");
         while($fila = mysql_fetch_array($resultado)){
               echo '<tr> 
-                        <td>'.$fila['nombre'].'</td>
+                        <td><a id="info"
+                         data-toggle="popover" data-placement="top" 
+                         data-content="N° Cedula: '.$fila['cedulaCliente'].'"
+
+                         data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
+                        </a>
+                        </td>
                         <td>'.$fila['direccion'].'</td>
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
@@ -1013,7 +1025,13 @@
             $resultado = mysql_query("SELECT * FROM clientes LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
             while($fila = mysql_fetch_array($resultado)){
                   echo '<tr> 
-                        <td>'.$fila['nombre'].'</td>
+                        <td><a id="info"
+                             data-toggle="popover" data-placement="top" 
+                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
+                            </a>
+                        </td>
                         <td>'.$fila['direccion'].'</td>
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
@@ -1025,7 +1043,13 @@
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
                    echo '<tr> 
-                        <td>'.$fila['nombre'].'</td>
+                        <td><a id="info"
+                             data-toggle="popover" data-placement="top" 
+                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
+                            </a>
+                        </td>
                         <td>'.$fila['direccion'].'</td>
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
@@ -1083,11 +1107,14 @@
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");//fecha actual bien 
         $fechaD = date("d");
+        $fechaM = date("m");
+        $fechaA = date("Y");
         $resultado = mysql_query("SELECT * FROM pagos,prestamos WHERE prestamos.codigo=pagos.numeroPresta and notificacion='1'");
         while($fila = mysql_fetch_array($resultado)){
                 $dia = substr($fila['fecha'],8,10);
+                $mes = substr($fila['fecha'],5,-3);
                 $dia2 = $dia + 5;
-                if($fechaD >= $dia2){
+                if($fechaD >= $dia2 or $fechaM > $mes){
                     $nPrestamo = $fila['codigo'];
                     mysql_query("UPDATE prestamos SET notificacion='0' WHERE codigo='$nPrestamo'") 
                                         or die ("Error en el update");
@@ -1098,14 +1125,26 @@
         $resultado = mysql_query("SELECT * FROM prestamos WHERE inicio='0'");
         while($fila = mysql_fetch_array($resultado)){
             $dia = substr($fila['fechaPrestamo'],8,10);
+            $mes = substr($fila['fechaPrestamo'],5,-3);
+            $año = substr($fila['fechaPrestamo'],0,4);
             $dia2 = $dia + 2;
-            if($fila['inicio'] == '0'){
-                if($fechaD >= $dia2){
+            if($fila['tipo'] == 'm'){
+                if($mes < $fechaM or $año < $fechaA){
+                    if($fila['inicio'] == '0'){
+                            $nPrestamo = $fila['codigo'];
+                            mysql_query("UPDATE prestamos SET inicio='1' WHERE codigo='$nPrestamo'") 
+                                                or die ("Error en el update");
+                    } 
+                }
+            }else{//es quincenal
+                if($fila['inicio'] == '0'){
+                    if($fechaD >= $dia2 or $fechaM > $mes){
                         $nPrestamo = $fila['codigo'];
                         mysql_query("UPDATE prestamos SET inicio='1' WHERE codigo='$nPrestamo'") 
-                                            or die ("Error en el update");
-                }
-            } 
+                                         or die ("Error en el update");
+                    }
+                } 
+            }
         }
     }//cierre metodo 
 
