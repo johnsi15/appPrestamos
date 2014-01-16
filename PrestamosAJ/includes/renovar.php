@@ -164,16 +164,37 @@
 
 		function calculo(){
     		//var contador = document.getElementById("totalDia");
-    		var quin = $('#quin').val();
-    		var prestamo = $('#prestamo').val();
-    		var porc = $('#porc').val();
-    		var resuPorce = (prestamo*porc)/100;
-    		var div = resuPorce/2;
-    		var interes = div * quin;
-    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
+    		for(i=0;i<document.formu.tipo.length;i++){
+				if(document.formu.tipo[i].checked) {
+					marcado=i;
+				}
+			}
+			//alert("El valor seleccionado es: "+document.formu.tipo[marcado].value);
+    		//var valor = document.getElementById("tipo").value;
+    		if(document.formu.tipo[marcado].value == 'm'){
+    			var quin = $('#quin').val();
+	    		var prestamo = $('#prestamo').val();
+	    		var porc = $('#porc').val();
+	    		var resuPorce = (prestamo*porc)/100;
+	    		var div = resuPorce/2;
+	    		var interes = div * quin;
+	    		var meses = quin/2;
+	    		var cuota = (parseInt(prestamo) + parseInt(interes))/meses;
 
-    		$("#vcuota").val(Math.round(cuota));
-    		$("#interes").val(interes);
+	    		$("#vcuota").val(Math.round(cuota));
+	    		$("#interes").val(interes);
+    		}else{
+    			var quin = $('#quin').val();
+	    		var prestamo = $('#prestamo').val();
+	    		var porc = $('#porc').val();
+	    		var resuPorce = (prestamo*porc)/100;
+	    		var div = resuPorce/2;
+	    		var interes = div * quin;
+	    		var cuota = (parseInt(prestamo) + parseInt(interes))/quin;
+
+	    		$("#vcuota").val(Math.round(cuota));
+	    		$("#interes").val(interes);
+    		}
     	}
 	</script>
 </head>
@@ -199,7 +220,7 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a  href="#">Caja</a></li>
+									<li><a  href="caja.php">Caja</a></li>
 									<li><a href="actualizarDatos.php">Registrar</a></li>
 									<li><a href="prestamos.php">Prestamos</a></li>
 									<li><a href="pagos.php">Pagos</a></li>
@@ -273,7 +294,7 @@
 
 	<!--codigo para renovar el credito o prestamo del cliente-->
 	<div class="hide" id="renovarPrestamo" title="Renovar Prestamo">
-     	<form action="acciones.php" method="post" id="renovarPrest" class="limpiar">
+     	<form action="acciones.php" method="post" id="renovarPrest" class="limpiar" name="formu">
      		<input type="hidden" id="id_registro" name="id_registro" value="0">
      			<label>Nombre:</label>
 				<input type="text" name="nombre" id="nombre" disabled>
@@ -281,6 +302,9 @@
 				<input type="text" name="dinero" required id="prestamo"/>
 				<label>%</label>
 				<input type="text" name="porcentaje" required id="porc">
+				<label>Mensual <input type="radio" name="tipo" id="tipo" value="m" checked>
+					   Quincenal <input type="radio" name="tipo" id="tipo" value="q">
+				</label>
 				<label>N-cuotas-Q:</label>
 				<input type="text" name="NcuotasQ" id="quin"/>
 				<label>N-cuotas-M:</label>

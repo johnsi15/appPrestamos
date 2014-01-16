@@ -106,6 +106,11 @@ $(document).ready(function(){
             }
       });
 
+       $('body').on('click','#cancelar',function(e){
+         e.preventDefault();
+         $('#deleteReg').dialog('close');
+      });
+
       ///Edicion de Registros.
       $('body').on('click','#delete',function(e){
                e.preventDefault();

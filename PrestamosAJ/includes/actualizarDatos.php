@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Registrar Cliente</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
@@ -14,7 +15,7 @@
 	<script src="../js/bootstrap.js"></script>
 	<script src="../js/registrar.js"></script>
 	<script src="../js/editar.js"></script>
-	<script src="../js/eliminar.js"></script>
+	<script src="../js/eliminarCliente.js"></script>
 	<?php
       session_start();
       if(isset($_SESSION['id_user'])){
@@ -289,7 +290,7 @@
      	<form action="acciones.php" method="post">
      		<input type="hidden" id="id_registro" name="id_registro" value="0">
      			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre" autofocus/>
+				<input type="text" name="nombre" id="nombre"/>
      			<label>Dirección:</label>
 				<input type="text" name="direccion" id="direccion"/>
 				<label>Teléfono:</label>
@@ -301,21 +302,17 @@
     </div>
 
      <!--codigo para eliminar-->
-    <div class="hide" id="deleteReg" title="Eliminar Cliente">
-	    <form action="acciones.php" method="post">
-	    	<fieldset id="datosOcultos">
-	    		<input type="hidden" id="id_delete" name="id_delete" value="0"/>
-	    	</fieldset>
-	    	<div class="control-group">
-	    		<label for="activoElim" class="alert alert-danger">
+     <div class="hide" id="deleteReg" title="Eliminar Cliente">
+     	<form action="acciones.php" method="post">
+     		<input type="hidden" id="id_delete" name="id_delete" value="0">
+     			<label for="activoElim" class="alert alert-danger">
 	    		    <strong>Esta seguro de Eliminar este Cliente</strong><br>
 	    		</label>
-	    		<input type="hidden" name="deleteCliente"/> 
-			    <button type="submit" class="btn btn-success">Aceptar</button>
-			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
-	    	</div>
-	    </form>
-	</div>
+				<input type="hidden" name="deleteCliente">
+				<button type="submit" id="deleteCliente" class="btn btn-success">Aceptar</button>
+				<button id="cancelar" class="btn btn-danger">Cancelar</button>
+     	</form>
+    </div>
 
 	<footer>
 		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>

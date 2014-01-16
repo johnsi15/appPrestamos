@@ -42,7 +42,7 @@
             $saldo = $prestamo;
             $saldoIn = $interes;
             mysql_query("INSERT INTO prestamos (cedula,monto,saldo,NcuotasQ,NcuotasM,Vcuota,fechaPrestamo,fechaPago,interes,saldoInteres,inicio,notificacion,mes,tipo,porcentaje)
-                                          VALUES ('$cedula','$prestamo','$saldo','$NcQ','$NcM','$Vcuota','$fechaPrestamo','$fechaPago','$interes','$saldoIn','0','0','0','$tipo','$porcentaje')")
+                                          VALUES ('$cedula','$prestamo','$saldo','$NcQ','$NcM','$Vcuota','$fechaPrestamo','$fechaPago','$interes','$saldoIn','0','0','1','$tipo','$porcentaje')")
                                           or die ("Error");
             $resultado = mysql_query("SELECT * FROM clientes WHERE cedulaCliente='$cedula' ");
             $fila = mysql_fetch_array($resultado);
@@ -686,7 +686,7 @@
     }
 
     /*renovar prestamos de los clientes*/
-    public function renovarPrestamos($cedula,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$condicion){
+    public function renovarPrestamos($codigo,$prestamo,$NcQ,$NcM,$Vcuota,$fechaPrestamo,$fechaPago,$interes,$tipo,$porcentaje){
         /*actualizando la caja despues del prestamo*/                           
         $resultado2 = mysql_query("SELECT baseTotal FROM caja");
         $fila2 = mysql_fetch_array($resultado2);
@@ -698,8 +698,9 @@
             $saldoIn = $interes;
             mysql_query("UPDATE prestamos SET monto='$prestamo', saldo='$saldo', NcuotasQ='$NcQ',
                                               NcuotasM='$NcM', Vcuota='$Vcuota',fechaPrestamo='$fechaPrestamo',
-                                              fechaPago='$fechaPago',interes='$interes',saldoInteres='$saldoIn' ,condicion='$condicion'
-                                              WHERE codigo='$cedula'")
+                                              fechaPago='$fechaPago',interes='$interes',saldoInteres='$saldoIn',
+                                              inicio='0', notificacion='0', mes='1', tipo='$tipo', porcentaje='$porcentaje'
+                                              WHERE codigo='$codigo'")
                                           or die ("Error");
 
             $nuevaCaja = $fila2['baseTotal'] - $prestamo;
@@ -941,17 +942,18 @@
         $resultado = mysql_query("SELECT * FROM clientes LIMIT $inicio,$cant_reg");
         while($fila = mysql_fetch_array($resultado)){
               echo '<tr> 
-                        <td><a id="info"
-                         data-toggle="popover" data-placement="top" 
-                         data-content="N° Cedula: '.$fila['cedulaCliente'].'"
-
-                         data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
-                        </a>
-                        </td>
+                        <td>'.$fila['nombre'].'</td>
                         <td>'.$fila['direccion'].'</td>
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedulaCliente'].'"><strong>Eliminar</strong></a></td>
+                        <td><a id="info" class="btn btn-mini btn-info"
+                             data-toggle="popover" data-placement="top" 
+                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
                     </tr>';
         }
     }
@@ -1025,17 +1027,18 @@
             $resultado = mysql_query("SELECT * FROM clientes LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
             while($fila = mysql_fetch_array($resultado)){
                   echo '<tr> 
-                        <td><a id="info"
-                             data-toggle="popover" data-placement="top" 
-                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
-
-                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
-                            </a>
-                        </td>
+                        <td>'.$fila['nombre'].'</td>
                         <td>'.$fila['direccion'].'</td>
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedulaCliente'].'"><strong>Eliminar</strong></a></td>
+                         <td><a id="info" class="btn btn-mini btn-info"
+                             data-toggle="popover" data-placement="top" 
+                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
                     </tr>';
             } 
         }else{
@@ -1043,17 +1046,18 @@
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
                    echo '<tr> 
-                        <td><a id="info"
-                             data-toggle="popover" data-placement="top" 
-                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
-
-                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>'.$fila['nombre'].'</strong>
-                            </a>
-                        </td>
+                        <td>'.$fila['nombre'].'</td>
                         <td>'.$fila['direccion'].'</td>
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedulaCliente'].'"><strong>Eliminar</strong></a></td>
+                         <td><a id="info" class="btn btn-mini btn-info"
+                             data-toggle="popover" data-placement="top" 
+                             data-content="N° Cedula: '.$fila['cedulaCliente'].'"
+
+                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                            </a>
+                        </td>
                     </tr>';
             }  
         }
@@ -1113,8 +1117,9 @@
         while($fila = mysql_fetch_array($resultado)){
                 $dia = substr($fila['fecha'],8,10);
                 $mes = substr($fila['fecha'],5,-3);
+                $año = substr($fila['fechaPrestamo'],0,4);
                 $dia2 = $dia + 5;
-                if($fechaD >= $dia2 or $fechaM > $mes){
+                if($fechaD >= $dia2 or $fechaM > $mes or $fechaA > $año){
                     $nPrestamo = $fila['codigo'];
                     mysql_query("UPDATE prestamos SET notificacion='0' WHERE codigo='$nPrestamo'") 
                                         or die ("Error en el update");
@@ -1279,20 +1284,24 @@
     public function mesualidad(){
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");//fecha actual bien 
-        $año = date("Y");
+        $fechaA = date("Y");
         $fechaD = date("d");
         $fechaM = date("m");
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
         while($fila = mysql_fetch_array($resultado)){
+            $mes = substr($fila['fechaPrestamo'],5,-3);
+            $año = substr($fila['fechaPrestamo'],0,4);
             if($fila['saldo'] != '0'){
                 if($fila['inicio'] == '1'){
                     if($fila['mes'] == '1'){
-                        echo '<tr>
-                              <td>'.$fila['codigo'].'</td>
-                              <td>'.$fila['nombre'].'</td>
-                              <td>'.number_format($fila['saldo']).'</td>
-                              <td><a id="pagar" class="btn btn-mini btn-success" href="'.$fila['cedulaCliente'].'"><strong>Pagar</strong></a></td>
-                        </tr>';
+                        if($mes < $fechaM or $año < $fechaA){
+                            echo '<tr>
+                                  <td>'.$fila['codigo'].'</td>
+                                  <td>'.$fila['nombre'].'</td>
+                                  <td>'.number_format($fila['saldo']).'</td>
+                                  <td><a id="pagar" class="btn btn-mini btn-success" href="'.$fila['cedulaCliente'].'"><strong>Pagar</strong></a></td>
+                            </tr>';
+                        }
                     }
                 }
             }

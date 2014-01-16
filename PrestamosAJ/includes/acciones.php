@@ -50,7 +50,7 @@
 
    /*renovar prestamo de los clientes*/
    if(isset($_POST['renovarPrest'])){
-      $cedula = $_POST['id_registro'];
+      $codigo = $_POST['id_registro'];
       $dinero = $_POST['dinero'];
       $NcQ = $_POST['NcuotasQ'];
       $NcM = $_POST['NcuotasM'];
@@ -59,8 +59,9 @@
       $interes = $_POST['interes'];
       date_default_timezone_set('America/Bogota'); 
       $fechaI = date("Y-m-d");
-      $condicion = "nopago";
-      if($objeto->renovarPrestamos($cedula,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$condicion)){
+      $tipo = $_POST['tipo'];
+      $porcentaje = $_POST['porcentaje'];
+      if($objeto->renovarPrestamos($codigo,$dinero,$NcQ,$NcM,$valor,$fechaI,$fechaP,$interes,$tipo,$porcentaje)){
         $objeto->verRenovar();
       }
    }
@@ -162,12 +163,11 @@
        $objeto->paginacionEstudianteMenu();
    }
 
-
    if(isset($_POST['deleteCliente'])){
        $cod = $_POST['id_delete'];
        $objeto->deleteCliente($cod);
-       $objeto->paginacionDatosPersonales();
        $objeto->verTodosClientes();
+       $objeto->paginacionDatosPersonales();
    }
 
    if(isset($_POST['deleteBaseDatos'])){

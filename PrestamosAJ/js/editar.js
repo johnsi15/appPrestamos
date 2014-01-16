@@ -193,12 +193,13 @@ $(document).ready(function(){
                   type: metodo,
                   data: $('#editarDatos form').serialize(),
                   success: function(resp){
-                        console.log(resp);
+                        //console.log(resp);
                         if(resp == "Error"){
                              setTimeout(function(){ $("#mensaje .alert").fadeOut(1000).fadeIn(900).fadeOut(800).fadeIn(500).fadeOut(300);}, 800); 
                              var error = '<div class="alert alert-error">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Error'+'</strong>'+'<br> No se Pudo Editar'+'</div>';
                              $('.span3 .alert').remove();
                              $('#mensaje').html(error);
+                             $('[data-toggle=popover]').popover({html:true});
                         }else{
                               $('#verDatos').empty();//limpiamos la tabla 
                               $('#verDatos').html(resp);//mandamos los nuevos datos a la tabla
@@ -206,9 +207,8 @@ $(document).ready(function(){
                               setTimeout(function(){ $("#mensaje .alert").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300);}, 800); 
                               var exito = '<div class="alert alert-info">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Modificado '+'</strong>'+' el registro se modifico correctamente'+'</div>';
                               $('#mensaje').html(exito);
-                              $('.limpiar')[0].reset();///limpiamos los campos del formulario.
-                             // $('#paginacion').empty();//limpiar los datos
-                              //$('#paginacion').load('paginacion.php');
+                              //$('.limpiar')[0].reset();///limpiamos los campos del formulario.
+                              $('[data-toggle=popover]').popover({html:true});
                         }
                   },
                   error: function(jqXHR,estado,error){
