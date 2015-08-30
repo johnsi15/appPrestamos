@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Registrar Cliente</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
@@ -124,8 +123,8 @@
 			  	   	$('.pagination').remove();
 			  	   	$('#verDatos').empty();//limpiar los datos
 			  	   	$('#verDatos').html(resp);
-	      	    	$('[data-toggle=popover]').popover({html:true});
-	      	    	//console.log(resp);
+			  	   	$('[data-toggle=popover]').popover({html:true});
+	      	    	console.log(resp);
 			  	},'html');
       	    }
 		});
@@ -141,10 +140,10 @@
 					  	url: $('.pagination ul li.next a').attr('href'),
 					  	success: function(html){
 					  	 		//console.log(html);
-					  	 	var nuevosGastos = $(html).find('#datos tbody'),
+					  	 	var nuevosGastos = $(html).find('table tbody'),
 					  	 		nuevaPag     = $(html).find('.pagination'),
-					  	 		tabla        = $('#datos');
-					  	    tabla.find('#verDatos').append(nuevosGastos.html());
+					  	 		tabla        = $('table');
+					  	    tabla.find('tbody').append(nuevosGastos.html());
 					  	 	tabla.after(nuevaPag.hide());
 					  	 	$('#cargando').hide();
 					  	 	$('[data-toggle=popover]').popover({html:true});
@@ -237,7 +236,7 @@
 			<div class="span12">
 				<a class="btn btn-large btn-primary" id="nuevo">Registrar cliente</a>
 				<hr>
-				<table id="datos" class="table table-hover table-bordered table-condensed">
+				<table class="table table-hover table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>Nombre</th>
@@ -290,7 +289,7 @@
      	<form action="acciones.php" method="post">
      		<input type="hidden" id="id_registro" name="id_registro" value="0">
      			<label>Nombre:</label>
-				<input type="text" name="nombre" id="nombre"/>
+				<input type="text" name="nombre" id="nombre" autofocus/>
      			<label>Dirección:</label>
 				<input type="text" name="direccion" id="direccion"/>
 				<label>Teléfono:</label>
@@ -302,17 +301,21 @@
     </div>
 
      <!--codigo para eliminar-->
-     <div class="hide" id="deleteReg" title="Eliminar Cliente">
-     	<form action="acciones.php" method="post">
-     		<input type="hidden" id="id_delete" name="id_delete" value="0">
-     			<label for="activoElim" class="alert alert-danger">
+    <div class="hide" id="deleteReg" title="Eliminar Cliente">
+	    <form action="acciones.php" method="post">
+	    	<fieldset id="datosOcultos">
+	    		<input type="hidden" id="id_delete" name="id_delete" value="0"/>
+	    	</fieldset>
+	    	<div class="control-group">
+	    		<label for="activoElim" class="alert alert-danger">
 	    		    <strong>Esta seguro de Eliminar este Cliente</strong><br>
 	    		</label>
-				<input type="hidden" name="deleteCliente">
-				<button type="submit" id="deleteCliente" class="btn btn-success">Aceptar</button>
-				<button id="cancelar" class="btn btn-danger">Cancelar</button>
-     	</form>
-    </div>
+	    		<input type="hidden" name="deleteCliente"/> 
+			    <button type="submit" id="deleteCliente" class="btn btn-success">Aceptar</button>
+			    <button id="cancelar" name="cancelar" class="btn btn-danger">Cancelar</button>
+	    	</div>
+	    </form>
+	</div>
 
 	<footer>
 		<h2 id="pie"><img src="../img/twitter.png">  @Jandrey15 - 2013</h2>

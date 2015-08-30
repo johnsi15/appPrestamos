@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	/*_______________________________________________________________________*/
+
   // codigo para limpiar la base de datos
    $('#deleteBase').dialog({
             autoOpen: false,

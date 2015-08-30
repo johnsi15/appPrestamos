@@ -186,7 +186,7 @@
      		<div class="control-group">
      			<label for="nombre" class="control-label">Nombre</label>
      			<div class="controls">
-     				<input type="text" name="nombre" id="nombre" autofocus  MAXLENGTH=5>
+     				<input type="text" name="nombre" id="nombre" autofocus  MAXLENGTH=8>
      			</div>
      		</div>
      		<div class="control-group">

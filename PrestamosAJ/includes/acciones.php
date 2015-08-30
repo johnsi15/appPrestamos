@@ -163,6 +163,7 @@
        $objeto->paginacionEstudianteMenu();
    }
 
+
    if(isset($_POST['deleteCliente'])){
        $cod = $_POST['id_delete'];
        $objeto->deleteCliente($cod);

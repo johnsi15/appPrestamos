@@ -106,7 +106,7 @@ $(document).ready(function(){
             }
       });
 
-       $('body').on('click','#cancelar',function(e){
+      $('body').on('click','#cancelar',function(e){
          e.preventDefault();
          $('#deleteReg').dialog('close');
       });

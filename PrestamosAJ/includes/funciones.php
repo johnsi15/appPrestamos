@@ -91,11 +91,15 @@
 
             mysql_query("UPDATE caja SET interesTotal='$nuevoInteres', baseTotal='$nuevaBase'") 
                                         or die ("Error");
-            return true;
+            //volvemos hacer la consulta para revisar si el saldo esta en cero
+            $resultado = mysql_query("SELECT * FROM prestamos WHERE codigo='$nPrestamo'");
+            $fila = mysql_fetch_array($resultado);
+
             if($fila['saldo'] == '0'){
                 mysql_query("UPDATE prestamos SET notificacion='3' WHERE codigo='$nPrestamo'") 
                                         or die ("Error");
             }
+            return true;
         } 
     }
 
@@ -123,12 +127,17 @@
 
             mysql_query("UPDATE caja SET interesTotal='$nuevoInteres', baseTotal='$nuevaBase'") 
                                         or die ("Error en el update");
-            return true;
+
+            //volvemos hacer la consulta para revisar si el saldo esta en cero
+            $resultado = mysql_query("SELECT * FROM prestamos WHERE codigo='$nPrestamo'");
+            $fila = mysql_fetch_array($resultado);
+
             if($fila['saldo'] == '0'){
                 mysql_query("UPDATE prestamos SET notificacion='3' WHERE codigo='$nPrestamo'") 
                                         or die ("Error");
-                echo'cero';
+                //echo'cero';
             }
+            return true;
         } 
     }
 
@@ -263,50 +272,54 @@
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC LIMIT $inicio,$cant_reg");
    
         while($fila = mysql_fetch_array($resultado)){
-            if($fila['tipo'] == 'm'){
-                 echo '<tr> 
-                    <td>'.$fila['codigo'].'</td>
-                    <td>'.$fila['nombre'].'</td>
-                    <td>'.$fila['direccion'].'</td>
-                    <td>'.$fila['telefono'].'</td>
-                    <td>'.number_format($fila['saldo']).'</td>
-                    <td><a id="info" class="btn btn-mini btn-info" 
-                             data-toggle="popover" data-placement="top" 
-                             data-content="Cedula: '.$fila['cedulaCliente'].'<br>
-                                           ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                           NcuotasM: '.$fila['NcuotasM'].'   <br>
-                                           TipoPago: '.$fila['tipo'].'   <br>
-                                           Prestamo:'.number_format($fila['monto']).'<br>
-                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                           FechaFin: '.$fila['fechaPago'].' <br>
-                                           N° Prestamos: '.$fila['nPrestamos'].'"
+            if($fila['saldo'] == '0'){
 
-                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                            </a>
-                        </td>
-                </tr>';
-            }else{
-                echo '<tr> 
-                    <td>'.$fila['codigo'].'</td>
-                    <td>'.$fila['nombre'].'</td>
-                    <td>'.$fila['direccion'].'</td>
-                    <td>'.$fila['telefono'].'</td>
-                    <td>'.number_format($fila['saldo']).'</td>
-                    <td><a id="info" class="btn btn-mini btn-info" 
-                             data-toggle="popover" data-placement="top" 
-                             data-content="Cedula: '.$fila['cedulaCliente'].'<br>
-                                           ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                           NcuotasQ: '.$fila['NcuotasQ'].'   <br>
-                                           TipoPago: '.$fila['tipo'].'   <br>
-                                           Prestamo:'.number_format($fila['monto']).'<br>
-                                           FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                           FechaFin: '.$fila['fechaPago'].' <br>
-                                           N° Prestamos: '.$fila['nPrestamos'].'"
+            }else{ 
+                 if($fila['tipo'] == 'm'){
+                     echo '<tr> 
+                        <td>'.$fila['codigo'].'</td>
+                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.number_format($fila['saldo']).'</td>
+                        <td><a id="info" class="btn btn-mini btn-info" 
+                                 data-toggle="popover" data-placement="top" 
+                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                               NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
+                                               Prestamo:'.number_format($fila['monto']).'<br>
+                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                               FechaFin: '.$fila['fechaPago'].' <br>
+                                               N° Prestamos: '.$fila['nPrestamos'].'"
 
-                             data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                            </a>
-                        </td>
-                </tr>';
+                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                </a>
+                            </td>
+                    </tr>';
+                }else{
+                    echo '<tr> 
+                        <td>'.$fila['codigo'].'</td>
+                        <td>'.$fila['nombre'].'</td>
+                        <td>'.$fila['direccion'].'</td>
+                        <td>'.$fila['telefono'].'</td>
+                        <td>'.number_format($fila['saldo']).'</td>
+                        <td><a id="info" class="btn btn-mini btn-info" 
+                                 data-toggle="popover" data-placement="top" 
+                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                               NcuotasQ: '.$fila['NcuotasQ'].'   <br>
+                                               TipoPago: '.$fila['tipo'].'   <br>
+                                               Prestamo:'.number_format($fila['monto']).'<br>
+                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                               FechaFin: '.$fila['fechaPago'].' <br>
+                                               N° Prestamos: '.$fila['nPrestamos'].'"
+
+                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                </a>
+                            </td>
+                    </tr>';
+                }
             }
         }      
     }/*cierre del metodo*/
@@ -378,100 +391,108 @@
 
             $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo ASC LIMIT $inicio,$cant_reg");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
             while($fila = mysql_fetch_array($resultado)){
-                if($fila['tipo'] == 'm'){
-                     echo '<tr> 
-                        <td>'.$fila['codigo'].'</td>
-                        <td>'.$fila['nombre'].'</td>
-                        <td>'.$fila['direccion'].'</td>
-                        <td>'.$fila['telefono'].'</td>
-                        <td>'.number_format($fila['saldo']).'</td>
-                        <td><a id="info" class="btn btn-mini btn-info" 
-                                 data-toggle="popover" data-placement="top" 
-                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
-                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                               NcuotasM: '.$fila['NcuotasM'].'   <br>
-                                               TipoPago: '.$fila['tipo'].'   <br>
-                                               Prestamo:'.number_format($fila['monto']).'<br>
-                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                               FechaFin: '.$fila['fechaPago'].' <br>
-                                               N° Prestamos: '.$fila['nPrestamos'].'"
+                if($fila['saldo'] == '0'){
 
-                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                                </a>
-                            </td>
-                    </tr>';
                 }else{
-                    echo '<tr> 
-                        <td>'.$fila['codigo'].'</td>
-                        <td>'.$fila['nombre'].'</td>
-                        <td>'.$fila['direccion'].'</td>
-                        <td>'.$fila['telefono'].'</td>
-                        <td>'.number_format($fila['saldo']).'</td>
-                        <td><a id="info" class="btn btn-mini btn-info" 
-                                 data-toggle="popover" data-placement="top" 
-                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
-                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                               NcuotasQ: '.$fila['NcuotasQ'].'   <br>
-                                               TipoPago: '.$fila['tipo'].'   <br>
-                                               Prestamo:'.number_format($fila['monto']).'<br>
-                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                               FechaFin: '.$fila['fechaPago'].' <br>
-                                               N° Prestamos: '.$fila['nPrestamos'].'"
+                    if($fila['tipo'] == 'm'){
+                         echo '<tr> 
+                            <td>'.$fila['codigo'].'</td>
+                            <td>'.$fila['nombre'].'</td>
+                            <td>'.$fila['direccion'].'</td>
+                            <td>'.$fila['telefono'].'</td>
+                            <td>'.number_format($fila['saldo']).'</td>
+                            <td><a id="info" class="btn btn-mini btn-info" 
+                                     data-toggle="popover" data-placement="top" 
+                                     data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                                   ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                                   NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                                   TipoPago: '.$fila['tipo'].'   <br>
+                                                   Prestamo:'.number_format($fila['monto']).'<br>
+                                                   FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                                   FechaFin: '.$fila['fechaPago'].' <br>
+                                                   N° Prestamos: '.$fila['nPrestamos'].'"
 
-                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                                </a>
-                            </td>
-                    </tr>';
+                                     data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                    </a>
+                                </td>
+                        </tr>';
+                    }else{
+                        echo '<tr> 
+                            <td>'.$fila['codigo'].'</td>
+                            <td>'.$fila['nombre'].'</td>
+                            <td>'.$fila['direccion'].'</td>
+                            <td>'.$fila['telefono'].'</td>
+                            <td>'.number_format($fila['saldo']).'</td>
+                            <td><a id="info" class="btn btn-mini btn-info" 
+                                     data-toggle="popover" data-placement="top" 
+                                     data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                                   ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                                   NcuotasQ: '.$fila['NcuotasQ'].'   <br>
+                                                   TipoPago: '.$fila['tipo'].'   <br>
+                                                   Prestamo:'.number_format($fila['monto']).'<br>
+                                                   FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                                   FechaFin: '.$fila['fechaPago'].' <br>
+                                                   N° Prestamos: '.$fila['nPrestamos'].'"
+
+                                     data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                    </a>
+                                </td>
+                        </tr>';
+                    }
                 }
             }/*cierre del while*/
         }else{
              $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE (prestamos.cedula=clientes.cedulaCliente AND nombre LIKE'%$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND cedulaCliente LIKE'$palabra%') OR (prestamos.cedula=clientes.cedulaCliente AND fechaPrestamo LIKE'%$palabra%')");
             //echo json_encode($resultado);
             while($fila = mysql_fetch_array($resultado)){
-                if($fila['tipo'] == 'm'){
-                     echo '<tr> 
-                        <td>'.$fila['codigo'].'</td>
-                        <td>'.$fila['nombre'].'</td>
-                        <td>'.$fila['direccion'].'</td>
-                        <td>'.$fila['telefono'].'</td>
-                        <td>'.number_format($fila['saldo']).'</td>
-                        <td><a id="info" class="btn btn-mini btn-info" 
-                                 data-toggle="popover" data-placement="top" 
-                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
-                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                               NcuotasM: '.$fila['NcuotasM'].'   <br>
-                                               TipoPago: '.$fila['tipo'].'   <br>
-                                               Prestamo:'.number_format($fila['monto']).'<br>
-                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                               FechaFin: '.$fila['fechaPago'].' <br>
-                                               N° Prestamos: '.$fila['nPrestamos'].'"
+                if($fila['saldo'] == '0'){
 
-                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                                </a>
-                            </td>
-                    </tr>';
                 }else{
-                    echo '<tr> 
-                        <td>'.$fila['codigo'].'</td>
-                        <td>'.$fila['nombre'].'</td>
-                        <td>'.$fila['direccion'].'</td>
-                        <td>'.$fila['telefono'].'</td>
-                        <td>'.number_format($fila['saldo']).'</td>
-                        <td><a id="info" class="btn btn-mini btn-info" 
-                                 data-toggle="popover" data-placement="top" 
-                                 data-content="Cedula: '.$fila['cedulaCliente'].'<br>
-                                               ValorCuota: '.number_format($fila['Vcuota']).'  <br>
-                                               NcuotasQ: '.$fila['NcuotasQ'].'   <br>
-                                               TipoPago: '.$fila['tipo'].'   <br>
-                                               Prestamo:'.number_format($fila['monto']).'<br>
-                                               FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
-                                               FechaFin: '.$fila['fechaPago'].' <br>
-                                               N° Prestamos: '.$fila['nPrestamos'].'"
+                    if($fila['tipo'] == 'm'){
+                         echo '<tr> 
+                            <td>'.$fila['codigo'].'</td>
+                            <td>'.$fila['nombre'].'</td>
+                            <td>'.$fila['direccion'].'</td>
+                            <td>'.$fila['telefono'].'</td>
+                            <td>'.number_format($fila['saldo']).'</td>
+                            <td><a id="info" class="btn btn-mini btn-info" 
+                                     data-toggle="popover" data-placement="top" 
+                                     data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                                   ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                                   NcuotasM: '.$fila['NcuotasM'].'   <br>
+                                                   TipoPago: '.$fila['tipo'].'   <br>
+                                                   Prestamo:'.number_format($fila['monto']).'<br>
+                                                   FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                                   FechaFin: '.$fila['fechaPago'].' <br>
+                                                   N° Prestamos: '.$fila['nPrestamos'].'"
 
-                                 data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
-                                </a>
-                            </td>
-                    </tr>';
+                                     data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                    </a>
+                                </td>
+                        </tr>';
+                    }else{
+                        echo '<tr> 
+                            <td>'.$fila['codigo'].'</td>
+                            <td>'.$fila['nombre'].'</td>
+                            <td>'.$fila['direccion'].'</td>
+                            <td>'.$fila['telefono'].'</td>
+                            <td>'.number_format($fila['saldo']).'</td>
+                            <td><a id="info" class="btn btn-mini btn-info" 
+                                     data-toggle="popover" data-placement="top" 
+                                     data-content="Cedula: '.$fila['cedulaCliente'].'<br>
+                                                   ValorCuota: '.number_format($fila['Vcuota']).'  <br>
+                                                   NcuotasQ: '.$fila['NcuotasQ'].'   <br>
+                                                   TipoPago: '.$fila['tipo'].'   <br>
+                                                   Prestamo:'.number_format($fila['monto']).'<br>
+                                                   FechaInicio:  '.$fila['fechaPrestamo'].'  <br>
+                                                   FechaFin: '.$fila['fechaPago'].' <br>
+                                                   N° Prestamos: '.$fila['nPrestamos'].'"
+
+                                     data-original-title="'.$fila['nombre'].'" href="#vermas"><strong>Ver Mas</strong>
+                                    </a>
+                                </td>
+                        </tr>';
+                    }
                 }
             }/*cierre del while*/
         }
@@ -899,25 +920,51 @@
             $diaNoti4 = $dia + 1;
 
             $diaP = substr($fila['fechaPago'],8,10);
-            $diaPnot = $diaP -3;
-            $diaPnot2 = $diaP -2;
-            $diaPnot3 = $diaP -1;
-            $diaPnot4 = $diaP +1;
-            if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
-               if($fila['inicio'] == 1){
-                   if($fila['notificacion'] == '0'){
-                        $con = $con +1;
-                   }
-               }
+            $diaP = $diaP+15; //aunmentamos 15 para saber la otras fecha de pago
+            if($diaP <= 31){
+                $diaPnot = $diaP -3;
+                $diaPnot2 = $diaP -2;
+                $diaPnot3 = $diaP -1;
+                $diaPnot4 = $diaP +1;
             }else{
+                $diaP = substr($fila['fechaPago'],8,10);
+                $diaP = $diaP-15;
+                $diaPnot = $diaP -3;
+                $diaPnot2 = $diaP -2;
+                $diaPnot3 = $diaP -1;
+                $diaPnot4 = $diaP +1;
+            }
+           
+            if($fila['tipo'] == 'm'){
+                $diaP = substr($fila['fechaPago'],8,10);
+                $diaPnot = $diaP -3;
+                $diaPnot2 = $diaP -2;
+                $diaPnot3 = $diaP -1;
+                $diaPnot4 = $diaP +1;
                 if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
-                    if($fila['inicio'] == 1){
-                       if($fila['notificacion'] == '0'){
+                    if($fila['inicio'] == '1'){
+                        if($fila['notificacion'] == '0'){
                             $con = $con +1;
-                       }
-                    }
+                        }
+                    } 
                 }
-            } 
+            }else{//quincenal muestra los que son quincenal 
+                 if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
+                    if($fila['inicio'] == '1'){
+                        if($fila['notificacion'] == '0'){
+                            $con = $con +1;
+                        }
+                    } 
+                }else{
+                    if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                        if($fila['inicio'] == '1'){
+                            if($fila['notificacion'] == '0'){
+                                $con = $con +1;
+                            }
+                        } 
+                    }
+                } 
+            }
         }/*cierre del while*/ 
             return $con;
     }
@@ -1032,7 +1079,7 @@
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedulaCliente'].'"><strong>Eliminar</strong></a></td>
-                         <td><a id="info" class="btn btn-mini btn-info"
+                        <td><a id="info" class="btn btn-mini btn-info"
                              data-toggle="popover" data-placement="top" 
                              data-content="N° Cedula: '.$fila['cedulaCliente'].'"
 
@@ -1051,7 +1098,7 @@
                         <td>'.$fila['telefono'].'</td>
                         <td><a id="editEstudiante" class="btn btn-mini btn-info" href="'.$fila['cedulaCliente'].'"><strong>Editar</strong></a></td>
                         <td><a id="delete" class="btn btn-mini btn-danger" href="'.$fila['cedulaCliente'].'"><strong>Eliminar</strong></a></td>
-                         <td><a id="info" class="btn btn-mini btn-info"
+                        <td><a id="info" class="btn btn-mini btn-info"
                              data-toggle="popover" data-placement="top" 
                              data-content="N° Cedula: '.$fila['cedulaCliente'].'"
 
@@ -1077,21 +1124,27 @@
             $diaNoti4 = $dia + 1;
 
             $diaP = substr($fila['fechaPago'],8,10);
-            $diaPnot = $diaP -3;
-            $diaPnot2 = $diaP -2;
-            $diaPnot3 = $diaP -1;
-            $diaPnot4 = $diaP +1;
-            if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
-                if($fila['inicio'] == '1'){
-                    if($fila['notificacion'] == '0'){
-                        echo '<tr class="success"> 
-                            <td>'.$fila['codigo'].'</td>
-                            <td><a href="includes/pagos.php">'.$fila['nombre'].'</a></td>
-                            <td>'.number_format($fila['Vcuota']).'</td>
-                        </tr>';
-                    }
-                } 
+            $diap = $diap+15; //aunmentamos 15 para saber la otras fecha de pago
+            if($diap <= 31){
+                $diaPnot = $diaP -3;
+                $diaPnot2 = $diaP -2;
+                $diaPnot3 = $diaP -1;
+                $diaPnot4 = $diaP +1;
             }else{
+                $diaP = substr($fila['fechaPago'],8,10);
+                $diap = $diap-15;
+                $diaPnot = $diaP -3;
+                $diaPnot2 = $diaP -2;
+                $diaPnot3 = $diaP -1;
+                $diaPnot4 = $diaP +1;
+            }
+
+            if($fila['tipo'] == 'm'){
+                $diaP = substr($fila['fechaPago'],8,10);
+                $diaPnot = $diaP -3;
+                $diaPnot2 = $diaP -2;
+                $diaPnot3 = $diaP -1;
+                $diaPnot4 = $diaP +1;
                 if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
                     if($fila['inicio'] == '1'){
                         if($fila['notificacion'] == '0'){
@@ -1103,7 +1156,31 @@
                         }
                     } 
                 }
-            } 
+            }else{//quincenal muestra los que son quincenal 
+                 if($dia == $fechaD or $diaNoti == $fechaD or $diaNoti2 == $fechaD or $diaNoti3 == $fechaD or $diaNoti4 ==$fechaD){
+                    if($fila['inicio'] == '1'){
+                        if($fila['notificacion'] == '0'){
+                            echo '<tr class="success"> 
+                                <td>'.$fila['codigo'].'</td>
+                                <td><a href="includes/pagos.php">'.$fila['nombre'].'</a></td>
+                                <td>'.number_format($fila['Vcuota']).'</td>
+                            </tr>';
+                        }
+                    } 
+                }else{
+                    if($diaP == $fechaD or $diaPnot == $fechaD or $diaPnot2 == $fechaD or $diaPnot3 == $fechaD or $diaPnot4 ==$fechaD){
+                        if($fila['inicio'] == '1'){
+                            if($fila['notificacion'] == '0'){
+                                echo '<tr class="success"> 
+                                     <td>'.$fila['codigo'].'</td>
+                                    <td><a href="includes/pagos.php">'.$fila['nombre'].'</td>
+                                    <td>'.number_format($fila['Vcuota']).'</td>
+                                </tr>';
+                            }
+                        } 
+                    }
+                } 
+            }
         }/*cierre del while*/
     }
 
@@ -1117,7 +1194,7 @@
         while($fila = mysql_fetch_array($resultado)){
                 $dia = substr($fila['fecha'],8,10);
                 $mes = substr($fila['fecha'],5,-3);
-                $año = substr($fila['fechaPrestamo'],0,4);
+                $año = substr($fila['fecha'],0,4);
                 $dia2 = $dia + 5;
                 if($fechaD >= $dia2 or $fechaM > $mes or $fechaA > $año){
                     $nPrestamo = $fila['codigo'];
@@ -1132,7 +1209,7 @@
             $dia = substr($fila['fechaPrestamo'],8,10);
             $mes = substr($fila['fechaPrestamo'],5,-3);
             $año = substr($fila['fechaPrestamo'],0,4);
-            $dia2 = $dia + 2;
+            $dia2 = $dia + 3;
             if($fila['tipo'] == 'm'){
                 if($mes < $fechaM or $año < $fechaA){
                     if($fila['inicio'] == '0'){
@@ -1284,7 +1361,7 @@
     public function mesualidad(){
         date_default_timezone_set('America/Bogota'); 
         $fecha = date("Y-m-d");//fecha actual bien 
-        $fechaA = date("Y");
+        $año = date("Y");
         $fechaD = date("d");
         $fechaM = date("m");
         $resultado = mysql_query("SELECT * FROM prestamos,clientes WHERE prestamos.cedula=clientes.cedulaCliente ORDER BY codigo DESC");//obtenemos los datos ordenados limitado con la variable inicio hasta la variable cant_reg
